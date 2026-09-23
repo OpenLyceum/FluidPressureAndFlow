@@ -1,7 +1,7 @@
-# CLAUDE.md — Fluid Pressure and Flow
+# AGENTS.md — Fluid Pressure and Flow
 
 Sim-specific context for AI assistants. General SceneryStack guidance:
-[OpenLyceum/.github/CLAUDE.md](https://github.com/OpenLyceum/.github/blob/main/CLAUDE.md).
+[OpenLyceum/.github/AGENTS.md](https://github.com/OpenLyceum/.github/blob/main/AGENTS.md).
 
 ## What this is
 
