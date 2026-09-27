@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "A SceneryStack simulation: Fluid Pressure and Flow.",
+  "description": "Explore hydrostatic pressure, Bernoulli flow through a pipe, and a water tower draining through a hose.",
   "license": "AGPL-3.0-or-later",
   "repository": {
     "type": "git",
