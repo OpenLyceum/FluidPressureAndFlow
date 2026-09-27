@@ -22,16 +22,16 @@
  */
 
 import { asyncLoader } from "scenerystack/phet-core";
-import handleUrl from "../../../images/handle.png";
-import handleWithBarUrl from "../../../images/handleWithBar.png";
-import injectorBulbUrl from "../../../images/injectorBulbCropped.png";
-import nozzleUrl from "../../../images/nozzle.png";
-import pipeLeftBackUrl from "../../../images/pipeLeftBack.png";
-import pipeLeftFrontUrl from "../../../images/pipeLeftFront.png";
-import pipeRightUrl from "../../../images/pipeRight.png";
-import pipeSegmentUrl from "../../../images/pipeSegment.png";
-import spoutHandleUrl from "../../../images/spoutHandle.png";
-import wheelUrl from "../../../images/wheel.png";
+import handleUrl from "../../assets/images/handle.png";
+import handleWithBarUrl from "../../assets/images/handleWithBar.png";
+import injectorBulbUrl from "../../assets/images/injectorBulbCropped.png";
+import nozzleUrl from "../../assets/images/nozzle.png";
+import pipeLeftBackUrl from "../../assets/images/pipeLeftBack.png";
+import pipeLeftFrontUrl from "../../assets/images/pipeLeftFront.png";
+import pipeRightUrl from "../../assets/images/pipeRight.png";
+import pipeSegmentUrl from "../../assets/images/pipeSegment.png";
+import spoutHandleUrl from "../../assets/images/spoutHandle.png";
+import wheelUrl from "../../assets/images/wheel.png";
 
 function preload(url: string): HTMLImageElement {
   const element = document.createElement("img");
