@@ -118,3 +118,20 @@ The upstream issue list is the backlog. Highest-value items, in order:
 4. **[#327](https://github.com/phetsims/fluid-pressure-and-flow/issues/327)** —
    water/sky contrast for colour-blind viewers. All colours are already in
    `FluidPressureAndFlowColors.ts`, so this is a one-file change.
+
+## Accessibility
+
+Follows the shared [OpenLyceum accessibility convention](https://github.com/OpenLyceum/Baton/blob/main/ACCESSIBILITY.md).
+A11y strings live under the `a11y` key of each locale JSON, read through `StringManager`.
+
+- Screen summaries: `src/flow/view/FlowScreenSummaryContent.ts`, `src/under-pressure/view/UnderPressureScreenSummaryContent.ts`, `src/water-tower/view/WaterTowerScreenSummaryContent.ts`
+- Keyboard Shortcuts dialog: `src/flow/view/FlowKeyboardHelpContent.ts`, `src/under-pressure/view/UnderPressureKeyboardHelpContent.ts`, `src/water-tower/view/WaterTowerKeyboardHelpContent.ts`
+- Keyboard-draggable objects: `src/FluidPressureAndFlowConstants.ts`, `src/common/view/BarometerNode.ts`, `src/common/view/FPAFRulerNode.ts`, `src/common/view/VelocitySensorNode.ts`, `src/flow/view/FluxMeterNode.ts`, `src/flow/view/PipeHandlesNode.ts`, `src/under-pressure/view/MassNode.ts`, `src/water-tower/view/HoseNode.ts`, `src/water-tower/view/WaterTowerNode.ts`
+
+## Commands
+
+```bash
+npm run lint && npm run check && npm test && npm run build && npm run test:fuzz:quick
+```
+
+The standard scripts are listed in the README. `npm run release` runs `npm test` before the version bump, and `src/init.ts` reads `version` from `package.json`.
