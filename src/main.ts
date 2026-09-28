@@ -44,22 +44,25 @@ onReadyToLaunch(() => {
 
   const screens = [
     new UnderPressureScreen({
-      sharedUnits: sharedUnits,
+      // The screen name Property updates automatically when the locale changes
       name: stringManager.getScreenNames().underPressureStringProperty,
       tandem: Tandem.ROOT.createTandem("underPressureScreen"),
       backgroundColorProperty: FluidPressureAndFlowColors.backgroundColorProperty,
+      sharedUnits: sharedUnits,
     }),
     new FlowScreen({
-      sharedUnits: sharedUnits,
+      // The screen name Property updates automatically when the locale changes
       name: stringManager.getScreenNames().flowStringProperty,
       tandem: Tandem.ROOT.createTandem("flowScreen"),
       backgroundColorProperty: FluidPressureAndFlowColors.backgroundColorProperty,
+      sharedUnits: sharedUnits,
     }),
     new WaterTowerScreen({
-      sharedUnits: sharedUnits,
+      // The screen name Property updates automatically when the locale changes
       name: stringManager.getScreenNames().waterTowerStringProperty,
       tandem: Tandem.ROOT.createTandem("waterTowerScreen"),
       backgroundColorProperty: FluidPressureAndFlowColors.backgroundColorProperty,
+      sharedUnits: sharedUnits,
     }),
   ];
 
