@@ -1,9 +1,9 @@
 /**
  * FluidPressureAndFlowPreferencesModel.ts
  *
- * The simulation-specific preferences shown in Preferences → Simulation, plus
- * the state they govern. Each preference takes its initial value from the
- * matching query parameter.
+ * Model for the simulation-specific preferences shown in Preferences →
+ * Simulation. Each preference Property takes its initial value from the
+ * corresponding query parameter in fluidPressureAndFlowQueryParameters.
  */
 
 import { BooleanProperty, EnumerationProperty } from "scenerystack/axon";
@@ -23,13 +23,16 @@ export class FluidPressureAndFlowPreferencesModel {
    * it is the thing all three agree about. Each screen model mirrors it while
    * linking is enabled and keeps its own value when it is not.
    */
-  public readonly sharedUnitSystemProperty = new EnumerationProperty(UnitSystem.METRIC);
+  public readonly sharedUnitSystemProperty: EnumerationProperty<UnitSystem>;
 
   public constructor(tandem?: Tandem) {
     this.linkUnitsProperty = new BooleanProperty(
       fluidPressureAndFlowQueryParameters.linkUnits,
       tandem ? { tandem: tandem.createTandem("linkUnitsProperty") } : undefined,
     );
+    this.sharedUnitSystemProperty = new EnumerationProperty(UnitSystem.METRIC, {
+      ...(tandem && { tandem: tandem.createTandem("sharedUnitSystemProperty") }),
+    });
   }
 
   public reset(): void {
