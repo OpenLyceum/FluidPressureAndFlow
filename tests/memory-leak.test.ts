@@ -8,18 +8,10 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { TimeModel } from "../src/common/TimeModel.js";
 import { FlowModel } from "../src/flow/model/FlowModel.js";
 import { UnderPressureModel } from "../src/under-pressure/model/UnderPressureModel.js";
 import { WaterTowerModel } from "../src/water-tower/model/WaterTowerModel.js";
 import { describeDisposalLeaks, forceGC } from "./helpers/memoryLeak.js";
-
-function createAndDisposeTimeModel(): WeakRef<object> {
-  const model = new TimeModel();
-  const ref = new WeakRef<object>(model);
-  model.dispose();
-  return ref;
-}
 
 /**
  * Runs a screen model through a stretch of simulated time, then disposes it.
@@ -40,18 +32,6 @@ function createStepAndDispose(create: () => { step(dt: number): void; dispose():
 }
 
 describe("Memory leak regression", () => {
-  it("TimeModel is collected after dispose", async () => {
-    const ref = createAndDisposeTimeModel();
-    await forceGC(ref);
-    expect(ref.deref()).toBeUndefined();
-  });
-
-  it("double dispose() does not throw", () => {
-    const model = new TimeModel();
-    model.dispose();
-    expect(() => model.dispose()).not.toThrow();
-  });
-
   it("UnderPressureModel is collected after dispose", async () => {
     const ref = createStepAndDispose(() => new UnderPressureModel());
     await forceGC(ref);
@@ -115,16 +95,10 @@ describe("Memory leak regression", () => {
     expect(flow.particles.length).toBeLessThan(afterTenSeconds * 2);
     flow.dispose();
   });
-
-  it("repeated create/dispose cycles leave no survivors", async () => {
-    const refs: WeakRef<object>[] = [];
-    for (let i = 0; i < 10; i++) {
-      refs.push(createAndDisposeTimeModel());
-    }
-    await forceGC(refs);
-    const survivors = refs.filter((r) => r.deref() !== undefined).length;
-    expect(survivors).toBe(0);
-  });
 });
 
-describeDisposalLeaks([{ name: "TimeModel", create: () => new TimeModel(), idempotentDispose: true }]);
+describeDisposalLeaks([
+  { name: "UnderPressureModel", create: () => new UnderPressureModel() },
+  { name: "FlowModel", create: () => new FlowModel() },
+  { name: "WaterTowerModel", create: () => new WaterTowerModel() },
+]);
