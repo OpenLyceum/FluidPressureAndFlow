@@ -3,7 +3,9 @@
 Sim-specific context for AI assistants. General SceneryStack guidance:
 [OpenLyceum/.github/AGENTS.md](https://github.com/OpenLyceum/.github/blob/main/AGENTS.md).
 
-## What this is
+## Project
+
+### What this is
 
 A SceneryStack recreation of PhET's **Fluid Pressure and Flow** — three screens:
 Under Pressure, Flow, Water Tower.
@@ -25,21 +27,6 @@ there. Two in particular have tests pinning the current behaviour so that
 changing them is deliberate: the chamber pool's 5:1 width coupling, and the fact
 that the Flow screen's friction checkbox does not affect pressure or flux.
 
-## Ground truth
-
-The PhET Java source is available locally and was the primary reference:
-
-```
-Baseline/PhET/trunk/simulations-java/simulations/fluid-pressure-and-flow/
-  src/edu/colorado/phet/fluidpressureandflow/   103 .java files
-  doc/model.txt  doc/implementation-notes.txt
-  doc/FluidPressureandFlow-DesignDoc-6-13-2012.pdf   (pdftotext -layout)
-  screenshots/                                       layout reference
-```
-
-Geometry and constants come from there; the Mystery pool and a few constants come
-from the HTML5 repo, which is reachable with `gh api`.
-
 ## Key files
 
 | File | Purpose |
@@ -55,19 +42,18 @@ from the HTML5 repo, which is reachable with `gh api`.
 | `src/under-pressure/view/PoolNode.ts` | Draws all four pools from model shapes |
 | `src/common/view/SensorToolboxNode.ts` | Tray; hands presses to instrument nodes |
 
-## Conventions that bite here
+## Model
 
-- **Model is SI throughout.** Never convert inside `model/`. `formatValue` and
-  `toDisplayValue` in `units.ts` are the only places conversion happens.
-- **`+y` is up, `y = 0` is ground.** Every screen. The `ModelViewTransform2` in
-  each ScreenView flips it; nothing else does its own arithmetic.
-- **Shape caching matters.** `getPressureAt` runs per barometer per frame and
-  two pools use polygon boolean ops. Container shapes are cached; water shapes
-  are `DerivedProperty`s. Don't build shapes in a hot path.
-- **Flow tracers store a fraction, not a `y`.** Changing that would let them
-  pass through the pipe wall as it closes.
-- **Canvas for particles.** Both dynamic screens draw their particles on a
-  `CanvasNode` and call `invalidatePaint()` from the ScreenView's `step`.
+Physics and behavior: `doc/model.md`.
+
+## Accessibility
+
+Follows the shared [OpenLyceum accessibility convention](https://github.com/OpenLyceum/Baton/blob/main/ACCESSIBILITY.md).
+A11y strings live under the `a11y` key of each locale JSON, read through `StringManager`.
+
+- Screen summaries: `src/flow/view/FlowScreenSummaryContent.ts`, `src/under-pressure/view/UnderPressureScreenSummaryContent.ts`, `src/water-tower/view/WaterTowerScreenSummaryContent.ts`
+- Keyboard Shortcuts dialog: `src/flow/view/FlowKeyboardHelpContent.ts`, `src/under-pressure/view/UnderPressureKeyboardHelpContent.ts`, `src/water-tower/view/WaterTowerKeyboardHelpContent.ts`
+- Keyboard-draggable objects: `src/FluidPressureAndFlowConstants.ts`, `src/common/view/BarometerNode.ts`, `src/common/view/FPAFRulerNode.ts`, `src/common/view/VelocitySensorNode.ts`, `src/flow/view/FluxMeterNode.ts`, `src/flow/view/PipeHandlesNode.ts`, `src/under-pressure/view/MassNode.ts`, `src/water-tower/view/HoseNode.ts`, `src/water-tower/view/WaterTowerNode.ts`
 
 ## Compliance carve-outs
 
@@ -104,7 +90,46 @@ Fleet gate, from the workspace root:
 bash Baton/scripts/check-repo-compliance.sh FluidPressureAndFlow
 ```
 
-## Follow-up work
+## Commands
+
+```bash
+npm run lint && npm run check && npm test && npm run build && npm run test:fuzz:quick
+```
+
+The standard scripts are listed in the README. `npm run release` runs `npm test` before the version bump, and `src/init.ts` reads `version` from `package.json`.
+
+## Development notes
+
+### Ground truth
+
+The PhET Java source is available locally and was the primary reference:
+
+```
+Baseline/PhET/trunk/simulations-java/simulations/fluid-pressure-and-flow/
+  src/edu/colorado/phet/fluidpressureandflow/   103 .java files
+  doc/model.txt  doc/implementation-notes.txt
+  doc/FluidPressureandFlow-DesignDoc-6-13-2012.pdf   (pdftotext -layout)
+  screenshots/                                       layout reference
+```
+
+Geometry and constants come from there; the Mystery pool and a few constants come
+from the HTML5 repo, which is reachable with `gh api`.
+
+### Conventions that bite here
+
+- **Model is SI throughout.** Never convert inside `model/`. `formatValue` and
+  `toDisplayValue` in `units.ts` are the only places conversion happens.
+- **`+y` is up, `y = 0` is ground.** Every screen. The `ModelViewTransform2` in
+  each ScreenView flips it; nothing else does its own arithmetic.
+- **Shape caching matters.** `getPressureAt` runs per barometer per frame and
+  two pools use polygon boolean ops. Container shapes are cached; water shapes
+  are `DerivedProperty`s. Don't build shapes in a hot path.
+- **Flow tracers store a fraction, not a `y`.** Changing that would let them
+  pass through the pipe wall as it closes.
+- **Canvas for particles.** Both dynamic screens draw their particles on a
+  `CanvasNode` and call `invalidatePaint()` from the ScreenView's `step`.
+
+### Follow-up work
 
 The upstream issue list is the backlog. Highest-value items, in order:
 
@@ -118,20 +143,3 @@ The upstream issue list is the backlog. Highest-value items, in order:
 4. **[#327](https://github.com/phetsims/fluid-pressure-and-flow/issues/327)** —
    water/sky contrast for colour-blind viewers. All colours are already in
    `FluidPressureAndFlowColors.ts`, so this is a one-file change.
-
-## Accessibility
-
-Follows the shared [OpenLyceum accessibility convention](https://github.com/OpenLyceum/Baton/blob/main/ACCESSIBILITY.md).
-A11y strings live under the `a11y` key of each locale JSON, read through `StringManager`.
-
-- Screen summaries: `src/flow/view/FlowScreenSummaryContent.ts`, `src/under-pressure/view/UnderPressureScreenSummaryContent.ts`, `src/water-tower/view/WaterTowerScreenSummaryContent.ts`
-- Keyboard Shortcuts dialog: `src/flow/view/FlowKeyboardHelpContent.ts`, `src/under-pressure/view/UnderPressureKeyboardHelpContent.ts`, `src/water-tower/view/WaterTowerKeyboardHelpContent.ts`
-- Keyboard-draggable objects: `src/FluidPressureAndFlowConstants.ts`, `src/common/view/BarometerNode.ts`, `src/common/view/FPAFRulerNode.ts`, `src/common/view/VelocitySensorNode.ts`, `src/flow/view/FluxMeterNode.ts`, `src/flow/view/PipeHandlesNode.ts`, `src/under-pressure/view/MassNode.ts`, `src/water-tower/view/HoseNode.ts`, `src/water-tower/view/WaterTowerNode.ts`
-
-## Commands
-
-```bash
-npm run lint && npm run check && npm test && npm run build && npm run test:fuzz:quick
-```
-
-The standard scripts are listed in the README. `npm run release` runs `npm test` before the version bump, and `src/init.ts` reads `version` from `package.json`.
