@@ -12,6 +12,7 @@ import { Bounds2, Vector2 } from "scenerystack/dot";
 import type { ModelViewTransform2 } from "scenerystack/phetcommon";
 import { DragListener, Image, KeyboardDragListener, Node, Path } from "scenerystack/scenery";
 import { handleImage, nozzleImage, spoutHandleImage } from "../../common/view/images.js";
+import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { SHIFT_KEY_SPEED_DIVISOR } from "../../FluidPressureAndFlowConstants.js";
 import { HOSE_OUTLET_X, type Hose, MAX_HOSE_OUTLET_Y } from "../model/Hose.js";
 import type { WaterTower } from "../model/WaterTower.js";
@@ -23,10 +24,6 @@ import {
   getMinOutletY,
   HOSE_LAYOUT_WIDTH,
 } from "./HoseGeometry.js";
-
-/** Hose fill and rim colours — match PhET's green hose with a grey edge. */
-const HOSE_FILL = "#00FF00";
-const HOSE_STROKE = "#555555";
 
 /** Scale for the height and spout drag handles. */
 const HANDLE_SCALE = 0.3;
@@ -61,8 +58,8 @@ export class HoseNode extends Node {
     const hoseViewWidth = Math.abs(modelViewTransform.modelToViewDeltaY(HOSE_LAYOUT_WIDTH));
 
     const pipe = new Path(null, {
-      fill: HOSE_FILL,
-      stroke: HOSE_STROKE,
+      fill: FluidPressureAndFlowColors.hoseFillColorProperty,
+      stroke: FluidPressureAndFlowColors.hoseStrokeColorProperty,
       lineWidth: 1,
     });
 

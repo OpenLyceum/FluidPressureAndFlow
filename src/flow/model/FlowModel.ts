@@ -26,7 +26,7 @@
  */
 
 import { BooleanProperty, EnumerationProperty, NumberProperty } from "scenerystack/axon";
-import { Vector2 } from "scenerystack/dot";
+import { dotRandom, Vector2 } from "scenerystack/dot";
 import { TimeSpeed } from "scenerystack/scenery-phet";
 import { getStandardAirPressure } from "../../common/model/airPressure.js";
 import { Barometer } from "../../common/model/Barometer.js";
@@ -212,7 +212,7 @@ export class FlowModel extends FluidPressureAndFlowModel {
       this.dripAccumulator += dt * DRIP_RATE;
       while (this.dripAccumulator >= 1) {
         this.dripAccumulator -= 1;
-        const fraction = DRIP_MIN_FRACTION + Math.random() * (DRIP_MAX_FRACTION - DRIP_MIN_FRACTION);
+        const fraction = dotRandom.nextDoubleBetween(DRIP_MIN_FRACTION, DRIP_MAX_FRACTION);
         this.particles.push(new Particle(this.pipe.getMinX() + PARTICLE_SPAWN_EPSILON, fraction, DRIP_RADIUS, false));
       }
     }

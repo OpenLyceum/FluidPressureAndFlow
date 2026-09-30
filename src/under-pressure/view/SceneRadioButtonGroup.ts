@@ -24,6 +24,7 @@ import { RectangularRadioButtonGroup } from "scenerystack/sun";
 import { getFluidColor, MYSTERY_FLUID_COLORS } from "../../common/model/fluidColor.js";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { PANEL_CORNER_RADIUS, WATER_DENSITY } from "../../FluidPressureAndFlowConstants.js";
+import { StringManager } from "../../i18n/StringManager.js";
 import { PoolScene, type PoolSceneLabelProperties } from "../model/PoolScene.js";
 
 /**
@@ -172,7 +173,7 @@ function createIcon(shape: Shape, isMystery = false): Node {
 
   if (isMystery) {
     children.push(
-      new Text("?", {
+      new Text(StringManager.getInstance().getUnderPressureStrings().mysteryGlyphStringProperty, {
         font: MYSTERY_GLYPH_FONT,
         fill: FluidPressureAndFlowColors.textColorProperty,
         centerX: ICON_WIDTH / 2,

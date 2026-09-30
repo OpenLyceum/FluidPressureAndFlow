@@ -83,7 +83,8 @@
     "planetA": "Planet A",
     "planetB": "Planet B",
     "planetC": "Planet C",
-    "massLabelPattern": "{{mass}} kg"
+    "massLabelPattern": "{{mass}} kg",
+    "mysteryGlyph": "?"
   },
   "flow": {
     "flowRate": "Flow Rate",

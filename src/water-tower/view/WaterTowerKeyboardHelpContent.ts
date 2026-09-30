@@ -2,29 +2,30 @@
  * WaterTowerKeyboardHelpContent.ts
  *
  * Content for the keyboard-help dialog (the "?" button in the navigation bar).
- * The template's only interactions are buttons and Reset All, so a single
- * basic-actions section covers the available keyboard controls. When the sim
- * grows, fill the right column (pattern stubbed below).
+ * The tank, sluice gate, and hose are KeyboardDragListeners, so dragging is
+ * documented with MoveDraggableItemsKeyboardHelpSection rather than a second
+ * HotkeyData. Sliders, the faucet, and the time controls use the matching
+ * scenery-phet sections.
  */
 
 import {
   BasicActionsKeyboardHelpSection,
-  // SliderControlsKeyboardHelpSection,
-  // TimeControlsKeyboardHelpSection,
+  FaucetControlsKeyboardHelpSection,
+  MoveDraggableItemsKeyboardHelpSection,
+  SliderControlsKeyboardHelpSection,
+  TimeControlsKeyboardHelpSection,
   TwoColumnKeyboardHelpContent,
 } from "scenerystack/scenery-phet";
 
 export class WaterTowerKeyboardHelpContent extends TwoColumnKeyboardHelpContent {
   public constructor() {
-    const leftColumn = [new BasicActionsKeyboardHelpSection()];
-
-    // Right column — uncomment when the sim adds sliders and/or TimeControlNode:
-    // const rightColumn = [
-    //   new SliderControlsKeyboardHelpSection(),
-    //   // new TimeControlsKeyboardHelpSection(),
-    // ];
-    const rightColumn: never[] = [];
-
-    super(leftColumn, rightColumn);
+    super(
+      [
+        new MoveDraggableItemsKeyboardHelpSection(),
+        new SliderControlsKeyboardHelpSection(),
+        new FaucetControlsKeyboardHelpSection(),
+      ],
+      [new TimeControlsKeyboardHelpSection(), new BasicActionsKeyboardHelpSection()],
+    );
   }
 }

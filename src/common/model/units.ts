@@ -16,6 +16,7 @@
  */
 
 import type { TReadOnlyProperty } from "scenerystack/axon";
+import { toFixed } from "scenerystack/dot";
 import { Enumeration, EnumerationValue } from "scenerystack/phet-core";
 
 /**
@@ -41,7 +42,7 @@ export function toSIValue(conversion: UnitConversion, displayValue: number): num
 
 /** Formats an SI value as a display string with the conversion's precision. */
 export function formatValue(conversion: UnitConversion, siValue: number): string {
-  return toDisplayValue(conversion, siValue).toFixed(conversion.decimalPlaces);
+  return toFixed(toDisplayValue(conversion, siValue), conversion.decimalPlaces);
 }
 
 // ── Conversion factors ────────────────────────────────────────────────────────

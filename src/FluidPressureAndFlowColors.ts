@@ -258,6 +258,18 @@ const FluidPressureAndFlowColors = {
     default: "#1a1a1a",
     projector: "#1a1a1a",
   }),
+
+  /** Body of the optional hose on the Water Tower screen. */
+  hoseFillColorProperty: new ProfileColorProperty(FluidPressureAndFlowNamespace, "hoseFill", {
+    default: "#00ff00",
+    projector: "#00cc00",
+  }),
+
+  /** Rim of the optional hose. */
+  hoseStrokeColorProperty: new ProfileColorProperty(FluidPressureAndFlowNamespace, "hoseStroke", {
+    default: "#555555",
+    projector: "#333333",
+  }),
 };
 
 export default FluidPressureAndFlowColors;
