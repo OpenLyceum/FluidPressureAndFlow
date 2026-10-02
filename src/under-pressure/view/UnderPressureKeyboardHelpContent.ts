@@ -2,29 +2,31 @@
  * UnderPressureKeyboardHelpContent.ts
  *
  * Content for the keyboard-help dialog (the "?" button in the navigation bar).
- * The template's only interactions are buttons and Reset All, so a single
- * basic-actions section covers the available keyboard controls. When the sim
- * grows, fill the right column (pattern stubbed below).
+ * Left column: dragging the sensors, ruler and masses, the sliders, and the
+ * faucets. Right column: the combo boxes and the basic actions, including the
+ * checkboxes.
  */
 
 import {
   BasicActionsKeyboardHelpSection,
-  // SliderControlsKeyboardHelpSection,
-  // TimeControlsKeyboardHelpSection,
+  ComboBoxKeyboardHelpSection,
+  FaucetControlsKeyboardHelpSection,
+  MoveDraggableItemsKeyboardHelpSection,
+  SliderControlsKeyboardHelpSection,
   TwoColumnKeyboardHelpContent,
 } from "scenerystack/scenery-phet";
 
 export class UnderPressureKeyboardHelpContent extends TwoColumnKeyboardHelpContent {
   public constructor() {
-    const leftColumn = [new BasicActionsKeyboardHelpSection()];
-
-    // Right column — uncomment when the sim adds sliders and/or TimeControlNode:
-    // const rightColumn = [
-    //   new SliderControlsKeyboardHelpSection(),
-    //   // new TimeControlsKeyboardHelpSection(),
-    // ];
-    const rightColumn: never[] = [];
-
-    super(leftColumn, rightColumn);
+    // Sensors, the ruler and the masses are keyboard-draggable; gravity and fluid
+    // density are sliders; the pools have faucets; units and fluid are combo boxes.
+    super(
+      [
+        new MoveDraggableItemsKeyboardHelpSection(),
+        new SliderControlsKeyboardHelpSection(),
+        new FaucetControlsKeyboardHelpSection(),
+      ],
+      [new ComboBoxKeyboardHelpSection(), new BasicActionsKeyboardHelpSection({ withCheckboxContent: true })],
+    );
   }
 }

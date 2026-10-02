@@ -165,6 +165,14 @@ The water's colour is not a profile colour: it is a continuous function of fluid
 density (`common/model/fluidColor.ts`), so it cannot be a fixed pair of values.
 The stroke around it is a profile colour, since that stays constant.
 
+## Object lifetime
+
+Each screen's model, view and screen-summary content are created once and live as long as the
+sim. Their `link`s and `DerivedProperty`s (for example the six links in `WaterTowerModel` and the
+seven in `UnderPressureScreenView`) connect objects that are torn down together, never, so they are
+not unlinked and those classes do not dispose them. Nodes created and removed at runtime must dispose
+what they attach; the leak suite covers the screen models.
+
 ## Tests
 
 `tests/` mirrors `src/`. The suites worth knowing about:
@@ -179,7 +187,7 @@ The stroke around it is a profile colour, since that stays constant.
 | `flow/Pipe` | continuity, the minimum-height clamp, the friction profile |
 | `flow/bernoulli` | constant total head, no negative pressure, tracer containment |
 | `water-tower/torricelli` | `v = √(2gh)`, its two independences, volume conservation |
-| `memory-leak` | dispose regressions on the dynamically created nodes |
+| `memory-leak` | dispose regressions on the three screen models |
 
 Several of these encode claims the sim makes *to a student*. If one breaks, the
 sim is teaching something false — a worse failure than a crash, and a quieter one.

@@ -270,6 +270,15 @@ const FluidPressureAndFlowColors = {
     default: "#555555",
     projector: "#333333",
   }),
+
+  /** Crosshair beside the measuring-tape toolbox icon (the tape's own orange). */
+  measuringTapeCrosshairColorProperty: new ProfileColorProperty(
+    FluidPressureAndFlowNamespace,
+    "measuringTapeCrosshair",
+    {
+      default: "#E05F20",
+    },
+  ),
 };
 
 export default FluidPressureAndFlowColors;

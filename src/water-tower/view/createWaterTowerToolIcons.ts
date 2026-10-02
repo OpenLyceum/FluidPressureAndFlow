@@ -9,6 +9,7 @@ import { Shape } from "scenerystack/kite";
 import { HBox, HStrut, Image, type Node, Path } from "scenerystack/scenery";
 import { measuringTape_png, PhetFont, RulerNode } from "scenerystack/scenery-phet";
 import { nozzleImage } from "../../common/view/images.js";
+import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 
 /** Miniature ruler beside the ruler checkbox. */
 export function createRulerIcon(): Node {
@@ -28,7 +29,7 @@ export function createMeasuringTapeIcon(): Node {
     new Path(
       new Shape().moveTo(-crosshairSize, 0).lineTo(crosshairSize, 0).moveTo(0, -crosshairSize).lineTo(0, crosshairSize),
       {
-        stroke: "#E05F20",
+        stroke: FluidPressureAndFlowColors.measuringTapeCrosshairColorProperty,
         lineWidth: 2,
         left: icon.right + 12,
         top: icon.bottom + 12,
