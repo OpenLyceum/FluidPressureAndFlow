@@ -122,7 +122,7 @@ export class SkyGroundNode extends Node {
     const isAtmosphereProperty = providedOptions?.isAtmosphereProperty;
     if (isAtmosphereProperty) {
       const updateSky = (isAtmosphere: boolean) => {
-        this.skyRectangle.fill = isAtmosphere ? this.skyGradient : "#000000";
+        this.skyRectangle.fill = isAtmosphere ? this.skyGradient : FluidPressureAndFlowColors.vacuumSkyColorProperty;
       };
       isAtmosphereProperty.link(updateSky);
       updateSky(isAtmosphereProperty.value);

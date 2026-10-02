@@ -43,6 +43,11 @@ const FluidPressureAndFlowColors = {
     projector: "#8ad6f0",
   }),
 
+  /** Sky when the atmosphere is switched off: the pools sit in vacuum. */
+  vacuumSkyColorProperty: new ProfileColorProperty(FluidPressureAndFlowNamespace, "vacuumSky", {
+    default: "#000000",
+  }),
+
   /** Earth immediately below the grass line, on the screens that cut into it. */
   earthTopColorProperty: new ProfileColorProperty(FluidPressureAndFlowNamespace, "earthTop", {
     default: "#9d8b61",
@@ -139,6 +144,17 @@ const FluidPressureAndFlowColors = {
     projector: "#000000",
   }),
 
+  /** Sluice gate: steel edges, shading toward a highlight a little left of centre. */
+  sluiceGateEdgeColorProperty: new ProfileColorProperty(FluidPressureAndFlowNamespace, "sluiceGateEdge", {
+    default: "#656570",
+  }),
+  sluiceGateHighlightColorProperty: new ProfileColorProperty(FluidPressureAndFlowNamespace, "sluiceGateHighlight", {
+    default: "#dee6f5",
+  }),
+  sluiceGateShadeColorProperty: new ProfileColorProperty(FluidPressureAndFlowNamespace, "sluiceGateShade", {
+    default: "#bdc3cf",
+  }),
+
   /** The tank's lid, and the band around its base. */
   towerTrimColorProperty: new ProfileColorProperty(FluidPressureAndFlowNamespace, "towerTrim", {
     default: "#9a9a9a",
@@ -149,6 +165,11 @@ const FluidPressureAndFlowColors = {
   massColorProperty: new ProfileColorProperty(FluidPressureAndFlowNamespace, "mass", {
     default: "#8e7a5c",
     projector: "#7a6748",
+  }),
+
+  /** Fill behind the drop-target outline in the chamber pool, matching the published sim. */
+  dropZoneFillColorProperty: new ProfileColorProperty(FluidPressureAndFlowNamespace, "dropZoneFill", {
+    default: "#ffdcf0",
   }),
 
   /** Dashed outline showing where a weight may be dropped. */

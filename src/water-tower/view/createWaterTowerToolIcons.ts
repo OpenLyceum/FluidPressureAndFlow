@@ -49,9 +49,9 @@ export function createHoseIcon(): Node {
       .lineTo(10, 0)
       .lineTo(0, 0),
     {
-      stroke: "grey",
+      stroke: FluidPressureAndFlowColors.hoseStrokeColorProperty,
       lineWidth: 1,
-      fill: "#00FF00",
+      fill: FluidPressureAndFlowColors.hoseFillColorProperty,
     },
   );
   icon.addChild(

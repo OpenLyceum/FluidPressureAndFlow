@@ -98,10 +98,10 @@ export class WaterTowerNode extends Node {
     });
     const sluiceGate = new Rectangle(0, 0, GATE_WIDTH, 0, {
       fill: new LinearGradient(0, 0, GATE_WIDTH, 0)
-        .addColorStop(0, "#656570")
-        .addColorStop(0.5, "#dee6f5")
-        .addColorStop(0.7, "#bdc3cf")
-        .addColorStop(1, "#656570"),
+        .addColorStop(0, FluidPressureAndFlowColors.sluiceGateEdgeColorProperty)
+        .addColorStop(0.5, FluidPressureAndFlowColors.sluiceGateHighlightColorProperty)
+        .addColorStop(0.7, FluidPressureAndFlowColors.sluiceGateShadeColorProperty)
+        .addColorStop(1, FluidPressureAndFlowColors.sluiceGateEdgeColorProperty),
       stroke: FluidPressureAndFlowColors.towerStructureColorProperty,
       lineWidth: 0.5,
       cursor: "ns-resize",

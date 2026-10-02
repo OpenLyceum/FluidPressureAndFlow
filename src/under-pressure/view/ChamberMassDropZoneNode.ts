@@ -19,9 +19,6 @@ import {
 /** Height of the drop zone above the water surface, metres — fits one large block. */
 const DROP_ZONE_HEIGHT = 0.55;
 
-/** Fill behind the dashed outline, matching the published sim. */
-const DROP_ZONE_FILL = "#ffdcf0";
-
 export class ChamberMassDropZoneNode extends Node {
   private readonly disposeChamberMassDropZoneNode: () => void;
 
@@ -32,7 +29,7 @@ export class ChamberMassDropZoneNode extends Node {
       stroke: FluidPressureAndFlowColors.textColorProperty,
       lineWidth: 2,
       lineDash: [10, 5],
-      fill: DROP_ZONE_FILL,
+      fill: FluidPressureAndFlowColors.dropZoneFillColorProperty,
     });
 
     this.children = [outline];
