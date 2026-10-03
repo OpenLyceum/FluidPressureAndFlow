@@ -66,6 +66,9 @@ export abstract class FluidPressureAndFlowModel implements TModel {
   /** Torn down in {@link dispose}; keeps the sensor-refresh links from leaking. */
   private readonly sensorRefreshMultilink: UnknownMultilink;
 
+  /** Removes listeners installed on cross-screen preferences, if supplied. */
+  private disposeSharedUnits: (() => void) | null = null;
+
   /**
    * Guards the two-way sync with the shared unit system, so setting one side
    * from the other does not immediately bounce back.
@@ -106,31 +109,40 @@ export abstract class FluidPressureAndFlowModel implements TModel {
       this.unitSystemProperty.value = sharedUnitSystemProperty.value;
     }
 
-    this.unitSystemProperty.link((system) => {
+    const updateSharedUnits = (system: UnitSystem) => {
       if (this.isSyncingUnits || !linkUnitsProperty.value) {
         return;
       }
       this.isSyncingUnits = true;
       sharedUnitSystemProperty.value = system;
       this.isSyncingUnits = false;
-    });
+    };
+    this.unitSystemProperty.link(updateSharedUnits);
 
-    sharedUnitSystemProperty.link((system) => {
+    const updateScreenUnits = (system: UnitSystem) => {
       if (this.isSyncingUnits || !linkUnitsProperty.value) {
         return;
       }
       this.isSyncingUnits = true;
       this.unitSystemProperty.value = system;
       this.isSyncingUnits = false;
-    });
+    };
+    sharedUnitSystemProperty.link(updateScreenUnits);
 
     // Turning the preference back on pulls this screen into step immediately,
     // rather than leaving it out of sync until the next change.
-    linkUnitsProperty.link((isLinked) => {
+    const updateLinkedPreference = (isLinked: boolean) => {
       if (isLinked) {
         this.unitSystemProperty.value = sharedUnitSystemProperty.value;
       }
-    });
+    };
+    linkUnitsProperty.link(updateLinkedPreference);
+
+    this.disposeSharedUnits = () => {
+      this.unitSystemProperty.unlink(updateSharedUnits);
+      sharedUnitSystemProperty.unlink(updateScreenUnits);
+      linkUnitsProperty.unlink(updateLinkedPreference);
+    };
   }
 
   /**
@@ -220,6 +232,7 @@ export abstract class FluidPressureAndFlowModel implements TModel {
   public abstract step(dt: number): void;
 
   public dispose(): void {
+    this.disposeSharedUnits?.();
     this.sensorRefreshMultilink.dispose();
   }
 }

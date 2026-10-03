@@ -26,6 +26,9 @@ import { TrapezoidPoolModel } from "./TrapezoidPoolModel.js";
 const BAROMETER_START_POSITION = new Vector2(-4, 2);
 
 export class UnderPressureModel extends FluidPressureAndFlowModel {
+  private ordinaryGravity = EARTH_GRAVITY;
+  private ordinaryFluidDensity = WATER_DENSITY;
+  private wasMysteryScene = false;
   public readonly squarePool = new SquarePoolModel();
   public readonly trapezoidPool = new TrapezoidPoolModel();
   public readonly chamberPool = new ChamberPoolModel();
@@ -80,16 +83,25 @@ export class UnderPressureModel extends FluidPressureAndFlowModel {
 
   /**
    * Drives gravity and density from the mystery selection while that scene is
-   * showing, and restores the defaults on the way out.
+   * showing, and restores the student's previous selections on the way out.
    *
    * The quantity that is *not* hidden is pinned to its familiar value — Earth
    * gravity, or water — so the student has exactly one unknown to solve for.
    */
   private applyMysteryOverrides(): void {
     if (this.sceneProperty.value !== PoolScene.MYSTERY) {
-      this.fluidDensityProperty.value = WATER_DENSITY;
-      this.gravityProperty.value = EARTH_GRAVITY;
+      if (this.wasMysteryScene) {
+        this.wasMysteryScene = false;
+        this.fluidDensityProperty.value = this.ordinaryFluidDensity;
+        this.gravityProperty.value = this.ordinaryGravity;
+      }
       return;
+    }
+
+    if (!this.wasMysteryScene) {
+      this.ordinaryFluidDensity = this.fluidDensityProperty.value;
+      this.ordinaryGravity = this.gravityProperty.value;
+      this.wasMysteryScene = true;
     }
 
     if (this.mysteryPool.mysteryQuantityProperty.value === MysteryQuantity.FLUID_DENSITY) {
@@ -120,8 +132,10 @@ export class UnderPressureModel extends FluidPressureAndFlowModel {
   }
 
   public override reset(): void {
-    super.reset();
     this.sceneProperty.reset();
+    super.reset();
+    this.ordinaryGravity = EARTH_GRAVITY;
+    this.ordinaryFluidDensity = WATER_DENSITY;
     this.squarePool.reset();
     this.trapezoidPool.reset();
     this.chamberPool.reset();

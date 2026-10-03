@@ -87,11 +87,11 @@ describe("Pipe", () => {
   });
 
   describe("friction", () => {
-    it("does not change the speed at the centreline", () => {
+    it("raises centreline speed to compensate for slower flow near the wall", () => {
       const centreY = pipe.fractionToY(0, 0.5);
       const withoutFriction = pipe.getTweakedVx(0, centreY);
       pipe.isFrictionEnabledProperty.value = true;
-      expect(pipe.getTweakedVx(0, centreY)).toBeCloseTo(withoutFriction, 6);
+      expect(pipe.getTweakedVx(0, centreY)).toBeGreaterThan(withoutFriction);
     });
 
     it("slows particles near the wall", () => {
@@ -100,6 +100,22 @@ describe("Pipe", () => {
       const nearWall = pipe.getTweakedVx(0, pipe.fractionToY(0, 0.9));
       expect(nearWall).toBeLessThan(centre);
       expect(nearWall).toBeGreaterThan(0);
+    });
+
+    it("carries the reported flow rate across the circular section with friction", () => {
+      pipe.isFrictionEnabledProperty.value = true;
+      const samples = 1000;
+      let weightedSpeed = 0;
+      let totalWeight = 0;
+      for (let i = 0; i < samples; i++) {
+        const radiusFraction = -1 + (2 * (i + 0.5)) / samples;
+        const fractionToTop = (radiusFraction + 1) / 2;
+        const weight = Math.sqrt(1 - radiusFraction * radiusFraction);
+        weightedSpeed += pipe.getTweakedVelocity(0, pipe.fractionToY(0, fractionToTop)).x * weight;
+        totalWeight += weight;
+      }
+      const carriedFlow = (weightedSpeed / totalWeight) * pipe.getCrossSectionalArea(0);
+      expect(carriedFlow).toBeCloseTo(pipe.effectiveFlowRateProperty.value, 3);
     });
 
     it("scales both components of velocity in a sloped pipe", () => {

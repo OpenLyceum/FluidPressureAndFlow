@@ -135,12 +135,13 @@ export class HoseNode extends Node {
     hose.outletYProperty.link(syncHeight);
 
     const heightBoundsProperty = new DerivedProperty(
-      [hose.angleProperty, waterTower.baseCenterProperty],
-      (angle, base) => {
-        const minY = base.y + getMinOutletY(angle);
-        return new Bounds2(HOSE_OUTLET_X, minY, HOSE_OUTLET_X, MAX_HOSE_OUTLET_Y);
-      },
+      [hose.angleProperty],
+      (angle) => new Bounds2(HOSE_OUTLET_X, getMinOutletY(angle), HOSE_OUTLET_X, MAX_HOSE_OUTLET_Y),
     );
+    const clampHeightToBounds = (bounds: Bounds2) => {
+      hose.outletYProperty.value = Math.max(bounds.minY, Math.min(bounds.maxY, hose.outletYProperty.value));
+    };
+    heightBoundsProperty.link(clampHeightToBounds);
     const heightDragListener = new DragListener({
       positionProperty: heightPositionProperty,
       transform: modelViewTransform,
@@ -189,6 +190,7 @@ export class HoseNode extends Node {
       heightPositionProperty.unlink(applyHeight);
       hose.outletYProperty.unlink(syncHeight);
       hose.isEnabledProperty.unlink(updateVisibility);
+      heightBoundsProperty.unlink(clampHeightToBounds);
       heightBoundsProperty.dispose();
       heightDragListener.dispose();
       heightKeyboardListener.dispose();

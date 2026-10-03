@@ -142,6 +142,7 @@ export class WaterTowerModel extends FluidPressureAndFlowModel {
     return (
       this.waterTower.isHoleOpenProperty.value &&
       this.waterTower.fluidVolumeProperty.value > 0 &&
+      this.waterTower.getFluidSurfaceY() > this.waterTower.getHolePosition().y &&
       this.getEffluxSpeed() > 0
     );
   }
@@ -160,7 +161,11 @@ export class WaterTowerModel extends FluidPressureAndFlowModel {
     const base = this.waterTower.baseCenterProperty.value;
     const surfaceY = this.waterTower.getFluidSurfaceY();
     const outlet = this.getOutletPosition();
-    if (this.hose.containsPoint(this.waterTower.getHolePosition(), x, y)) {
+    if (
+      surfaceY > this.waterTower.getHolePosition().y &&
+      this.getHead() > 0 &&
+      this.hose.containsPoint(this.waterTower.getHolePosition(), x, y)
+    ) {
       // Bernoulli between the hose point and the open nozzle: the speed is
       // constant through the hose, so only elevation changes its static
       // pressure. At the nozzle this correctly reduces to ambient pressure.

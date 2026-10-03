@@ -89,6 +89,17 @@ describe("Torricelli's law", () => {
     model.hose.outletYProperty.value = model.waterTower.getFluidSurfaceY() + 1;
     expect(model.getEffluxSpeed()).toBe(0);
   });
+
+  it("stops draining through a hose when water falls below the side hole", () => {
+    model.hose.isEnabledProperty.value = true;
+    model.hose.outletYProperty.value = 5;
+    model.waterTower.fluidVolumeProperty.value = TANK_AREA * 0.25;
+    expect(model.getHead()).toBeGreaterThan(0);
+    expect(model.isFlowing()).toBe(false);
+    const volume = model.waterTower.fluidVolumeProperty.value;
+    model.stepOnce(0.016);
+    expect(model.waterTower.fluidVolumeProperty.value).toBe(volume);
+  });
 });
 
 describe("volume conservation", () => {
@@ -268,6 +279,15 @@ describe("pressure in the tank", () => {
     const pressureInHose = model.getPressureAt(17, 4);
     expect(pressureInHose).not.toBeNull();
     expect(pressureInHose as number).toBeGreaterThan(model.getAirPressure(4));
+  });
+
+  it("reads air in a hose when the tank is empty or its side hole is dry", () => {
+    model.hose.isEnabledProperty.value = true;
+    model.hose.outletYProperty.value = 5;
+    model.waterTower.fluidVolumeProperty.value = 0;
+    expect(model.getPressureAt(17, 4)).toBeCloseTo(model.getAirPressure(4), 6);
+    model.waterTower.fluidVolumeProperty.value = TANK_AREA * 0.25;
+    expect(model.getPressureAt(17, 4)).toBeCloseTo(model.getAirPressure(4), 6);
   });
 
   it("refreshes sensor readings when the hose angle changes", () => {

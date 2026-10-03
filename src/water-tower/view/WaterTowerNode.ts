@@ -19,7 +19,16 @@ import { Multilink, Property, type TReadOnlyProperty } from "scenerystack/axon";
 import { Bounds2, Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
 import type { ModelViewTransform2 } from "scenerystack/phetcommon";
-import { DragListener, Image, KeyboardDragListener, LinearGradient, Node, Path, Rectangle } from "scenerystack/scenery";
+import {
+  DragListener,
+  Image,
+  KeyboardDragListener,
+  KeyboardListener,
+  LinearGradient,
+  Node,
+  Path,
+  Rectangle,
+} from "scenerystack/scenery";
 import { getFluidColor } from "../../common/model/fluidColor.js";
 import { handleImage, wheelImage } from "../../common/view/images.js";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
@@ -286,6 +295,13 @@ export class WaterTowerNode extends Node {
         waterTower.isHoleOpenProperty.value = !waterTower.isHoleOpenProperty.value;
       },
     });
+    const gateKeyboardListener = new KeyboardListener({
+      keys: ["enter", "space"],
+      fire: () => {
+        waterTower.isHoleOpenProperty.value = !waterTower.isHoleOpenProperty.value;
+      },
+    });
+    sluiceGate.addInputListener(gateKeyboardListener);
 
     this.disposeWaterTowerNode = () => {
       layoutMultilink.dispose();
@@ -294,6 +310,7 @@ export class WaterTowerNode extends Node {
       tankDragListener.dispose();
       tankKeyboardListener.dispose();
       gateDragListener.dispose();
+      gateKeyboardListener.dispose();
     };
   }
 

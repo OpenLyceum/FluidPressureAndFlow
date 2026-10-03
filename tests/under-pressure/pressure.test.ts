@@ -100,6 +100,33 @@ describe("hydrostatic pressure", () => {
   });
 });
 
+describe("scene selections", () => {
+  it("keeps gravity and density when switching among ordinary pools", () => {
+    const model = new UnderPressureModel();
+    model.gravityProperty.value = 3.71;
+    model.fluidDensityProperty.value = 1420;
+    model.sceneProperty.value = PoolScene.TRAPEZOID;
+    model.sceneProperty.value = PoolScene.CHAMBER;
+    expect(model.gravityProperty.value).toBe(3.71);
+    expect(model.fluidDensityProperty.value).toBe(1420);
+  });
+
+  it("restores selections after the Mystery pool and resets to defaults", () => {
+    const model = new UnderPressureModel();
+    model.gravityProperty.value = 3.71;
+    model.fluidDensityProperty.value = 1420;
+    model.sceneProperty.value = PoolScene.MYSTERY;
+    expect(model.fluidDensityProperty.value).not.toBe(1420);
+    model.sceneProperty.value = PoolScene.SQUARE;
+    expect(model.gravityProperty.value).toBe(3.71);
+    expect(model.fluidDensityProperty.value).toBe(1420);
+    model.sceneProperty.value = PoolScene.MYSTERY;
+    model.reset();
+    expect(model.gravityProperty.value).toBe(EARTH_GRAVITY);
+    expect(model.fluidDensityProperty.value).toBe(WATER_DENSITY);
+  });
+});
+
 describe("trapezoid pool", () => {
   let model: UnderPressureModel;
 

@@ -24,6 +24,7 @@ import {
   Text,
 } from "scenerystack/scenery";
 import { ArrowNode } from "scenerystack/scenery-phet";
+import { Utterance } from "scenerystack/utterance-queue";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { SHIFT_KEY_SPEED_DIVISOR } from "../../FluidPressureAndFlowConstants.js";
 import type { VelocitySensor } from "../model/VelocitySensor.js";
@@ -80,6 +81,7 @@ export class VelocitySensorNode extends Node {
       tagName: "div",
       focusable: true,
       accessibleName: options.accessibleName,
+      accessibleHelpText: speedTextProperty,
     });
 
     const body = new Rectangle(0, 0, BODY_WIDTH, BODY_HEIGHT, 5, 5, {
@@ -187,14 +189,30 @@ export class VelocitySensorNode extends Node {
     });
     this.addInputListener(this.dragListener);
 
+    const readingUtterance = new Utterance({ alert: speedTextProperty });
+    let lastAnnouncedReading = speedTextProperty.value;
+    const announceReading = () => {
+      const reading = speedTextProperty.value;
+      if (reading !== lastAnnouncedReading) {
+        lastAnnouncedReading = reading;
+        this.addAccessibleResponse(readingUtterance);
+      }
+    };
     const keyboardDragListener = new KeyboardDragListener({
       positionProperty: sensor.positionProperty,
       transform: modelViewTransform,
       dragBoundsProperty: dragBoundsProperty,
       dragSpeed: modelViewTransform.modelToViewDeltaX(KEYBOARD_DRAG_SPEED),
       shiftDragSpeed: modelViewTransform.modelToViewDeltaX(KEYBOARD_DRAG_SPEED) / SHIFT_KEY_SPEED_DIVISOR,
-      start: () => this.moveToFront(),
-      end: endDrag,
+      start: () => {
+        this.moveToFront();
+        lastAnnouncedReading = speedTextProperty.value;
+      },
+      drag: announceReading,
+      end: () => {
+        announceReading();
+        endDrag();
+      },
     });
     this.addInputListener(keyboardDragListener);
 
@@ -210,6 +228,7 @@ export class VelocitySensorNode extends Node {
       speedTextProperty.unlink(centerReadout);
       this.dragListener.dispose();
       keyboardDragListener.dispose();
+      readingUtterance.dispose();
     };
   }
 

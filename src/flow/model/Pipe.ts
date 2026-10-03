@@ -391,8 +391,8 @@ export class Pipe {
 }
 
 /**
- * The friction velocity profile: a parabola that is 1 at the centreline and
- * reaches 0 slightly *outside* each wall.
+ * The friction velocity profile: a parabola reaching 0 slightly *outside* each
+ * wall, normalized so its circular cross-section mean is 1.
  *
  * Written as a Lagrange interpolation through the three points that define it,
  * rather than as an expanded quadratic, so the three conditions stay legible.
@@ -405,5 +405,8 @@ function frictionProfile(fractionToTop: number): number {
   const x3 = 1 + FRICTION_PROFILE_OVERSHOOT;
   const x = fractionToTop;
   // y1 = y3 = 0 and y2 = 1, so only the middle term survives.
-  return ((x - x1) * (x - x3)) / ((x2 - x1) * (x2 - x3));
+  const centreValue = ((x - x1) * (x - x3)) / ((x2 - x1) * (x2 - x3));
+  // Across a circular section, mean((fractionToTop - 0.5)^2) = 1/16.
+  const areaMean = 1 - 1 / (16 * (x2 - x1) ** 2);
+  return centreValue / areaMean;
 }

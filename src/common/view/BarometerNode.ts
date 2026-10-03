@@ -27,6 +27,7 @@ import {
   Text,
 } from "scenerystack/scenery";
 import { GaugeNode } from "scenerystack/scenery-phet";
+import { Utterance } from "scenerystack/utterance-queue";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { PRESSURE_RANGE, SHIFT_KEY_SPEED_DIVISOR } from "../../FluidPressureAndFlowConstants.js";
 import type { Barometer } from "../model/Barometer.js";
@@ -99,6 +100,7 @@ export class BarometerNode extends Node {
       tagName: "div",
       focusable: true,
       accessibleName: options.accessibleName,
+      accessibleHelpText: pressureTextProperty,
     });
 
     // The needle stays pegged rather than wrapping when the reading leaves the
@@ -204,6 +206,15 @@ export class BarometerNode extends Node {
     });
     this.addInputListener(this.dragListener);
 
+    const readingUtterance = new Utterance({ alert: pressureTextProperty });
+    let lastAnnouncedReading = pressureTextProperty.value;
+    const announceReading = () => {
+      const reading = pressureTextProperty.value;
+      if (reading !== lastAnnouncedReading) {
+        lastAnnouncedReading = reading;
+        this.addAccessibleResponse(readingUtterance);
+      }
+    };
     const keyboardDragListener = new KeyboardDragListener({
       positionProperty: barometer.positionProperty,
       transform: modelViewTransform,
@@ -213,8 +224,13 @@ export class BarometerNode extends Node {
       start: () => {
         barometer.isActiveProperty.value = true;
         this.moveToFront();
+        lastAnnouncedReading = pressureTextProperty.value;
       },
-      end: endDrag,
+      drag: announceReading,
+      end: () => {
+        announceReading();
+        endDrag();
+      },
     });
     this.addInputListener(keyboardDragListener);
 
@@ -233,6 +249,7 @@ export class BarometerNode extends Node {
       needleValueProperty.dispose();
       this.dragListener.dispose();
       keyboardDragListener.dispose();
+      readingUtterance.dispose();
       gauge.dispose();
     };
   }
