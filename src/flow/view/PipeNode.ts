@@ -8,7 +8,7 @@
  */
 
 import { Multilink, type NumberProperty } from "scenerystack/axon";
-import { type Bounds2, Vector2 } from "scenerystack/dot";
+import { Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
 import type { ModelViewTransform2 } from "scenerystack/phetcommon";
 import { Image, Node, Path } from "scenerystack/scenery";
@@ -19,13 +19,9 @@ import { FLOW_PARTICLE_CANVAS_BOUNDS } from "../../FluidPressureAndFlowConstants
 import type { FlowModel } from "../model/FlowModel.js";
 import type { Pipe, WallSample } from "../model/Pipe.js";
 import { ParticleCanvasNode } from "./ParticleCanvasNode.js";
-import { getPipeEndLayout, LEFT_PIPE_X, PIPE_HEAD_X_SCALE, RIGHT_PIPE_LAYOUT_INSET } from "./pipeEndLayout.js";
+import { getPipeEndLayout, PIPE_HEAD_X_SCALE } from "./pipeEndLayout.js";
 
 const MIDDLE_WALL_LINE_WIDTH = 8;
-
-/** Model x-range of the spline middle; overlaps the bitmap heads slightly. */
-const MIDDLE_MIN_X = -6.7;
-const MIDDLE_MAX_X = 6.7;
 
 /** Horizontal stretch of the repeating pipe-segment bitmap off-screen. */
 const PIPE_SEGMENT_X_SCALE = 100;
@@ -61,7 +57,6 @@ export class PipeNode extends Node {
     pipe: Pipe,
     fluidDensityProperty: NumberProperty,
     modelViewTransform: ModelViewTransform2,
-    layoutBounds: Bounds2,
   ) {
     super();
 
@@ -75,10 +70,9 @@ export class PipeNode extends Node {
     });
     this.leftPipeFront = new Node({
       children: [leftPipeHead, leftPipeSegment],
-      x: LEFT_PIPE_X,
     });
 
-    const leftPipeBack = new Image(pipeLeftBackImage, { x: LEFT_PIPE_X });
+    const leftPipeBack = new Image(pipeLeftBackImage);
 
     const rightPipeHead = new Image(pipeRightImage);
     const rightPipeSegment = new Image(pipeSegmentImage, {
@@ -87,7 +81,6 @@ export class PipeNode extends Node {
     });
     this.rightPipe = new Node({
       children: [rightPipeHead, rightPipeSegment],
-      x: layoutBounds.maxX - RIGHT_PIPE_LAYOUT_INSET,
     });
 
     const fluid = new Path(null, {
@@ -104,17 +97,21 @@ export class PipeNode extends Node {
     this.particleCanvas = new ParticleCanvasNode(model, modelViewTransform, FLOW_PARTICLE_CANVAS_BOUNDS);
 
     const updateMiddleShape = () => {
-      const shape = buildMiddlePipeShape(pipe.getWall(), modelViewTransform, MIDDLE_MIN_X, MIDDLE_MAX_X);
-      fluid.shape = shape;
-      wall.shape = shape;
+      const shapes = buildMiddlePipeShapes(pipe.getWall(), modelViewTransform);
+      fluid.shape = shapes.fluid;
+      wall.shape = shapes.wall;
       fluid.fill = getFluidColor(fluidDensityProperty.value).toCSS();
     };
 
     const updateLeftPipe = () => {
       const layout = getPipeEndLayout(leftSection, modelViewTransform);
       this.leftPipeFront.setScaleMagnitude(PIPE_HEAD_X_SCALE, layout.scaleY);
+      // Align the mouth with the end control point, allowing the sampled wall
+      // extension to overlap the bitmap rim instead of leaving a ground gap.
+      this.leftPipeFront.x = layout.viewX - leftPipeHead.width * PIPE_HEAD_X_SCALE;
       this.leftPipeFront.y = layout.viewY;
       leftPipeBack.setScaleMagnitude(PIPE_HEAD_X_SCALE, layout.scaleY);
+      leftPipeBack.x = this.leftPipeFront.x;
       leftPipeBack.y = layout.viewY;
     };
 
@@ -122,7 +119,7 @@ export class PipeNode extends Node {
       const layout = getPipeEndLayout(rightSection, modelViewTransform);
       this.rightPipe.setScaleMagnitude(PIPE_HEAD_X_SCALE, layout.scaleY);
       this.rightPipe.y = layout.viewY;
-      this.rightPipe.x = layoutBounds.maxX - RIGHT_PIPE_LAYOUT_INSET;
+      this.rightPipe.x = layout.viewX;
     };
 
     const shapeMultilink = Multilink.multilinkAny([pipe.shapeVersionProperty, fluidDensityProperty], () => {
@@ -156,37 +153,39 @@ export class PipeNode extends Node {
   }
 }
 
-function buildMiddlePipeShape(
+function buildMiddlePipeShapes(
   wall: readonly WallSample[],
   modelViewTransform: ModelViewTransform2,
-  minX: number,
-  maxX: number,
-): Shape {
-  let startIndex = 0;
-  let endIndex = 0;
-  for (let i = 0; i < wall.length; i++) {
+): { fluid: Shape; wall: Shape } {
+  const fluidShape = new Shape();
+  const wallShape = new Shape();
+  const first = wall[0] as WallSample;
+  const firstX = modelViewTransform.modelToViewX(first.x);
+  const firstY = modelViewTransform.modelToViewY(first.bottomY);
+  fluidShape.moveTo(firstX, firstY);
+  wallShape.moveTo(firstX, firstY);
+
+  for (let i = 1; i < wall.length; i++) {
     const sample = wall[i] as WallSample;
-    if (sample.x <= minX) {
-      startIndex = i;
+    const x = modelViewTransform.modelToViewX(sample.x);
+    const y = modelViewTransform.modelToViewY(sample.bottomY);
+    fluidShape.lineTo(x, y);
+    wallShape.lineTo(x, y);
+  }
+
+  for (let i = wall.length - 1; i >= 0; i--) {
+    const sample = wall[i] as WallSample;
+    const x = modelViewTransform.modelToViewX(sample.x);
+    const y = modelViewTransform.modelToViewY(sample.topY);
+    fluidShape.lineTo(x, y);
+    // The pipe is open at its ends; a vertical stroke would cap the water
+    // before it reaches the fitting. Only the ceiling and floor have walls.
+    if (i === wall.length - 1) {
+      wallShape.moveTo(x, y);
+    } else {
+      wallShape.lineTo(x, y);
     }
-    if (sample.x <= maxX) {
-      endIndex = i;
-    }
   }
-
-  const shape = new Shape();
-  const firstBottom = wall[startIndex + 1] as WallSample;
-  shape.moveTo(modelViewTransform.modelToViewX(firstBottom.x), modelViewTransform.modelToViewY(firstBottom.bottomY));
-
-  for (let i = startIndex + 2; i <= endIndex; i++) {
-    const sample = wall[i] as WallSample;
-    shape.lineTo(modelViewTransform.modelToViewX(sample.x), modelViewTransform.modelToViewY(sample.bottomY));
-  }
-
-  for (let i = endIndex; i > startIndex; i--) {
-    const sample = wall[i] as WallSample;
-    shape.lineTo(modelViewTransform.modelToViewX(sample.x), modelViewTransform.modelToViewY(sample.topY));
-  }
-
-  return shape;
+  fluidShape.close();
+  return { fluid: fluidShape, wall: wallShape };
 }

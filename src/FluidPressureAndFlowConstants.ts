@@ -39,10 +39,9 @@ import FluidPressureAndFlowNamespace from "./FluidPressureAndFlowNamespace.js";
  *  - Under Pressure and Water Tower are limited by height, and use 618/504.
  *    Their extra width becomes clearance between the scene and the right-hand
  *    control column.
- *  - Flow is limited by width, and uses 1024/768. Its bitmap pipe heads are
- *    pinned to the layout edges while the spline middle spans a fixed model
- *    range, so its metres-per-pixel has to track the width or the spline stops
- *    short of the right-hand head.
+ *  - Flow is limited by width, and uses 1024/768. Its spline middle spans a
+ *    fixed model range, with bitmap pipe heads anchored to the end sections.
+ *    Its metres-per-pixel tracks the width to keep those ends near the edges.
  *
  * Chrome does not scale with the frame — panel content widths, instrument
  * bodies, gauge radii. Holding those fixed while the play area grows is what
@@ -137,8 +136,8 @@ export const DEFAULT_FLOW_RATE = 5;
 /**
  * Flow screen model-view mapping. The HTML5 reference in totality
  * (`FlowScreenView.js`) puts the model origin at view (370, 140) with 50 view px
- * per metre; these are those values widened by 1024/768 for this frame, which is
- * what keeps the spline middle meeting the bitmap pipe heads at both edges.
+ * per metre; these are those values widened by 1024/768 for this frame. The
+ * bitmap pipe heads use the same mapping as the spline's end sections.
  */
 export const FLOW_MODEL_VIEW_ANCHOR = new Vector2(493, 187);
 

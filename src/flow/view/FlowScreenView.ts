@@ -110,7 +110,7 @@ export class FlowScreenView extends ScreenView {
     );
     this.addChild(gridInjector);
 
-    const pipeNode = new PipeNode(model, model.pipe, model.fluidDensityProperty, modelViewTransform, this.layoutBounds);
+    const pipeNode = new PipeNode(model, model.pipe, model.fluidDensityProperty, modelViewTransform);
     this.addChild(pipeNode);
     this.particleCanvas = pipeNode.particleCanvas;
 

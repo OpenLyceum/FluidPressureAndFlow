@@ -3,8 +3,9 @@
  *
  * Shared layout math for the bitmap pipe heads at each end of the Flow pipe.
  * PhET scales the head images vertically with the end cross-section height and
- * pins their y to the top control point; the constants here are taken from the
- * HTML5 reference in totality.
+ * pins their y to the top control point; the scaling constants here are taken
+ * from the HTML5 reference in totality. Mouths align horizontally with the end
+ * control points through the same transform used to draw the spline.
  */
 
 import type { ModelViewTransform2 } from "scenerystack/phetcommon";
@@ -30,19 +31,14 @@ export const MIN_PIPE_HEAD_SCALE = 0.24;
  */
 export const LEFT_PIPE_Y_OFFSET = 30;
 
-/** View x of the left pipe-head assembly. */
-export const LEFT_PIPE_X = -65;
-
-/** Inset of the right pipe head from the layout right edge, view pixels. */
-export const RIGHT_PIPE_LAYOUT_INSET = 100;
-
 export type PipeEndLayout = {
   readonly scaleY: number;
+  readonly viewX: number;
   readonly viewY: number;
 };
 
 export function getPipeEndLayout(section: PipeCrossSection, modelViewTransform: ModelViewTransform2): PipeEndLayout {
   const scaleY = Math.max((section.getHeight() / PIPE_REFERENCE_HEIGHT) * PIPE_HEAD_X_SCALE, MIN_PIPE_HEAD_SCALE);
   const viewY = modelViewTransform.modelToViewY(section.topYProperty.value) - LEFT_PIPE_Y_OFFSET * scaleY;
-  return { scaleY, viewY };
+  return { scaleY, viewX: modelViewTransform.modelToViewX(section.x), viewY };
 }
