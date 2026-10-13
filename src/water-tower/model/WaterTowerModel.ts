@@ -150,12 +150,9 @@ export class WaterTowerModel extends FluidPressureAndFlowModel {
   /**
    * Pressure at a point.
    *
-   * Inside the tank's water: air pressure at the free surface plus ρgh. Anywhere
-   * else — including inside the falling jet — plain air pressure. The jet really
-   * is at atmospheric pressure once it has left the outlet, but the barometer
-   * also reads air pressure *inside the hose*, which is not right and which
-   * upstream has an open design question about
-   * (phetsims/fluid-pressure-and-flow#322). Recorded in doc/model.md.
+   * Inside the tank's water: air pressure at the free surface plus ρgh. Inside
+   * the attached hose: the hydrostatic elevation term relative to its open
+   * nozzle. The free jet is at atmospheric pressure.
    */
   public override getPressureAt(x: number, y: number): number | null {
     const base = this.waterTower.baseCenterProperty.value;

@@ -171,7 +171,8 @@ take away. Drops then fly ballistically under `g`.
 
 Pressure in the tank is hydrostatic, as on screen 1. Inside an attached hose it
 follows the same hydrostatic elevation term relative to the open nozzle; in the
-free jet it is atmospheric.
+free jet it is atmospheric. The hose's cached SI outline is shared by pressure
+sampling and rendering, including its stepped riser and bends.
 
 There is deliberately **no gravity control** on this screen. PhET's design
 document is explicit: a student should be able to *measure* `g` from the efflux
@@ -182,12 +183,12 @@ speed and the drop height, which they cannot do if a slider hands it to them.
 | Quantity | Value |
 |---|---|
 | Tank radius / height | 5 m / 10 m |
-| Tank base altitude | 6–18 m, starting at 15 m |
+| Tank base altitude | 6–15 m, starting at 11 m |
 | Initial fill | 80 % of capacity |
 | Hole diameter | 1 m |
 | Effective outlet area | 2.8 m² (tuned; see below) |
 | Internal timestep | 0.016 s, fixed |
-| Hose nozzle | x = 17 m, y ∈ [0, 14] m, angle ∈ [0, π/2] |
+| Hose nozzle | x = 17 m, angle-dependent ground clearance ≤ y ≤ 14 m, angle ∈ [0, π/2] |
 
 ---
 

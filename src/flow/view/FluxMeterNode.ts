@@ -10,15 +10,26 @@
  */
 
 import type { EnumerationProperty, TReadOnlyProperty } from "scenerystack/axon";
-import { DerivedProperty, Multilink, Property } from "scenerystack/axon";
+import { DerivedProperty, Multilink, PatternStringProperty, Property } from "scenerystack/axon";
 import { Bounds2, Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
 import type { ModelViewTransform2 } from "scenerystack/phetcommon";
-import { DragListener, KeyboardDragListener, Node, Path, Text, VBox } from "scenerystack/scenery";
+import {
+  DragListener,
+  KeyboardDragListener,
+  Node,
+  Path,
+  PEER_DESCRIPTION_SIBLING,
+  PEER_PRIMARY_SIBLING,
+  Text,
+  VBox,
+} from "scenerystack/scenery";
 import { FluidPressureAndFlowPanel } from "../../common/FluidPressureAndFlowPanel.js";
 import { formatValue, type UnitLabelGroups, type UnitSystem } from "../../common/model/units.js";
+import { InstrumentDescriptionProperty } from "../../common/view/InstrumentDescriptionProperty.js";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { SHIFT_KEY_SPEED_DIVISOR } from "../../FluidPressureAndFlowConstants.js";
+import { StringManager } from "../../i18n/StringManager.js";
 import type { FluxMeter } from "../model/FluxMeter.js";
 import type { Pipe } from "../model/Pipe.js";
 
@@ -86,17 +97,38 @@ export class FluxMeterNode extends Node {
     });
 
     const flowRateTextProperty = new DerivedProperty(
-      [pipe.effectiveFlowRateProperty, unitSystemProperty, labels.flowRateStringProperty],
+      [
+        pipe.effectiveFlowRateProperty,
+        unitSystemProperty,
+        labels.flowRateStringProperty,
+        unitLabelGroups.metric.flowRateStringProperty,
+        unitLabelGroups.atmospheres.flowRateStringProperty,
+        unitLabelGroups.english.flowRateStringProperty,
+      ],
       (flowRate, system, label) =>
         `${label}: ${formatValue(system.flowRate, flowRate)} ${system.labels(unitLabelGroups).flowRateStringProperty.value}`,
     );
     const areaTextProperty = new DerivedProperty(
-      [fluxMeter.areaProperty, unitSystemProperty, labels.areaStringProperty],
+      [
+        fluxMeter.areaProperty,
+        unitSystemProperty,
+        labels.areaStringProperty,
+        unitLabelGroups.metric.areaStringProperty,
+        unitLabelGroups.atmospheres.areaStringProperty,
+        unitLabelGroups.english.areaStringProperty,
+      ],
       (area, system, label) =>
         `${label}: ${formatValue(system.area, area)} ${system.labels(unitLabelGroups).areaStringProperty.value}`,
     );
     const fluxTextProperty = new DerivedProperty(
-      [fluxMeter.fluxProperty, unitSystemProperty, labels.fluxStringProperty],
+      [
+        fluxMeter.fluxProperty,
+        unitSystemProperty,
+        labels.fluxStringProperty,
+        unitLabelGroups.metric.fluxStringProperty,
+        unitLabelGroups.atmospheres.fluxStringProperty,
+        unitLabelGroups.english.fluxStringProperty,
+      ],
       (flux, system, label) =>
         `${label}: ${formatValue(system.flux, flux)} ${system.labels(unitLabelGroups).fluxStringProperty.value}`,
     );
@@ -153,6 +185,27 @@ export class FluxMeterNode extends Node {
     const layoutMultilink = Multilink.multilinkAny([fluxMeter.xProperty, pipe.shapeVersionProperty], layout);
 
     const positionProperty = new Property(new Vector2(fluxMeter.xProperty.value, 0));
+    const readingsProperty = new PatternStringProperty(
+      StringManager.getInstance().getCommonA11yStrings().fluxReadingsPatternStringProperty,
+      {
+        flowRate: flowRateTextProperty,
+        area: areaTextProperty,
+        flux: fluxTextProperty,
+      },
+    );
+    const descriptionProperty = new InstrumentDescriptionProperty(
+      readingsProperty,
+      positionProperty,
+      unitSystemProperty,
+      true,
+    );
+    this.accessibleHelpText = descriptionProperty;
+    this.addAriaDescribedbyAssociation({
+      otherNode: this,
+      thisElementName: PEER_PRIMARY_SIBLING,
+      otherElementName: PEER_DESCRIPTION_SIBLING,
+    });
+
     const syncToModel = (position: Vector2) => {
       fluxMeter.xProperty.value = position.x;
     };
@@ -196,6 +249,9 @@ export class FluxMeterNode extends Node {
     layout();
 
     this.disposeFluxMeterNode = () => {
+      this.accessibleHelpText = null;
+      descriptionProperty.dispose();
+      readingsProperty.dispose();
       layoutMultilink.dispose();
       positionProperty.unlink(syncToModel);
       fluxMeter.xProperty.unlink(syncFromModel);

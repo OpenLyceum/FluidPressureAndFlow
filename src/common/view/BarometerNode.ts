@@ -13,7 +13,7 @@
  * dial, so that what is being measured is the place the student put the point.
  */
 
-import { DerivedProperty, Property, type TReadOnlyProperty } from "scenerystack/axon";
+import { DerivedProperty, type EnumerationProperty, Property, type TReadOnlyProperty } from "scenerystack/axon";
 import type { Bounds2, Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
 import type { ModelViewTransform2 } from "scenerystack/phetcommon";
@@ -22,6 +22,8 @@ import {
   KeyboardDragListener,
   Node,
   Path,
+  PEER_DESCRIPTION_SIBLING,
+  PEER_PRIMARY_SIBLING,
   type PressListenerEvent,
   Rectangle,
   Text,
@@ -31,6 +33,8 @@ import { Utterance } from "scenerystack/utterance-queue";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { PRESSURE_RANGE, SHIFT_KEY_SPEED_DIVISOR } from "../../FluidPressureAndFlowConstants.js";
 import type { Barometer } from "../model/Barometer.js";
+import type { UnitSystem } from "../model/units.js";
+import { InstrumentDescriptionProperty } from "./InstrumentDescriptionProperty.js";
 
 /**
  * Radius of the dial face, view pixels. Exported because the stowed tray icon in
@@ -77,6 +81,7 @@ export type BarometerNodeOptions = {
 
   /** Accessible name for this instrument. */
   readonly accessibleName: TReadOnlyProperty<string>;
+  readonly unitSystemProperty: EnumerationProperty<UnitSystem>;
 };
 
 export class BarometerNode extends Node {
@@ -95,12 +100,23 @@ export class BarometerNode extends Node {
     labelProperty: TReadOnlyProperty<string>,
     options: BarometerNodeOptions,
   ) {
+    const descriptionProperty = new InstrumentDescriptionProperty(
+      pressureTextProperty,
+      barometer.positionProperty,
+      options.unitSystemProperty,
+    );
     super({
+      accessibleHelpText: descriptionProperty,
       cursor: "pointer",
       tagName: "div",
       focusable: true,
       accessibleName: options.accessibleName,
-      accessibleHelpText: pressureTextProperty,
+    });
+
+    this.addAriaDescribedbyAssociation({
+      otherNode: this,
+      thisElementName: PEER_PRIMARY_SIBLING,
+      otherElementName: PEER_DESCRIPTION_SIBLING,
     });
 
     // The needle stays pegged rather than wrapping when the reading leaves the
@@ -243,6 +259,8 @@ export class BarometerNode extends Node {
     barometer.isActiveProperty.link(updateVisibility);
 
     this.disposeBarometerNode = () => {
+      this.accessibleHelpText = null;
+      descriptionProperty.dispose();
       barometer.positionProperty.unlink(updatePosition);
       barometer.isActiveProperty.unlink(updateVisibility);
       pressureTextProperty.unlink(centerReadout);

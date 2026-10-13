@@ -10,7 +10,7 @@
  * Tower screen entirely.
  */
 
-import { Property, type TReadOnlyProperty } from "scenerystack/axon";
+import { type EnumerationProperty, Property, type TReadOnlyProperty } from "scenerystack/axon";
 import type { Bounds2, Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
 import type { ModelViewTransform2 } from "scenerystack/phetcommon";
@@ -19,6 +19,8 @@ import {
   KeyboardDragListener,
   Node,
   Path,
+  PEER_DESCRIPTION_SIBLING,
+  PEER_PRIMARY_SIBLING,
   type PressListenerEvent,
   Rectangle,
   Text,
@@ -27,7 +29,9 @@ import { ArrowNode } from "scenerystack/scenery-phet";
 import { Utterance } from "scenerystack/utterance-queue";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { SHIFT_KEY_SPEED_DIVISOR } from "../../FluidPressureAndFlowConstants.js";
+import type { UnitSystem } from "../model/units.js";
 import type { VelocitySensor } from "../model/VelocitySensor.js";
+import { InstrumentDescriptionProperty } from "./InstrumentDescriptionProperty.js";
 
 /**
  * Size of the readout body, view pixels. Exported because the stowed tray icon in
@@ -58,6 +62,7 @@ export type VelocitySensorNodeOptions = {
   readonly homePosition: Vector2;
   /** Accessible name for this instrument. */
   readonly accessibleName: TReadOnlyProperty<string>;
+  readonly unitSystemProperty: EnumerationProperty<UnitSystem>;
 };
 
 export class VelocitySensorNode extends Node {
@@ -76,12 +81,23 @@ export class VelocitySensorNode extends Node {
     labelProperty: TReadOnlyProperty<string>,
     options: VelocitySensorNodeOptions,
   ) {
+    const descriptionProperty = new InstrumentDescriptionProperty(
+      speedTextProperty,
+      sensor.positionProperty,
+      options.unitSystemProperty,
+    );
     super({
+      accessibleHelpText: descriptionProperty,
       cursor: "pointer",
       tagName: "div",
       focusable: true,
       accessibleName: options.accessibleName,
-      accessibleHelpText: speedTextProperty,
+    });
+
+    this.addAriaDescribedbyAssociation({
+      otherNode: this,
+      thisElementName: PEER_PRIMARY_SIBLING,
+      otherElementName: PEER_DESCRIPTION_SIBLING,
     });
 
     const body = new Rectangle(0, 0, BODY_WIDTH, BODY_HEIGHT, 5, 5, {
@@ -222,6 +238,8 @@ export class VelocitySensorNode extends Node {
     sensor.isActiveProperty.link(updateVisibility);
 
     this.disposeVelocitySensorNode = () => {
+      this.accessibleHelpText = null;
+      descriptionProperty.dispose();
       sensor.positionProperty.unlink(updatePosition);
       sensor.valueProperty.unlink(updateArrow);
       sensor.isActiveProperty.unlink(updateVisibility);

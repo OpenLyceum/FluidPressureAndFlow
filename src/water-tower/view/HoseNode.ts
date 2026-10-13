@@ -15,15 +15,14 @@ import { handleImage, nozzleImage, spoutHandleImage } from "../../common/view/im
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { SHIFT_KEY_SPEED_DIVISOR } from "../../FluidPressureAndFlowConstants.js";
 import { HOSE_OUTLET_X, type Hose, MAX_HOSE_OUTLET_Y } from "../model/Hose.js";
-import type { WaterTower } from "../model/WaterTower.js";
 import {
   computeHoseLayout,
-  createHoseShape,
   getHoseHeightHandlePoint,
   getHoseMouthPoint,
   getMinOutletY,
   HOSE_LAYOUT_WIDTH,
-} from "./HoseGeometry.js";
+} from "../model/HoseGeometry.js";
+import type { WaterTower } from "../model/WaterTower.js";
 
 /** Scale for the height and spout drag handles. */
 const HANDLE_SCALE = 0.3;
@@ -102,7 +101,7 @@ export class HoseNode extends Node {
       const pivotY = outlet.y - base.y;
       const hoseLayout = computeHoseLayout(pivotX, pivotY, angle);
 
-      pipe.shape = createHoseShape(hoseLayout, holeX, base.y, modelViewTransform);
+      pipe.shape = modelViewTransform.modelToViewShape(hose.getPipeShape(waterTower.getHolePosition()));
 
       const handlePoint = getHoseHeightHandlePoint(hoseLayout, holeX, base.y);
       const handleView = modelViewTransform.modelToViewPosition(handlePoint);
@@ -134,14 +133,16 @@ export class HoseNode extends Node {
     };
     hose.outletYProperty.link(syncHeight);
 
-    const heightBoundsProperty = new DerivedProperty(
-      [hose.angleProperty],
-      (angle) => new Bounds2(HOSE_OUTLET_X, getMinOutletY(angle), HOSE_OUTLET_X, MAX_HOSE_OUTLET_Y),
-    );
-    const clampHeightToBounds = (bounds: Bounds2) => {
-      hose.outletYProperty.value = Math.max(bounds.minY, Math.min(bounds.maxY, hose.outletYProperty.value));
+    const heightBoundsProperty = new DerivedProperty([hose.angleProperty], (angle) => {
+      const minY = getMinOutletY(angle);
+      return new Bounds2(HOSE_OUTLET_X, minY, HOSE_OUTLET_X, MAX_HOSE_OUTLET_Y);
+    });
+    // A change in aim can raise the minimum safe altitude even without a drag.
+    const constrainHeight = (bounds: Bounds2) => {
+      heightPositionProperty.value = bounds.closestPointTo(heightPositionProperty.value);
     };
-    heightBoundsProperty.link(clampHeightToBounds);
+    heightBoundsProperty.link(constrainHeight);
+
     const heightDragListener = new DragListener({
       positionProperty: heightPositionProperty,
       transform: modelViewTransform,
@@ -190,7 +191,7 @@ export class HoseNode extends Node {
       heightPositionProperty.unlink(applyHeight);
       hose.outletYProperty.unlink(syncHeight);
       hose.isEnabledProperty.unlink(updateVisibility);
-      heightBoundsProperty.unlink(clampHeightToBounds);
+      heightBoundsProperty.unlink(constrainHeight);
       heightBoundsProperty.dispose();
       heightDragListener.dispose();
       heightKeyboardListener.dispose();
