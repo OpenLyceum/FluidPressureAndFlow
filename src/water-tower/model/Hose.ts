@@ -14,6 +14,11 @@
 
 import { BooleanProperty, NumberProperty } from "scenerystack/axon";
 import { Vector2 } from "scenerystack/dot";
+import type { Shape } from "scenerystack/kite";
+import { computeHoseLayout, createHoseShape, HOSE_NOZZLE_LENGTH } from "./HoseGeometry.js";
+import { HOLE_SIZE } from "./WaterTower.js";
+
+export { HOSE_NOZZLE_LENGTH } from "./HoseGeometry.js";
 
 /** Where the nozzle sits horizontally, metres. Far enough out to see the whole arc. */
 export const HOSE_OUTLET_X = 17;
@@ -21,11 +26,8 @@ export const HOSE_OUTLET_X = 17;
 /** Highest the nozzle may be raised, metres. */
 export const MAX_HOSE_OUTLET_Y = 14;
 
-/** Radius of the hose bore represented by the model, metres. */
+/** Radius of the straight nozzle bore, metres. */
 export const HOSE_RADIUS = 0.4;
-
-/** Length of the straight nozzle beyond the last bend, metres. */
-export const HOSE_NOZZLE_LENGTH = 2.4;
 
 /** Angle straight up, radians. Zero is horizontal, to the right. */
 const INITIAL_ANGLE = Math.PI / 2;
@@ -38,6 +40,10 @@ const INITIAL_ANGLE = Math.PI / 2;
 const INITIAL_OUTLET_Y = 9;
 
 export class Hose {
+  private cachedPipeShape: Shape | null = null;
+  private cachedAttachment: Vector2 | null = null;
+  private cachedOutletY = Number.NaN;
+  private cachedAngle = Number.NaN;
   /** Whether the hose is attached. */
   public readonly isEnabledProperty = new BooleanProperty(false);
 
@@ -57,38 +63,36 @@ export class Hose {
     return Vector2.createPolar(1, this.angleProperty.value);
   }
 
-  /**
-   * Whether a model point lies in the water-filled hose.
-   *
-   * A quadratic sag into the last straight nozzle run: the two endpoints and the
-   * nozzle match the drawn hose, but the route between them is smooth where the
-   * view has a squared-off riser, so a barometer parked just outside a bend can
-   * disagree with the picture by about a bore. Keeping the test here at all is
-   * what stops a barometer treating water inside the hose as open air, which is
-   * the open question in upstream issue #322.
-   */
+  /** The same cached SI outline used to paint the green pipe. */
+  public getPipeShape(attachment: Vector2): Shape {
+    const outletY = this.outletYProperty.value;
+    const angle = this.angleProperty.value;
+    if (
+      !(this.cachedPipeShape && this.cachedAttachment?.equals(attachment)) ||
+      this.cachedOutletY !== outletY ||
+      this.cachedAngle !== angle
+    ) {
+      const baseY = attachment.y - HOLE_SIZE / 2;
+      const layout = computeHoseLayout(HOSE_OUTLET_X - attachment.x, outletY - baseY, angle);
+      this.cachedPipeShape = createHoseShape(layout, attachment.x, baseY);
+      this.cachedAttachment = attachment.copy();
+      this.cachedOutletY = outletY;
+      this.cachedAngle = angle;
+    }
+    return this.cachedPipeShape;
+  }
+
+  /** Whether a point lies in the drawn pipe or the straight nozzle bore. */
   public containsPoint(attachment: Vector2, x: number, y: number): boolean {
     if (!this.isEnabledProperty.value) {
       return false;
     }
+    if (this.getPipeShape(attachment).containsPoint(new Vector2(x, y))) {
+      return true;
+    }
     const outlet = this.getOutletPosition();
     const direction = this.getDirection();
     const bend = outlet.minus(direction.timesScalar(HOSE_NOZZLE_LENGTH));
-    const control = new Vector2(bend.x, Math.min(attachment.y, bend.y) - 1);
-    let previous = attachment;
-    const samples = 24;
-    for (let i = 1; i <= samples; i++) {
-      const t = i / samples;
-      const inverseT = 1 - t;
-      const current = attachment
-        .timesScalar(inverseT * inverseT)
-        .plus(control.timesScalar(2 * inverseT * t))
-        .plus(bend.timesScalar(t * t));
-      if (distanceToSegmentSquared(x, y, previous, current) <= HOSE_RADIUS * HOSE_RADIUS) {
-        return true;
-      }
-      previous = current;
-    }
     return distanceToSegmentSquared(x, y, bend, outlet) <= HOSE_RADIUS * HOSE_RADIUS;
   }
 

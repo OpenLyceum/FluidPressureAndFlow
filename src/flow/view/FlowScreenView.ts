@@ -172,7 +172,14 @@ export class FlowScreenView extends ScreenView {
 
     for (const barometer of model.barometers) {
       const readoutProperty = new DerivedProperty(
-        [barometer.valueProperty, model.unitSystemProperty, common.unknownValueStringProperty],
+        [
+          barometer.valueProperty,
+          model.unitSystemProperty,
+          common.unknownValueStringProperty,
+          unitLabelGroups.metric.pressureStringProperty,
+          unitLabelGroups.atmospheres.pressureStringProperty,
+          unitLabelGroups.english.pressureStringProperty,
+        ],
         (value, system, unknown) =>
           value === null
             ? unknown
@@ -183,6 +190,7 @@ export class FlowScreenView extends ScreenView {
         toolboxBounds: () => toolbox.bounds,
         dragBounds: toolDragBounds,
         accessibleName: a11y.controls.barometerStringProperty,
+        unitSystemProperty: model.unitSystemProperty,
       });
       barometerNodes.set(barometer, node);
       sensorLayer.addChild(node);
@@ -190,7 +198,14 @@ export class FlowScreenView extends ScreenView {
 
     for (const sensor of model.velocitySensors) {
       const readoutProperty = new DerivedProperty(
-        [sensor.valueProperty, model.unitSystemProperty, common.unknownValueStringProperty],
+        [
+          sensor.valueProperty,
+          model.unitSystemProperty,
+          common.unknownValueStringProperty,
+          unitLabelGroups.metric.velocityStringProperty,
+          unitLabelGroups.atmospheres.velocityStringProperty,
+          unitLabelGroups.english.velocityStringProperty,
+        ],
         (value, system, unknown) =>
           value === null
             ? unknown
@@ -201,6 +216,7 @@ export class FlowScreenView extends ScreenView {
         toolboxBounds: () => toolbox.bounds,
         dragBounds: toolDragBounds,
         accessibleName: a11y.controls.speedometerStringProperty,
+        unitSystemProperty: model.unitSystemProperty,
       });
       speedometerNodes.set(sensor, node);
       sensorLayer.addChild(node);

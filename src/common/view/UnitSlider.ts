@@ -139,9 +139,11 @@ export class UnitSlider extends VBox {
     };
   }
 
-  /** Greys out the readout and track without removing them — used by the mystery scene. */
-  public setSliderEnabled(enabled: boolean): void {
-    this.enabled = enabled;
+  /** Hide the unknown value and its thumb position, retaining room for the mystery chooser. */
+  public setValueHidden(hidden: boolean): void {
+    this.opacity = hidden ? 0 : 1;
+    this.pdomVisible = !hidden;
+    this.enabled = !hidden;
   }
 
   public override dispose(): void {

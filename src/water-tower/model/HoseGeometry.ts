@@ -4,8 +4,8 @@
  * Filled hose shape built from Kite arcs, ported from PhET's HTML5
  * fluid-pressure-and-flow HoseNode (createTopShape / createBottomShape).
  *
- * Layout coordinates are metres offset from the tank's hole: +x out towards the
- * nozzle, +y up. Only the origin differs from world coordinates, so the mapping
+ * Layout coordinates are metres from the hole's x and the tank's base y:
+ * +x out towards the nozzle, +y up. Only the origin differs from world coordinates, so the mapping
  * back is a translation and nothing is rescaled. That matters: the port's outline
  * mixes horizontal and vertical offsets of the same bore width, and the elbow is
  * closed with a circular arc of that radius, so any difference between the x and
@@ -15,11 +15,12 @@
 
 import { Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
-import type { ModelViewTransform2 } from "scenerystack/phetcommon";
-import { HOSE_NOZZLE_LENGTH } from "../model/Hose.js";
 
-/** Corner fillet radius in view pixels — matches the HTML5 port. */
-const CORNER_RADIUS = 3;
+/** Length of the nozzle, metres. */
+export const HOSE_NOZZLE_LENGTH = 2.4;
+
+/** Corner fillet radius in metres, matching the artwork at its 12 px/m scale. */
+const CORNER_RADIUS = 0.25;
 
 /**
  * Where the riser stands, as a fraction of the run from the tank to the nozzle.
@@ -117,14 +118,6 @@ function mapLayoutY(layoutY: number, tankBaseY: number): number {
   return tankBaseY + layoutY;
 }
 
-function viewX(layoutX: number, holeX: number, modelViewTransform: ModelViewTransform2): number {
-  return modelViewTransform.modelToViewX(mapLayoutX(layoutX, holeX));
-}
-
-function viewY(layoutY: number, tankBaseY: number, modelViewTransform: ModelViewTransform2): number {
-  return modelViewTransform.modelToViewY(mapLayoutY(layoutY, tankBaseY));
-}
-
 /** Centre of the hose's open mouth — where the nozzle bitmap joins the pipe. */
 export function getHoseMouthPoint(layout: HoseLayout, holeX: number, tankBaseY: number): Vector2 {
   return new Vector2(mapLayoutX(layout.mouthX, holeX), mapLayoutY(layout.mouthY, tankBaseY));
@@ -138,167 +131,136 @@ export function getHoseHeightHandlePoint(layout: HoseLayout, holeX: number, tank
   );
 }
 
-/** Filled hose path in view coordinates. */
-export function createHoseShape(
-  layout: HoseLayout,
-  holeX: number,
-  tankBaseY: number,
-  modelViewTransform: ModelViewTransform2,
-): Shape {
-  return useTopShape(layout)
-    ? createTopShape(layout, holeX, tankBaseY, modelViewTransform)
-    : createBottomShape(layout, holeX, tankBaseY, modelViewTransform);
+/** Filled hose path in SI coordinates, shared by rendering and pressure sampling. */
+export function createHoseShape(layout: HoseLayout, holeX: number, tankBaseY: number): Shape {
+  return useTopShape(layout) ? createTopShape(layout, holeX, tankBaseY) : createBottomShape(layout, holeX, tankBaseY);
 }
 
 // Shape when the height handle sits above the hole (HTML5 createTopShape).
-function createTopShape(
-  hose: HoseLayout,
-  holeX: number,
-  tankBaseY: number,
-  modelViewTransform: ModelViewTransform2,
-): Shape {
-  const vx = (layoutX: number) => viewX(layoutX, holeX, modelViewTransform);
-  const vy = (layoutY: number) => viewY(layoutY, tankBaseY, modelViewTransform);
+function createTopShape(hose: HoseLayout, holeX: number, tankBaseY: number): Shape {
+  const mx = (layoutX: number) => mapLayoutX(layoutX, holeX);
+  const my = (layoutY: number) => mapLayoutY(layoutY, tankBaseY);
 
   let shape = new Shape();
   shape = shape
-    .moveTo(vx(hose.elbowOuterX), vy(hose.elbowOuterY))
-    .lineTo(vx(hose.nozzleAttachmentOuterX), vy(hose.nozzleAttachmentOuterY))
-    .lineTo(vx(hose.nozzleAttachmentInnerX), vy(hose.nozzleAttachmentInnerY))
-    .lineTo(vx(hose.elbowInnerX), vy(hose.elbowInnerY) - CORNER_RADIUS * Math.cos(hose.angleWithVertical))
+    .moveTo(mx(hose.elbowOuterX), my(hose.elbowOuterY))
+    .lineTo(mx(hose.nozzleAttachmentOuterX), my(hose.nozzleAttachmentOuterY))
+    .lineTo(mx(hose.nozzleAttachmentInnerX), my(hose.nozzleAttachmentInnerY))
+    .lineTo(mx(hose.elbowInnerX), my(hose.elbowInnerY) + CORNER_RADIUS * Math.cos(hose.angleWithVertical))
     .arc(
-      vx(hose.elbowInnerX) - CORNER_RADIUS,
-      vy(hose.elbowInnerY) - CORNER_RADIUS,
+      mx(hose.elbowInnerX) - CORNER_RADIUS,
+      my(hose.elbowInnerY) + CORNER_RADIUS,
       CORNER_RADIUS,
-      hose.angleWithVertical,
-      Math.PI / 2,
-      false,
+      -hose.angleWithVertical,
+      -Math.PI / 2,
+      true,
     )
-    .lineTo(vx(hose.L1 - hose.width) + CORNER_RADIUS, vy(hose.elbowInnerY));
+    .lineTo(mx(hose.L1 - hose.width) + CORNER_RADIUS, my(hose.elbowInnerY));
 
   if (hose.elbowInnerY - hose.width > 0.6) {
     shape = shape
       .arc(
-        vx(hose.L1 - hose.width) + CORNER_RADIUS,
-        vy(hose.elbowInnerY) + CORNER_RADIUS,
+        mx(hose.L1 - hose.width) + CORNER_RADIUS,
+        my(hose.elbowInnerY) - CORNER_RADIUS,
         CORNER_RADIUS,
-        -Math.PI / 2,
-        Math.PI,
-        true,
+        Math.PI / 2,
+        -Math.PI,
+        false,
       )
-      .lineTo(vx(hose.L1 - hose.width), vy(hose.width) - CORNER_RADIUS)
+      .lineTo(mx(hose.L1 - hose.width), my(hose.width) + CORNER_RADIUS)
       .arc(
-        vx(hose.L1 - hose.width) - CORNER_RADIUS,
-        vy(hose.width) - CORNER_RADIUS,
+        mx(hose.L1 - hose.width) - CORNER_RADIUS,
+        my(hose.width) + CORNER_RADIUS,
         CORNER_RADIUS,
         0,
-        Math.PI / 2,
-        false,
+        -Math.PI / 2,
+        true,
       );
   }
 
-  shape = shape.lineTo(vx(0), vy(hose.width)).lineTo(vx(0), vy(0));
+  shape = shape.lineTo(mx(0), my(hose.width)).lineTo(mx(0), my(0));
 
   if (hose.elbowInnerY - hose.width > 0.6) {
     shape = shape
-      .lineTo(vx(hose.L1) - CORNER_RADIUS, vy(0))
-      .arc(vx(hose.L1) - CORNER_RADIUS, vy(0) - CORNER_RADIUS, CORNER_RADIUS, Math.PI / 2, 0, true)
-      .lineTo(vx(hose.L1), vy(hose.elbowLowerY) + CORNER_RADIUS)
+      .lineTo(mx(hose.L1) - CORNER_RADIUS, my(0))
+      .arc(mx(hose.L1) - CORNER_RADIUS, my(0) + CORNER_RADIUS, CORNER_RADIUS, -Math.PI / 2, 0, false)
+      .lineTo(mx(hose.L1), my(hose.elbowLowerY) - CORNER_RADIUS)
       .arc(
-        vx(hose.L1) + CORNER_RADIUS,
-        vy(hose.elbowLowerY) + CORNER_RADIUS,
+        mx(hose.L1) + CORNER_RADIUS,
+        my(hose.elbowLowerY) - CORNER_RADIUS,
         CORNER_RADIUS,
-        Math.PI,
-        -Math.PI / 2,
-        false,
+        -Math.PI,
+        Math.PI / 2,
+        true,
       );
   } else {
-    shape = shape.lineTo(vx(hose.L1), vy(hose.elbowLowerY));
+    shape = shape.lineTo(mx(hose.L1), my(hose.elbowLowerY));
   }
 
   shape = shape
-    .lineTo(vx(hose.elbowLowerX), vy(hose.elbowLowerY))
-    .arc(
-      vx(hose.elbowInnerX),
-      vy(hose.elbowInnerY),
-      Math.abs(modelViewTransform.modelToViewDeltaX(hose.width)),
-      Math.PI / 2,
-      hose.angleWithVertical,
-      true,
-    );
+    .lineTo(mx(hose.elbowLowerX), my(hose.elbowLowerY))
+    .arc(mx(hose.elbowInnerX), my(hose.elbowInnerY), hose.width, -Math.PI / 2, -hose.angleWithVertical, false);
 
   return shape;
 }
 
 // Shape when the height handle sits below the hole (HTML5 createBottomShape).
-function createBottomShape(
-  hose: HoseLayout,
-  holeX: number,
-  tankBaseY: number,
-  modelViewTransform: ModelViewTransform2,
-): Shape {
-  const vx = (layoutX: number) => viewX(layoutX, holeX, modelViewTransform);
-  const vy = (layoutY: number) => viewY(layoutY, tankBaseY, modelViewTransform);
+function createBottomShape(hose: HoseLayout, holeX: number, tankBaseY: number): Shape {
+  const mx = (layoutX: number) => mapLayoutX(layoutX, holeX);
+  const my = (layoutY: number) => mapLayoutY(layoutY, tankBaseY);
 
   let shape = new Shape();
   shape = shape
-    .moveTo(vx(hose.elbowOuterX), vy(hose.elbowOuterY))
-    .lineTo(vx(hose.nozzleAttachmentOuterX), vy(hose.nozzleAttachmentOuterY))
-    .lineTo(vx(hose.nozzleAttachmentInnerX), vy(hose.nozzleAttachmentInnerY))
-    .lineTo(vx(hose.elbowInnerX), vy(hose.elbowInnerY) - CORNER_RADIUS * Math.cos(hose.angleWithVertical))
+    .moveTo(mx(hose.elbowOuterX), my(hose.elbowOuterY))
+    .lineTo(mx(hose.nozzleAttachmentOuterX), my(hose.nozzleAttachmentOuterY))
+    .lineTo(mx(hose.nozzleAttachmentInnerX), my(hose.nozzleAttachmentInnerY))
+    .lineTo(mx(hose.elbowInnerX), my(hose.elbowInnerY) + CORNER_RADIUS * Math.cos(hose.angleWithVertical))
     .arc(
-      vx(hose.elbowInnerX) - CORNER_RADIUS,
-      vy(hose.elbowInnerY) - CORNER_RADIUS,
+      mx(hose.elbowInnerX) - CORNER_RADIUS,
+      my(hose.elbowInnerY) + CORNER_RADIUS,
       CORNER_RADIUS,
-      hose.angleWithVertical,
-      Math.PI / 2,
-      false,
+      -hose.angleWithVertical,
+      -Math.PI / 2,
+      true,
     )
-    .lineTo(vx(hose.L1) + CORNER_RADIUS, vy(hose.elbowInnerY));
+    .lineTo(mx(hose.L1) + CORNER_RADIUS, my(hose.elbowInnerY));
 
   if (-hose.elbowInnerY + hose.width > 0.6) {
     shape = shape
       .arc(
-        vx(hose.L1) + CORNER_RADIUS,
-        vy(hose.elbowInnerY) - CORNER_RADIUS,
+        mx(hose.L1) + CORNER_RADIUS,
+        my(hose.elbowInnerY) + CORNER_RADIUS,
         CORNER_RADIUS,
-        Math.PI / 2,
-        Math.PI,
-        false,
+        -Math.PI / 2,
+        -Math.PI,
+        true,
       )
-      .lineTo(vx(hose.L1), vy(hose.width) + CORNER_RADIUS)
-      .arc(vx(hose.L1) - CORNER_RADIUS, vy(hose.width) + CORNER_RADIUS, CORNER_RADIUS, 0, -Math.PI / 2, true);
+      .lineTo(mx(hose.L1), my(hose.width) - CORNER_RADIUS)
+      .arc(mx(hose.L1) - CORNER_RADIUS, my(hose.width) - CORNER_RADIUS, CORNER_RADIUS, 0, Math.PI / 2, false);
   }
 
-  shape = shape.lineTo(vx(0), vy(hose.width)).lineTo(vx(0), vy(0));
+  shape = shape.lineTo(mx(0), my(hose.width)).lineTo(mx(0), my(0));
 
   if (-hose.elbowInnerY + hose.width > 0.6) {
     shape = shape
-      .lineTo(vx(hose.L1 - hose.width) - CORNER_RADIUS, vy(0))
-      .arc(vx(hose.L1 - hose.width) - CORNER_RADIUS, vy(0) + CORNER_RADIUS, CORNER_RADIUS, -Math.PI / 2, 0, false)
-      .lineTo(vx(hose.L1 - hose.width), vy(hose.elbowLowerY) - CORNER_RADIUS)
+      .lineTo(mx(hose.L1 - hose.width) - CORNER_RADIUS, my(0))
+      .arc(mx(hose.L1 - hose.width) - CORNER_RADIUS, my(0) - CORNER_RADIUS, CORNER_RADIUS, Math.PI / 2, 0, true)
+      .lineTo(mx(hose.L1 - hose.width), my(hose.elbowLowerY) + CORNER_RADIUS)
       .arc(
-        vx(hose.L1 - hose.width) + CORNER_RADIUS,
-        vy(hose.elbowLowerY) - CORNER_RADIUS,
+        mx(hose.L1 - hose.width) + CORNER_RADIUS,
+        my(hose.elbowLowerY) + CORNER_RADIUS,
         CORNER_RADIUS,
-        Math.PI,
-        Math.PI / 2,
-        true,
+        -Math.PI,
+        -Math.PI / 2,
+        false,
       );
   } else {
-    shape = shape.lineTo(vx(hose.L1 - hose.width), vy(hose.elbowLowerY));
+    shape = shape.lineTo(mx(hose.L1 - hose.width), my(hose.elbowLowerY));
   }
 
   shape = shape
-    .lineTo(vx(hose.elbowLowerX), vy(hose.elbowLowerY))
-    .arc(
-      vx(hose.elbowInnerX),
-      vy(hose.elbowInnerY),
-      Math.abs(modelViewTransform.modelToViewDeltaX(hose.width)),
-      Math.PI / 2,
-      hose.angleWithVertical,
-      true,
-    );
+    .lineTo(mx(hose.elbowLowerX), my(hose.elbowLowerY))
+    .arc(mx(hose.elbowInnerX), my(hose.elbowInnerY), hose.width, -Math.PI / 2, -hose.angleWithVertical, false);
 
   return shape;
 }

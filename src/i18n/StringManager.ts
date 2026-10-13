@@ -119,6 +119,11 @@ export class StringManager {
     return stringProperties.common.unitLabels;
   }
 
+  /** Live instrument descriptions shared by all screens. */
+  public getCommonA11yStrings() {
+    return stringProperties.a11y.common;
+  }
+
   /** Accessibility strings for the Under Pressure screen. */
   public getUnderPressureA11yStrings() {
     return stringProperties.a11y.underPressure;

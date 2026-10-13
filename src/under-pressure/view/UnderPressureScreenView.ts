@@ -270,7 +270,14 @@ export class UnderPressureScreenView extends ScreenView {
 
     for (const barometer of model.barometers) {
       const readoutProperty = new DerivedProperty(
-        [barometer.valueProperty, model.unitSystemProperty, common.unknownValueStringProperty],
+        [
+          barometer.valueProperty,
+          model.unitSystemProperty,
+          common.unknownValueStringProperty,
+          unitLabelGroups.metric.pressureStringProperty,
+          unitLabelGroups.atmospheres.pressureStringProperty,
+          unitLabelGroups.english.pressureStringProperty,
+        ],
         (value, system, unknown) =>
           value === null
             ? unknown
@@ -286,6 +293,7 @@ export class UnderPressureScreenView extends ScreenView {
           toolboxBounds: () => toolbox.bounds,
           dragBounds: toolDragBounds,
           accessibleName: a11y.controls.barometerStringProperty,
+          unitSystemProperty: model.unitSystemProperty,
         },
       );
       barometerNodes.set(barometer, barometerNode);
@@ -373,12 +381,12 @@ export class UnderPressureScreenView extends ScreenView {
     const updateMysterySliders = () => {
       const isMystery = model.sceneProperty.value === PoolScene.MYSTERY;
       if (!isMystery) {
-        gravityBox.unitSlider.setSliderEnabled(true);
-        fluidDensityBox.unitSlider.setSliderEnabled(true);
+        gravityBox.unitSlider.setValueHidden(false);
+        fluidDensityBox.unitSlider.setValueHidden(false);
         return;
       }
-      gravityBox.unitSlider.setSliderEnabled(!model.isGravityHidden());
-      fluidDensityBox.unitSlider.setSliderEnabled(!model.isFluidDensityHidden());
+      gravityBox.unitSlider.setValueHidden(model.isGravityHidden());
+      fluidDensityBox.unitSlider.setValueHidden(model.isFluidDensityHidden());
     };
     model.sceneProperty.link(updateMysterySliders);
     model.mysteryPool.mysteryQuantityProperty.link(updateMysterySliders);
