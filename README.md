@@ -59,7 +59,7 @@ Then open the URL Vite prints (by default <http://localhost:5173>).
 - [SceneryStack](https://scenerystack.org/) — scenery, kite, dot, axon, sun,
   scenery-phet and joist
 - TypeScript, Vite, Vitest, Playwright, Biome
-- `vite-plugin-pwa` for offline support
+- [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) ^2 for offline support
 
 ## License
 
