@@ -90,14 +90,6 @@ Fleet gate, from the workspace root:
 bash Baton/scripts/check-repo-compliance.sh FluidPressureAndFlow
 ```
 
-## Commands
-
-```bash
-npm run lint && npm run check && npm test && npm run build && npm run test:fuzz:quick
-```
-
-The standard scripts are listed in the README. `npm run release` runs `npm test` before the version bump, and `src/init.ts` reads `version` from `package.json`.
-
 ## Development notes
 
 ### Ground truth
