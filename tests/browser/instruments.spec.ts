@@ -103,6 +103,7 @@ test("barometer descriptions follow pressure, probe position and units", async (
   await expect(barometer).toHaveAccessibleDescription(/kPa\. Probe at x 0.0, y -2.5 m/);
   await barometer.focus();
   await page.keyboard.down("ArrowUp");
+  // biome-ignore lint/suspicious/noPlaywrightWaitForTimeout: holds the key down for a fixed time; the test measures how far it moved.
   await page.waitForTimeout(250);
   await page.keyboard.up("ArrowUp");
   await barometer.press("ArrowUp");
@@ -153,6 +154,7 @@ test("the hose lowers normally and stays above ground when its aim changes", asy
   const height = instrument(page, /^Tank Height$/).last();
   await height.focus();
   await page.keyboard.down("ArrowDown");
+  // biome-ignore lint/suspicious/noPlaywrightWaitForTimeout: holds the key down for a fixed time; the test measures how far it moved.
   await page.waitForTimeout(250);
   await page.keyboard.up("ArrowDown");
   const lowered = await page.evaluate(
@@ -173,6 +175,7 @@ test("the hose lowers normally and stays above ground when its aim changes", asy
   ).toBe(6);
   await height.focus();
   await page.keyboard.down("ArrowUp");
+  // biome-ignore lint/suspicious/noPlaywrightWaitForTimeout: holds the key down for a fixed time; the test measures how far it moved.
   await page.waitForTimeout(250);
   await page.keyboard.up("ArrowUp");
   const raised = await page.evaluate(
