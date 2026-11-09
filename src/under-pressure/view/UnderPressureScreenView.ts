@@ -55,18 +55,17 @@ import { UnderPressureControlPanel } from "./UnderPressureControlPanel.js";
 import { UnderPressureScreenSummaryContent } from "./UnderPressureScreenSummaryContent.js";
 
 /**
- * View pixels per model metre. PhET used 70 px/m against a 504-px-tall frame;
- * this is that scale grown with the frame height, so the pool still occupies the
- * same fraction of the screen and the sky above it still holds a barometer
- * lifted to MAX_TOOL_ALTITUDE.
+ * View pixels per model metre. Sized so the widest pool and its drain faucet
+ * fit between the scene chooser and the expanded right-hand controls, including
+ * clearance for the faucet handle when fully open.
  */
-const VIEW_SCALE = 86;
+const VIEW_SCALE = 76;
 
 /** View y of the ground line (model y = 0). */
 const GROUND_VIEW_Y = 300;
 
-/** Model x that lands at the horizontal centre of the play area. */
-const MODEL_CENTER_X = -0.7;
+/** Model x at the play-area anchor; keeps the widest pool clear of the scene chooser. */
+const MODEL_CENTER_X = -0.15;
 
 /** How high above the ground a tool may be dragged, metres. */
 const MAX_TOOL_ALTITUDE = 3.6;
