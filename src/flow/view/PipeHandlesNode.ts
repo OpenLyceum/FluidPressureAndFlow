@@ -15,6 +15,7 @@ import { SHIFT_KEY_SPEED_DIVISOR } from "../../FluidPressureAndFlowConstants.js"
 import { MAX_PIPE_Y, MIN_PIPE_HEIGHT, MIN_PIPE_Y, type Pipe } from "../model/Pipe.js";
 import type { PipeCrossSection } from "../model/PipeCrossSection.js";
 import type { PipeNode } from "./PipeNode.js";
+import { PIPE_HEAD_X_SCALE } from "./pipeEndLayout.js";
 
 /** Scale applied to every handle bitmap, tracking the pipe artwork it sits on. */
 const HANDLE_IMAGE_SCALE = 0.43;
@@ -49,19 +50,11 @@ const MAIN_HANDLE_TOUCH_TOP_INSET = 25;
 /** View-pixel gap between a pipe-head rim and its rim handle. */
 const RIM_HANDLE_OFFSET = 2;
 
+/** Distance from a pipe-head image's mouth edge to its brown rim centre, bitmap pixels. */
+const RIM_HANDLE_X_INSET = 48;
+
 /** Metres the handle moves per arrow-key press. */
 const KEYBOARD_DRAG_SPEED = 1.5;
-
-/** Model y below which a top handle image is not flipped. */
-const HANDLE_FLIP_Y_THRESHOLD = -2;
-
-/**
- * Where the handle bitmap sits relative to its wrapper, unflipped and flipped.
- * Rotating the bitmap by π moves its bar to the other side, and these put the bar
- * back over the cross-section; the pair therefore scales with HANDLE_IMAGE_SCALE.
- */
-const HANDLE_IMAGE_LEFT = -17;
-const HANDLE_IMAGE_LEFT_FLIPPED = 26;
 
 export type PipeHandlesNodeOptions = {
   readonly layoutBounds: Bounds2;
@@ -145,8 +138,8 @@ export class PipeHandlesNode extends Node {
     }
 
     const syncMainHandleY = () => {
-      leftMainHandle.centerY = pipeNode.leftPipeFront.centerY;
-      rightMainHandle.centerY = pipeNode.rightPipe.centerY;
+      leftMainHandle.top = pipeNode.leftPipeFront.centerY;
+      rightMainHandle.top = pipeNode.rightPipe.centerY;
     };
     const mainHandleMultilink = Multilink.multilinkAny([pipe.shapeVersionProperty], syncMainHandleY);
     syncMainHandleY();
@@ -237,7 +230,7 @@ function createMainDragListener(
       section.bottomYProperty.value = point.y - half;
       section.topYProperty.value = point.y + half;
     }
-    handle.centerY = pipeHeadNode.centerY;
+    handle.top = pipeHeadNode.centerY;
     isSyncing = false;
   };
   dragPositionProperty.link(syncToModel);
@@ -269,18 +262,12 @@ function createMainDragListener(
   });
 }
 
-function createHandleImage(modelY: number): Image {
-  const imageRotation = modelY < HANDLE_FLIP_Y_THRESHOLD ? 0 : Math.PI;
-  const imageLeft = modelY < HANDLE_FLIP_Y_THRESHOLD ? HANDLE_IMAGE_LEFT : HANDLE_IMAGE_LEFT_FLIPPED;
-
-  const image = new Image(handleWithBarImage, {
-    left: imageLeft,
+function createHandleImage(isTop: boolean): Image {
+  return new Image(handleWithBarImage, {
     cursor: "ns-resize",
     scale: HANDLE_IMAGE_SCALE,
-    rotation: imageRotation,
+    rotation: isTop ? Math.PI : 0,
   });
-
-  return image;
 }
 
 function createMiddleHandle(
@@ -294,7 +281,7 @@ function createMiddleHandle(
     readonly limit: PipeCrossSection["topYProperty"];
   },
 ): Node {
-  const image = createHandleImage(config.moved.value);
+  const image = createHandleImage(config.isTop);
   image.touchArea = createVerticalHandleTouchArea(image, config.isTop);
 
   const wrapper = new Node({
@@ -307,8 +294,14 @@ function createMiddleHandle(
   attachVerticalDrag(wrapper, section, modelViewTransform, config, disposers);
 
   const syncFromModel = (y: number) => {
-    wrapper.center = modelViewTransform.modelToViewPosition(new Vector2(section.x, y));
-    updateHandleImage(image, y);
+    wrapper.centerX = modelViewTransform.modelToViewX(section.x);
+    // The free end of the bar attaches to the wall; the grip stays outside the fluid.
+    const wallY = modelViewTransform.modelToViewY(y);
+    if (config.isTop) {
+      wrapper.bottom = wallY;
+    } else {
+      wrapper.top = wallY;
+    }
   };
   config.moved.link(syncFromModel);
   disposers.push(() => config.moved.unlink(syncFromModel));
@@ -329,7 +322,7 @@ function createRimHandle(
     readonly limit: PipeCrossSection["topYProperty"];
   },
 ): Node {
-  const image = createHandleImage(config.moved.value);
+  const image = createHandleImage(config.isTop);
   image.touchArea = createVerticalHandleTouchArea(image, config.isTop);
 
   const wrapper = new Node({
@@ -342,13 +335,13 @@ function createRimHandle(
   attachVerticalDrag(wrapper, section, modelViewTransform, config, disposers);
 
   const syncRimPosition = () => {
-    wrapper.centerX = modelViewTransform.modelToViewX(section.x);
+    const rimOffset = RIM_HANDLE_X_INSET * PIPE_HEAD_X_SCALE;
+    wrapper.centerX = modelViewTransform.modelToViewX(section.x) + (section.x < 0 ? -rimOffset : rimOffset);
     if (config.isTop) {
       wrapper.bottom = pipeHead.top + RIM_HANDLE_OFFSET;
     } else {
       wrapper.top = pipeHead.bottom - RIM_HANDLE_OFFSET;
     }
-    updateHandleImage(image, config.moved.value);
   };
 
   const rimMultilink = Multilink.multilinkAny(
@@ -359,11 +352,6 @@ function createRimHandle(
   disposers.push(() => rimMultilink.dispose());
 
   return wrapper;
-}
-
-function updateHandleImage(image: Image, modelY: number): void {
-  image.rotation = modelY < HANDLE_FLIP_Y_THRESHOLD ? 0 : Math.PI;
-  image.left = modelY < HANDLE_FLIP_Y_THRESHOLD ? HANDLE_IMAGE_LEFT : HANDLE_IMAGE_LEFT_FLIPPED;
 }
 
 function attachVerticalDrag(
@@ -421,7 +409,7 @@ function attachVerticalDrag(
   const dragBoundsProperty = new Property(new Bounds2(section.x, MIN_PIPE_Y, section.x, MAX_PIPE_Y));
 
   // `useParentOffset` measures the grab offset against dragPositionProperty through
-  // the transform. The wrapper is placed by its centre or against a pipe rim, so its
+  // the transform. The wrapper is placed by its bar tip or against a pipe rim, so its
   // origin is not the point being dragged.
   const dragListener = new DragListener({
     positionProperty: dragPositionProperty,
