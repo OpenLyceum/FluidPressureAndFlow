@@ -50,7 +50,7 @@ const EARTH_GRADIENT_DEPTH = 490;
 const TURF_GRADIENT_DEPTH = 61;
 
 /** Which ground a screen stands on. See the file comment. */
-export type GroundStyle = "earth" | "turf";
+type GroundStyle = "earth" | "turf";
 
 export type SkyGroundNodeOptions = {
   /** Defaults to "earth", the buried-scene ground. */

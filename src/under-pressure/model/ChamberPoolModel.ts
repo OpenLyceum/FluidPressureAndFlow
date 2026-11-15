@@ -60,7 +60,7 @@ const RIGHT_CHAMBER_WIDTH = CHAMBER_HEIGHT;
 const RIGHT_CHAMBER_CENTER_X = RIGHT_CHAMBER_MIN_X + RIGHT_CHAMBER_WIDTH / 2;
 
 /** Altitude of the floor of both openings — the top of the chambers, metres. */
-export const CHAMBER_OPENING_FLOOR_Y = -MAX_POOL_HEIGHT + CHAMBER_HEIGHT;
+const CHAMBER_OPENING_FLOOR_Y = -MAX_POOL_HEIGHT + CHAMBER_HEIGHT;
 
 /** Water standing in each opening when nothing is pressing on it, metres. */
 const RESTING_COLUMN_HEIGHT = 1;
@@ -86,9 +86,6 @@ const STACK_FRICTION = 0.98;
 
 /** x-centre of the left opening — where masses are stacked. */
 export const CHAMBER_LEFT_OPENING_CENTER_X = LEFT_CHAMBER_CENTER_X;
-
-/** x-centre of the right opening. */
-export const CHAMBER_RIGHT_OPENING_CENTER_X = RIGHT_CHAMBER_CENTER_X;
 
 export class ChamberPoolModel extends Pool {
   /**

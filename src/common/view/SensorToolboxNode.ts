@@ -25,7 +25,7 @@ const DISABLED_OPACITY = 0.4;
  * Narrower than {@link Sensor} on purpose, so one tray can hold barometers and
  * speedometers side by side without their differing reading types leaking in.
  */
-export type StowableSensor = {
+type StowableSensor = {
   readonly isActiveProperty: Property<boolean>;
   readonly positionProperty: Property<Vector2>;
 };

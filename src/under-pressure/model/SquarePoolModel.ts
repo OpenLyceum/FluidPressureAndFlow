@@ -16,16 +16,16 @@ import { MAX_POOL_HEIGHT } from "../../FluidPressureAndFlowConstants.js";
 import { PoolWithFaucetsModel } from "./PoolWithFaucetsModel.js";
 
 /** Left edge of the pool, metres. */
-export const SQUARE_POOL_MIN_X = -3.2;
+const SQUARE_POOL_MIN_X = -3.2;
 
 /** Width of the pool, metres. */
-export const SQUARE_POOL_WIDTH = 4;
+const SQUARE_POOL_WIDTH = 4;
 
 /** Right edge of the pool, metres. */
-export const SQUARE_POOL_MAX_X = SQUARE_POOL_MIN_X + SQUARE_POOL_WIDTH;
+const SQUARE_POOL_MAX_X = SQUARE_POOL_MIN_X + SQUARE_POOL_WIDTH;
 
 /** Where the fill tap pours in, just inside the left wall. */
-export const SQUARE_POOL_INPUT_FAUCET_X = SQUARE_POOL_MIN_X + 0.2;
+const SQUARE_POOL_INPUT_FAUCET_X = SQUARE_POOL_MIN_X + 0.2;
 
 /**
  * Where the drain empties, just outside the right wall.
@@ -34,7 +34,7 @@ export const SQUARE_POOL_INPUT_FAUCET_X = SQUARE_POOL_MIN_X + 0.2;
  * by the pool itself, and the point of drawing it is that a student can see which
  * tap is open and watch the water leave.
  */
-export const SQUARE_POOL_DRAIN_FAUCET_X = SQUARE_POOL_MAX_X + 0.6;
+const SQUARE_POOL_DRAIN_FAUCET_X = SQUARE_POOL_MAX_X + 0.6;
 
 export class SquarePoolModel extends PoolWithFaucetsModel {
   protected override createContainerShape(): Shape {

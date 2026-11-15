@@ -36,10 +36,10 @@ export class MysteryQuantity extends EnumerationValue {
  * cannot match one by eye against gasoline, water or honey — and none is a round
  * number, so a lucky guess is unlikely to look right.
  */
-export const MYSTERY_FLUID_DENSITIES = [1700, 840, 1100] as const;
+const MYSTERY_FLUID_DENSITIES = [1700, 840, 1100] as const;
 
 /** The three unnamed planets, m/s². Also deliberately off the slider's labels. */
-export const MYSTERY_GRAVITIES = [20, 14, 6.5] as const;
+const MYSTERY_GRAVITIES = [20, 14, 6.5] as const;
 
 export class MysteryPoolModel extends SquarePoolModel {
   /** Which quantity is currently hidden. */

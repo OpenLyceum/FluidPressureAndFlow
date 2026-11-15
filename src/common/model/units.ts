@@ -49,7 +49,7 @@ export function formatValue(conversion: UnitConversion, siValue: number): string
 // Sourced from the PhET Java sim's Units.java and the HTML5 port's Units.js.
 
 /** Feet per metre. Also serves for ft/s per m/s. */
-export const FEET_PER_METER = 3.2808399;
+const FEET_PER_METER = 3.2808399;
 
 /** Atmospheres per pascal. */
 const ATM_PER_PASCAL = 9.8692e-6;

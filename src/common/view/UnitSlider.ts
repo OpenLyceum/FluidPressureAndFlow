@@ -29,7 +29,7 @@ import { StringManager } from "../../i18n/StringManager.js";
 import { formatValue, type UnitConversion, type UnitSystem } from "../model/units.js";
 
 /** A labelled tick along the track. */
-export type UnitSliderTick = {
+type UnitSliderTick = {
   /** Position of the tick, in SI. */
   readonly value: number;
   /** What to write under it — a name like "water", not a number. */

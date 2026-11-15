@@ -19,17 +19,17 @@ import type { PipeCrossSection } from "../model/PipeCrossSection.js";
 export const PIPE_HEAD_X_SCALE = 0.48;
 
 /** Reference cross-section height used to compute the vertical head scale (PhET: 2.1 m). */
-export const PIPE_REFERENCE_HEIGHT = 2.1;
+const PIPE_REFERENCE_HEIGHT = 2.1;
 
 /** Smallest allowed vertical scale for a pipe head. */
-export const MIN_PIPE_HEAD_SCALE = 0.24;
+const MIN_PIPE_HEAD_SCALE = 0.24;
 
 /**
  * Offset from the top control point to the pipe-head node origin, in unscaled
  * bitmap pixels — it is multiplied by the head's own scale below, so it does not
  * move with the layout bounds.
  */
-export const LEFT_PIPE_Y_OFFSET = 30;
+const LEFT_PIPE_Y_OFFSET = 30;
 
 export type PipeEndLayout = {
   readonly scaleY: number;

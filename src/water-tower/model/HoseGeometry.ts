@@ -30,7 +30,7 @@ const CORNER_RADIUS = 0.25;
 const RISER_FRACTION = 0.36;
 
 /** Straight segment between the elbow and the nozzle, metres. */
-export const HOSE_LAYOUT_H2 = 2.1;
+const HOSE_LAYOUT_H2 = 2.1;
 
 /** Hose bore diameter, metres. */
 export const HOSE_LAYOUT_WIDTH = 1.5;
