@@ -21,7 +21,7 @@ import { Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
 import { Node, Path, Rectangle, Text } from "scenerystack/scenery";
 import { RectangularRadioButtonGroup } from "scenerystack/sun";
-import { getFluidColor, MYSTERY_FLUID_COLORS } from "../../common/model/fluidColor.js";
+import { getFluidColor, MYSTERY_FLUID_COLORS } from "../../common/view/fluidColor.js";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { PANEL_CORNER_RADIUS, WATER_DENSITY } from "../../FluidPressureAndFlowConstants.js";
 import { StringManager } from "../../i18n/StringManager.js";

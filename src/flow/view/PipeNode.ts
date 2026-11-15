@@ -12,7 +12,7 @@ import { Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
 import type { ModelViewTransform2 } from "scenerystack/phetcommon";
 import { Image, Node, Path } from "scenerystack/scenery";
-import { getFluidColor } from "../../common/model/fluidColor.js";
+import { getFluidColor } from "../../common/view/fluidColor.js";
 import { pipeLeftBackImage, pipeLeftFrontImage, pipeRightImage, pipeSegmentImage } from "../../common/view/images.js";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { FLOW_PARTICLE_CANVAS_BOUNDS } from "../../FluidPressureAndFlowConstants.js";

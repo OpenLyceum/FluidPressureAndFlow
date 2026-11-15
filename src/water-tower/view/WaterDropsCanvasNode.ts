@@ -12,7 +12,7 @@
 import type { Bounds2 } from "scenerystack/dot";
 import type { ModelViewTransform2 } from "scenerystack/phetcommon";
 import { CanvasNode } from "scenerystack/scenery";
-import { getFluidColor } from "../../common/model/fluidColor.js";
+import { getFluidColor } from "../../common/view/fluidColor.js";
 import type { WaterDrop } from "../model/WaterDrop.js";
 import type { WaterTowerModel } from "../model/WaterTowerModel.js";
 

@@ -29,7 +29,7 @@ import {
   Path,
   Rectangle,
 } from "scenerystack/scenery";
-import { getFluidColor } from "../../common/model/fluidColor.js";
+import { getFluidColor } from "../../common/view/fluidColor.js";
 import { handleImage, wheelImage } from "../../common/view/images.js";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { SHIFT_KEY_SPEED_DIVISOR } from "../../FluidPressureAndFlowConstants.js";

@@ -16,7 +16,7 @@ import { type Node, Path, Rectangle } from "scenerystack/scenery";
 import { ABSwitch } from "scenerystack/sun";
 import { Tandem } from "scenerystack/tandem";
 import { FluidPressureAndFlowPanel } from "../../common/FluidPressureAndFlowPanel.js";
-import { getFluidColor } from "../../common/model/fluidColor.js";
+import { getFluidColor } from "../../common/view/fluidColor.js";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { PANEL_CORNER_RADIUS, WATER_DENSITY } from "../../FluidPressureAndFlowConstants.js";
 

@@ -19,7 +19,7 @@ import { DerivedProperty, Multilink } from "scenerystack/axon";
 import type { ModelViewTransform2 } from "scenerystack/phetcommon";
 import { Node, Rectangle } from "scenerystack/scenery";
 import { FaucetNode } from "scenerystack/scenery-phet";
-import { getFluidColor } from "../../common/model/fluidColor.js";
+import { getFluidColor } from "../../common/view/fluidColor.js";
 import { MAX_POOL_HEIGHT } from "../../FluidPressureAndFlowConstants.js";
 import type { PoolWithFaucetsModel } from "../model/PoolWithFaucetsModel.js";
 

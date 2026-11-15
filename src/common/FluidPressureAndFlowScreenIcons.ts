@@ -11,7 +11,7 @@ import { ArrowNode } from "scenerystack/scenery-phet";
 import { ScreenIcon } from "scenerystack/sim";
 import FluidPressureAndFlowColors from "../FluidPressureAndFlowColors.js";
 import { WATER_DENSITY } from "../FluidPressureAndFlowConstants.js";
-import { getFluidColor } from "./model/fluidColor.js";
+import { getFluidColor } from "./view/fluidColor.js";
 
 const W = 548;
 const H = 373;

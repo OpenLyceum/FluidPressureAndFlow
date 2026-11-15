@@ -18,7 +18,7 @@ import { DerivedProperty, type NumberProperty, type TReadOnlyProperty } from "sc
 import { Shape } from "scenerystack/kite";
 import type { ModelViewTransform2 } from "scenerystack/phetcommon";
 import { Node, Path } from "scenerystack/scenery";
-import { getFluidColor } from "../../common/model/fluidColor.js";
+import { getFluidColor } from "../../common/view/fluidColor.js";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 
 /** Stroke width of the pool wall and the water outline, view pixels. */

@@ -14,7 +14,7 @@
  * rather than inverting anything.
  *
  * The water is *not* here: its colour is a continuous function of fluid density
- * (see common/model/fluidColor.ts), so it cannot be a fixed pair of profile
+ * (see common/view/fluidColor.ts), so it cannot be a fixed pair of profile
  * values. The stroke around the water is here, since that stays constant.
  *
  * ── Usage ─────────────────────────────────────────────────────────────────────
@@ -124,7 +124,7 @@ const FluidPressureAndFlowColors = {
 
   /**
    * Stand-in colour for a mystery fluid in the scene-chooser icon. The fluids
-   * themselves are coloured in common/model/fluidColor.ts, where the three
+   * themselves are coloured in common/view/fluidColor.ts, where the three
    * purples live together; this is just the button.
    */
   mysteryFluidColorProperty: new ProfileColorProperty(FluidPressureAndFlowNamespace, "mysteryFluid", {
