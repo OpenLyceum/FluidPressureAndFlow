@@ -65,7 +65,10 @@ const CHAMBER_OPENING_FLOOR_Y = -MAX_POOL_HEIGHT + CHAMBER_HEIGHT;
 /** Water standing in each opening when nothing is pressing on it, metres. */
 const RESTING_COLUMN_HEIGHT = 1;
 
-/** Where a mass comes to rest on the ground, just above the grass line. */
+/**
+ * Where a mass comes to rest on the ground, just above the grass line.
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export const TOP_OF_GRASS = 0.025;
 
 /** Fraction of the remaining displacement shed per step once the weights are off. */

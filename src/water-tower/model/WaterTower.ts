@@ -15,7 +15,10 @@
 import { BooleanProperty, DerivedProperty, NumberProperty, Property, type TReadOnlyProperty } from "scenerystack/axon";
 import { Vector2 } from "scenerystack/dot";
 
-/** Radius of the tank, metres. */
+/**
+ * Radius of the tank, metres.
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export const TANK_RADIUS = 5;
 
 /** Height of the tank, metres. */
@@ -38,7 +41,10 @@ const INITIAL_TANK_BASE_Y = 11;
 /** Diameter of the hole in the tank's side, metres. */
 export const HOLE_SIZE = 1;
 
-/** Full capacity of the tank, m³. */
+/**
+ * Full capacity of the tank, m³.
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export const TANK_VOLUME = Math.PI * TANK_RADIUS * TANK_RADIUS * TANK_HEIGHT;
 
 /** Smallest and largest tank radii the capacity slider can produce, metres. */

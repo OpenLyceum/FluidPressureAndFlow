@@ -35,7 +35,10 @@ export function toDisplayValue(conversion: UnitConversion, siValue: number): num
   return siValue * conversion.factor;
 }
 
-/** Converts a display value back into SI. The inverse of {@link toDisplayValue}. */
+/**
+ * Converts a display value back into SI. The inverse of {@link toDisplayValue}.
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export function toSIValue(conversion: UnitConversion, displayValue: number): number {
   return displayValue / conversion.factor;
 }

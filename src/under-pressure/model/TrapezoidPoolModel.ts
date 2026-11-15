@@ -25,13 +25,19 @@ const WIDTH_AT_NARROW_END = 1;
 /** Width of the wide end of either chamber, metres. */
 const WIDTH_AT_WIDE_END = 4;
 
-/** Centre of the left chamber's opening at ground level, metres. */
+/**
+ * Centre of the left chamber's opening at ground level, metres.
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export const TRAPEZOID_LEFT_CHAMBER_CENTER_X = -2.9;
 
 /** Horizontal distance between the two chambers' openings, metres. */
 const CHAMBER_SEPARATION = 3.9;
 
-/** Centre of the right chamber's floor, metres. */
+/**
+ * Centre of the right chamber's floor, metres.
+ * @internal Exported for unit tests; not part of the application API.
+ */
 export const TRAPEZOID_RIGHT_CHAMBER_CENTER_X = TRAPEZOID_LEFT_CHAMBER_CENTER_X + CHAMBER_SEPARATION;
 
 /** Height of the passage joining the two chambers along the floor, metres. */
