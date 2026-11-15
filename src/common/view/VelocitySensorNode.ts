@@ -224,16 +224,19 @@ export class VelocitySensorNode extends Node {
         this.moveToFront();
         lastAnnouncedReading = speedTextProperty.value;
       },
-      drag: announceReading,
       end: () => {
         announceReading();
         endDrag();
       },
     });
     this.addInputListener(keyboardDragListener);
+    sensor.positionProperty.lazyLink(announceReading);
 
     const updateVisibility = (isActive: boolean) => {
       this.visible = isActive;
+      if (!isActive) {
+        keyboardDragListener.interrupt();
+      }
     };
     sensor.isActiveProperty.link(updateVisibility);
 
@@ -241,6 +244,7 @@ export class VelocitySensorNode extends Node {
       this.accessibleHelpText = null;
       descriptionProperty.dispose();
       sensor.positionProperty.unlink(updatePosition);
+      sensor.positionProperty.unlink(announceReading);
       sensor.valueProperty.unlink(updateArrow);
       sensor.isActiveProperty.unlink(updateVisibility);
       speedTextProperty.unlink(centerReadout);

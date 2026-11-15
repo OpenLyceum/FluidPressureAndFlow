@@ -242,19 +242,27 @@ export class BarometerNode extends Node {
         this.moveToFront();
         lastAnnouncedReading = pressureTextProperty.value;
       },
-      drag: announceReading,
       end: () => {
         announceReading();
         endDrag();
       },
     });
     this.addInputListener(keyboardDragListener);
+    // Announce from the position Property rather than KeyboardDragListener's drag
+    // callback: under fuzzBoard the stepTimer can fire after the pointer is cleared,
+    // and drag: would assert "pointer must be assigned".
+    barometer.positionProperty.lazyLink(announceReading);
 
     // A stowed barometer is not on the play area at all — it is drawn inside the
     // toolbox instead — so hide the free-floating copy rather than leaving an
     // unreachable duplicate for keyboard users to land on.
     const updateVisibility = (isActive: boolean) => {
       this.visible = isActive;
+      // Hiding mid-keyboard-drag leaves KeyboardDragListener's timer running with a
+      // cleared pointer; interrupt so stepForSpeed does not assert.
+      if (!isActive) {
+        keyboardDragListener.interrupt();
+      }
     };
     barometer.isActiveProperty.link(updateVisibility);
 
@@ -264,6 +272,7 @@ export class BarometerNode extends Node {
       barometer.positionProperty.unlink(updatePosition);
       barometer.isActiveProperty.unlink(updateVisibility);
       pressureTextProperty.unlink(centerReadout);
+      barometer.positionProperty.unlink(announceReading);
       needleValueProperty.dispose();
       this.dragListener.dispose();
       keyboardDragListener.dispose();

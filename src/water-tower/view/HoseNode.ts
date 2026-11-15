@@ -8,7 +8,7 @@
  */
 
 import { DerivedProperty, Multilink, Property, type TReadOnlyProperty } from "scenerystack/axon";
-import { Bounds2, Vector2 } from "scenerystack/dot";
+import { Bounds2, Vector2, Vector2Property } from "scenerystack/dot";
 import type { ModelViewTransform2 } from "scenerystack/phetcommon";
 import { DragListener, Image, KeyboardDragListener, Node, Path } from "scenerystack/scenery";
 import { handleImage, nozzleImage, spoutHandleImage } from "../../common/view/images.js";
@@ -170,19 +170,36 @@ export class HoseNode extends Node {
     });
     spoutHandle.addInputListener(angleDragListener);
 
+    // Drive angle through a Vector2Property so KeyboardDragListener never needs a
+    // drag: callback (under fuzzBoard, stepTimer can fire after the pointer is
+    // cleared and drag: would assert "pointer must be assigned").
+    const anglePositionProperty = new Vector2Property(new Vector2(hose.angleProperty.value, 0));
+    const angleDragBoundsProperty = new Property(new Bounds2(0, 0, Math.PI / 2, 0));
+    const syncAngleFromPosition = (position: Vector2) => {
+      hose.angleProperty.value = position.x;
+    };
+    const syncPositionFromAngle = (angle: number) => {
+      if (anglePositionProperty.value.x !== angle) {
+        anglePositionProperty.value = new Vector2(angle, 0);
+      }
+    };
+    anglePositionProperty.lazyLink(syncAngleFromPosition);
+    hose.angleProperty.lazyLink(syncPositionFromAngle);
     const angleKeyboardListener = new KeyboardDragListener({
-      drag: (_event, listener) => {
-        const delta = listener.modelDelta.x + listener.modelDelta.y;
-        hose.angleProperty.value = Math.max(
-          0,
-          Math.min(Math.PI / 2, hose.angleProperty.value + delta * KEYBOARD_ANGLE_SPEED),
-        );
-      },
+      positionProperty: anglePositionProperty,
+      dragBoundsProperty: angleDragBoundsProperty,
+      keyboardDragDirection: "leftRight",
+      dragSpeed: KEYBOARD_ANGLE_SPEED,
+      shiftDragSpeed: KEYBOARD_ANGLE_SPEED / SHIFT_KEY_SPEED_DIVISOR,
     });
     spoutHandle.addInputListener(angleKeyboardListener);
 
     const updateVisibility = (isEnabled: boolean) => {
       this.visible = isEnabled;
+      if (!isEnabled) {
+        heightKeyboardListener.interrupt();
+        angleKeyboardListener.interrupt();
+      }
     };
     hose.isEnabledProperty.link(updateVisibility);
 
@@ -196,7 +213,11 @@ export class HoseNode extends Node {
       heightDragListener.dispose();
       heightKeyboardListener.dispose();
       angleDragListener.dispose();
+      anglePositionProperty.unlink(syncAngleFromPosition);
+      hose.angleProperty.unlink(syncPositionFromAngle);
       angleKeyboardListener.dispose();
+      anglePositionProperty.dispose();
+      angleDragBoundsProperty.dispose();
     };
   }
 

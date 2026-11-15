@@ -242,6 +242,9 @@ export class FluxMeterNode extends Node {
     const updateVisibility = (isVisible: boolean) => {
       this.visible = isVisible;
       this.backRing.visible = isVisible;
+      if (!isVisible) {
+        keyboardDragListener.interrupt();
+      }
     };
     fluxMeter.isVisibleProperty.link(updateVisibility);
     updateVisibility(fluxMeter.isVisibleProperty.value);
