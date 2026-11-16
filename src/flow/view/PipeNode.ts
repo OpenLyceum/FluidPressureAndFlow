@@ -1,3 +1,4 @@
+import { PIPE_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * PipeNode.ts
  *
@@ -21,19 +22,19 @@ import type { Pipe, WallSample } from "../model/Pipe.js";
 import { ParticleCanvasNode } from "./ParticleCanvasNode.js";
 import { getPipeEndLayout, PIPE_HEAD_X_SCALE } from "./pipeEndLayout.js";
 
-const MIDDLE_WALL_LINE_WIDTH = 8;
+const MIDDLE_WALL_LINE_WIDTH: number = PIPE_NODE_SETTINGS.MIDDLE_WALL_LINE_WIDTH;
 
 /** Horizontal stretch of the repeating pipe-segment bitmap off-screen. */
-const PIPE_SEGMENT_X_SCALE = 100;
+const PIPE_SEGMENT_X_SCALE: number = PIPE_NODE_SETTINGS.PIPE_SEGMENT_X_SCALE;
 
 /**
  * Gap between the left head and the repeating segment, in unscaled bitmap
  * pixels: both live inside the head assembly, which is scaled as a whole.
  */
-const LEFT_SEGMENT_GAP = 30;
+const LEFT_SEGMENT_GAP: number = PIPE_NODE_SETTINGS.LEFT_SEGMENT_GAP;
 
 /** Overlap between the right head and the repeating segment, same frame as above. */
-const RIGHT_SEGMENT_OVERLAP = 50;
+const RIGHT_SEGMENT_OVERLAP: number = PIPE_NODE_SETTINGS.RIGHT_SEGMENT_OVERLAP;
 
 export class PipeNode extends Node {
   private readonly disposePipeNode: () => void;

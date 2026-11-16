@@ -1,3 +1,4 @@
+import { POOL_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * PoolNode.ts
  *
@@ -22,14 +23,14 @@ import { getFluidColor } from "../../common/view/fluidColor.js";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 
 /** Stroke width of the pool wall and the water outline, view pixels. */
-const EDGE_LINE_WIDTH = 3;
+const EDGE_LINE_WIDTH: number = POOL_NODE_SETTINGS.EDGE_LINE_WIDTH;
 const WATER_LINE_WIDTH = 1;
 
 /** Cement lip traced outside the pool walls at the cutaway, view pixels. */
-const CEMENT_LINE_WIDTH = 4;
+const CEMENT_LINE_WIDTH: number = POOL_NODE_SETTINGS.CEMENT_LINE_WIDTH;
 
 /** How far the cement lip sits outside the pool wall, model metres. */
-const CEMENT_OUTSET = 0.1;
+const CEMENT_OUTSET: number = POOL_NODE_SETTINGS.CEMENT_OUTSET;
 
 export class PoolNode extends Node {
   private readonly disposePoolNode: () => void;

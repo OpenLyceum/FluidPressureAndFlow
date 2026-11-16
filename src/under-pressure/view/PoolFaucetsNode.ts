@@ -1,3 +1,4 @@
+import { POOL_FAUCETS_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * PoolFaucetsNode.ts
  *
@@ -28,7 +29,7 @@ import type { PoolWithFaucetsModel } from "../model/PoolWithFaucetsModel.js";
  * run off the left of the screen, so the water reads as coming from the mains
  * rather than from a floating spout.
  */
-const SUPPLY_PIPE_LENGTH = 900;
+const SUPPLY_PIPE_LENGTH: number = POOL_FAUCETS_NODE_SETTINGS.SUPPLY_PIPE_LENGTH;
 
 /**
  * Length of the drain's pipe. Just long enough to read as a stub emerging from
@@ -37,34 +38,34 @@ const SUPPLY_PIPE_LENGTH = 900;
  */
 // FaucetNode needs enough room for its 112px spout offset. At the displayed
 // scale this remains a compact, 73px drain-pipe stub.
-const DRAIN_PIPE_LENGTH = 120;
+const DRAIN_PIPE_LENGTH: number = POOL_FAUCETS_NODE_SETTINGS.DRAIN_PIPE_LENGTH;
 
 /** How wide the falling column of water is drawn, view pixels. */
-const STREAM_WIDTH = 15;
+const STREAM_WIDTH: number = POOL_FAUCETS_NODE_SETTINGS.STREAM_WIDTH;
 
 /** Scale applied to the whole faucet assembly, to fit the pool. */
-const FAUCET_SCALE = 0.61;
+const FAUCET_SCALE: number = POOL_FAUCETS_NODE_SETTINGS.FAUCET_SCALE;
 
 /** Vertical run of pipe above the fill tap's spout, view pixels. */
-const INPUT_FAUCET_VERTICAL_PIPE_LENGTH = 20;
+const INPUT_FAUCET_VERTICAL_PIPE_LENGTH: number = POOL_FAUCETS_NODE_SETTINGS.INPUT_FAUCET_VERTICAL_PIPE_LENGTH;
 
 /** Vertical run of pipe above the drain's spout, view pixels. */
-const DRAIN_FAUCET_VERTICAL_PIPE_LENGTH = 16;
+const DRAIN_FAUCET_VERTICAL_PIPE_LENGTH: number = POOL_FAUCETS_NODE_SETTINGS.DRAIN_FAUCET_VERTICAL_PIPE_LENGTH;
 
 /** How far a faucet's right edge sits from its spout's model x, view pixels. */
-const FAUCET_SPOUT_RIGHT_INSET = 25;
+const FAUCET_SPOUT_RIGHT_INSET: number = POOL_FAUCETS_NODE_SETTINGS.FAUCET_SPOUT_RIGHT_INSET;
 
 /** How far above the water's resting surface the fill tap's spout sits, view pixels. */
-const INPUT_FAUCET_BOTTOM_INSET = 32;
+const INPUT_FAUCET_BOTTOM_INSET: number = POOL_FAUCETS_NODE_SETTINGS.INPUT_FAUCET_BOTTOM_INSET;
 
 /** Overlap between a stream's top and the spout it falls from, so no gap shows, view pixels. */
-const STREAM_SPOUT_OVERLAP = 2;
+const STREAM_SPOUT_OVERLAP: number = POOL_FAUCETS_NODE_SETTINGS.STREAM_SPOUT_OVERLAP;
 
 /** How far below the pool floor the drain's spout sits, view pixels. */
-const DRAIN_FAUCET_BOTTOM_INSET = 37;
+const DRAIN_FAUCET_BOTTOM_INSET: number = POOL_FAUCETS_NODE_SETTINGS.DRAIN_FAUCET_BOTTOM_INSET;
 
 /** Length of the drain's falling column, long enough to run off the bottom of the screen, view pixels. */
-const DRAIN_STREAM_FALL_LENGTH = 490;
+const DRAIN_STREAM_FALL_LENGTH: number = POOL_FAUCETS_NODE_SETTINGS.DRAIN_STREAM_FALL_LENGTH;
 
 export type PoolFaucetsNodeOptions = {
   /** Model x the fill tap pours into. */

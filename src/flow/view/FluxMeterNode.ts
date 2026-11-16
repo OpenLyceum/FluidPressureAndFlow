@@ -1,3 +1,4 @@
+import { FLUX_METER_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * FluxMeterNode.ts
  *
@@ -34,20 +35,20 @@ import type { FluxMeter } from "../model/FluxMeter.js";
 import type { Pipe } from "../model/Pipe.js";
 
 /** Metres the hoop moves per arrow-key press. */
-const KEYBOARD_DRAG_SPEED = 1.5;
+const KEYBOARD_DRAG_SPEED: number = FLUX_METER_NODE_SETTINGS.KEYBOARD_DRAG_SPEED;
 
 /** Thickness of the hoop, view pixels. */
-const HOOP_LINE_WIDTH = 7;
+const HOOP_LINE_WIDTH: number = FLUX_METER_NODE_SETTINGS.HOOP_LINE_WIDTH;
 
 /** How much wider than the pipe the hoop is drawn, view pixels. */
-const HOOP_OVERHANG = 8;
+const HOOP_OVERHANG: number = FLUX_METER_NODE_SETTINGS.HOOP_OVERHANG;
 
 /** Opacity of the back half of the hoop, so it reads as behind the fluid without disappearing. */
-const BACK_RING_OPACITY = 0.5;
+const BACK_RING_OPACITY: number = FLUX_METER_NODE_SETTINGS.BACK_RING_OPACITY;
 
 const READOUT_FONT = "12px sans-serif";
-const READOUT_MAX_WIDTH = 180;
-const READOUT_SPACING = 3;
+const READOUT_MAX_WIDTH: number = FLUX_METER_NODE_SETTINGS.READOUT_MAX_WIDTH;
+const READOUT_SPACING: number = FLUX_METER_NODE_SETTINGS.READOUT_SPACING;
 
 function createReadoutText(textProperty: TReadOnlyProperty<string>): Text {
   return new Text(textProperty, {
@@ -179,7 +180,7 @@ export class FluxMeterNode extends Node {
       );
 
       panel.centerX = viewX;
-      panel.bottom = viewTop - HOOP_OVERHANG - 8;
+      panel.bottom = viewTop - HOOP_OVERHANG - FLUX_METER_NODE_SETTINGS.LAYOUT_BOTTOM_OFFSET;
     };
 
     const layoutMultilink = Multilink.multilinkAny([fluxMeter.xProperty, pipe.shapeVersionProperty], layout);

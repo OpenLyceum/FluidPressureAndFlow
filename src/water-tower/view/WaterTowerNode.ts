@@ -1,3 +1,4 @@
+import { WATER_TOWER_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * WaterTowerNode.ts
  *
@@ -36,37 +37,37 @@ import { SHIFT_KEY_SPEED_DIVISOR } from "../../FluidPressureAndFlowConstants.js"
 import { HOLE_SIZE, MAX_TANK_BASE_Y, MIN_TANK_BASE_Y, TANK_HEIGHT, type WaterTower } from "../model/WaterTower.js";
 
 /** How far the legs splay out from the tank wall, metres. */
-const LEG_SPLAY = 3;
+const LEG_SPLAY: number = WATER_TOWER_NODE_SETTINGS.LEG_SPLAY;
 
 /** Thickness of the tank wall and the legs, view pixels. */
-const STRUCTURE_LINE_WIDTH = 4;
+const STRUCTURE_LINE_WIDTH: number = WATER_TOWER_NODE_SETTINGS.STRUCTURE_LINE_WIDTH;
 
 /** Thickness of the cross-bracing between the legs. Thinner than the legs it braces. */
-const BRACE_LINE_WIDTH = 2;
+const BRACE_LINE_WIDTH: number = WATER_TOWER_NODE_SETTINGS.BRACE_LINE_WIDTH;
 
 /** Height of the lid on top of the tank, view pixels. */
-const LID_HEIGHT = 10;
+const LID_HEIGHT: number = WATER_TOWER_NODE_SETTINGS.LID_HEIGHT;
 
 /** Metres the tank moves per arrow-key press. */
-const KEYBOARD_DRAG_SPEED = 4;
+const KEYBOARD_DRAG_SPEED: number = WATER_TOWER_NODE_SETTINGS.KEYBOARD_DRAG_SPEED;
 
 /** How far the lid overhangs the tank wall on each side, view pixels. */
-const LID_OVERHANG = 3;
+const LID_OVERHANG: number = WATER_TOWER_NODE_SETTINGS.LID_OVERHANG;
 
 /** Scale for the tank-lift handle bitmap. */
-const HANDLE_SCALE = 0.45;
+const HANDLE_SCALE: number = WATER_TOWER_NODE_SETTINGS.HANDLE_SCALE;
 
 /** Scale for the sluice wheel bitmap. */
-const WHEEL_SCALE = 0.4;
+const WHEEL_SCALE: number = WATER_TOWER_NODE_SETTINGS.WHEEL_SCALE;
 
 /** Width of the sluice gate, view pixels. */
-const GATE_WIDTH = 5;
+const GATE_WIDTH: number = WATER_TOWER_NODE_SETTINGS.GATE_WIDTH;
 
 /** Height of the sluice gate, relative to the hole size. */
-const GATE_HEIGHT_RATIO = 2.5;
+const GATE_HEIGHT_RATIO: number = WATER_TOWER_NODE_SETTINGS.GATE_HEIGHT_RATIO;
 
 /** View pixels the gate drops past the hole when fully open (PhET HTML5 port). */
-const GATE_OPEN_VIEW_NUDGE = 5;
+const GATE_OPEN_VIEW_NUDGE: number = WATER_TOWER_NODE_SETTINGS.GATE_OPEN_VIEW_NUDGE;
 
 export class WaterTowerNode extends Node {
   private readonly disposeWaterTowerNode: () => void;
@@ -99,7 +100,7 @@ export class WaterTowerNode extends Node {
     const lid = new Rectangle(0, 0, 0, 0, {
       fill: FluidPressureAndFlowColors.towerTrimColorProperty,
       stroke: FluidPressureAndFlowColors.towerStructureColorProperty,
-      lineWidth: 2,
+      lineWidth: WATER_TOWER_NODE_SETTINGS.LID_LINE_WIDTH,
     });
     const rope = new Path(null, {
       stroke: FluidPressureAndFlowColors.towerStructureColorProperty,
@@ -112,7 +113,7 @@ export class WaterTowerNode extends Node {
         .addColorStop(0.7, FluidPressureAndFlowColors.sluiceGateShadeColorProperty)
         .addColorStop(1, FluidPressureAndFlowColors.sluiceGateEdgeColorProperty),
       stroke: FluidPressureAndFlowColors.towerStructureColorProperty,
-      lineWidth: 0.5,
+      lineWidth: WATER_TOWER_NODE_SETTINGS.SLUICE_GATE_LINE_WIDTH,
       cursor: "ns-resize",
       tagName: "div",
       focusable: true,
@@ -183,7 +184,7 @@ export class WaterTowerNode extends Node {
       handle.centerX = (leftX + rightX) / 2;
       handle.top = baseY;
 
-      wheel.right = rightX + 3;
+      wheel.right = rightX + WATER_TOWER_NODE_SETTINGS.LAYOUT_RIGHT_OFFSET;
       wheel.bottom = topY;
 
       const holeViewSize = modelViewTransform.modelToViewDeltaX(HOLE_SIZE);

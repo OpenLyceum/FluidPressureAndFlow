@@ -1,3 +1,4 @@
+import { UNITS_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * units.ts
  *
@@ -52,13 +53,13 @@ export function formatValue(conversion: UnitConversion, siValue: number): string
 // Sourced from the PhET Java sim's Units.java and the HTML5 port's Units.js.
 
 /** Feet per metre. Also serves for ft/s per m/s. */
-const FEET_PER_METER = 3.2808399;
+const FEET_PER_METER: number = UNITS_SETTINGS.FEET_PER_METER;
 
 /** Atmospheres per pascal. */
-const ATM_PER_PASCAL = 9.8692e-6;
+const ATM_PER_PASCAL: number = UNITS_SETTINGS.ATM_PER_PASCAL;
 
 /** Pounds per square inch, per pascal. */
-const PSI_PER_PASCAL = 145.04e-6;
+const PSI_PER_PASCAL: number = UNITS_SETTINGS.PSI_PER_PASCAL;
 
 /** Pounds per cubic foot, per kg/m³. */
 const LB_PER_FT3_PER_KG_PER_M3 = 62.4 / 1000;
@@ -73,7 +74,7 @@ const FT2_PER_M2 = FEET_PER_METER * FEET_PER_METER;
 const FT3_PER_M3 = FEET_PER_METER * FEET_PER_METER * FEET_PER_METER;
 
 /** Litres per cubic metre. */
-const LITERS_PER_M3 = 1000;
+const LITERS_PER_M3: number = UNITS_SETTINGS.LITERS_PER_M3;
 
 // ── Per-quantity conversions ──────────────────────────────────────────────────
 

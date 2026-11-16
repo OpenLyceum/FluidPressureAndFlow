@@ -1,3 +1,4 @@
+import { WATER_TOWER_SCREEN_VIEW_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * WaterTowerScreenView.ts
  *
@@ -51,22 +52,25 @@ import { WaterTowerScreenSummaryContent } from "./WaterTowerScreenSummaryContent
  * the faucet still above it and still on screen. The jet's horizontal range fits
  * comfortably at the same scale.
  */
-const VIEW_SCALE = 12;
+const VIEW_SCALE: number = WATER_TOWER_SCREEN_VIEW_SETTINGS.VIEW_SCALE;
 
 /** View y of the ground line (model y = 0). */
-const GROUND_VIEW_Y = 429;
+const GROUND_VIEW_Y: number = WATER_TOWER_SCREEN_VIEW_SETTINGS.GROUND_VIEW_Y;
 
 /** Model x that lands at the left of the play area. */
-const MODEL_LEFT_X = -6;
+const MODEL_LEFT_X: number = WATER_TOWER_SCREEN_VIEW_SETTINGS.MODEL_LEFT_X;
 
 /** View x of {@link MODEL_LEFT_X}, measured in from the left edge. */
-const MODEL_LEFT_VIEW_INSET = 49;
+const MODEL_LEFT_VIEW_INSET: number = WATER_TOWER_SCREEN_VIEW_SETTINGS.MODEL_LEFT_VIEW_INSET;
 
 /** Length of the draggable ruler, metres. */
-const RULER_LENGTH = 20;
+const RULER_LENGTH: number = WATER_TOWER_SCREEN_VIEW_SETTINGS.RULER_LENGTH;
 
 /** Where the ruler sits when first shown, model coordinates. */
-const RULER_HOME_POSITION = new Vector2(-4, 20);
+const RULER_HOME_POSITION = new Vector2(
+  WATER_TOWER_SCREEN_VIEW_SETTINGS.RULER_HOME_POSITION_X,
+  WATER_TOWER_SCREEN_VIEW_SETTINGS.RULER_HOME_POSITION_Y,
+);
 
 export type WaterTowerScreenViewOptions = ScreenViewOptions;
 
@@ -142,11 +146,12 @@ export class WaterTowerScreenView extends ScreenView {
       // Small enough that the whole assembly fits between the top of the screen
       // and the spout: the spout is pinned to FAUCET_POSITION, which is only just
       // above the tank's highest reach, so the body has to hang in what is left.
-      scale: 0.43,
+      scale: WATER_TOWER_SCREEN_VIEW_SETTINGS.FAUCET_SCALE,
       closeOnRelease: false,
       accessibleName: a11y.controls.faucetModeControlStringProperty,
     });
-    faucet.right = modelViewTransform.modelToViewX(FAUCET_POSITION.x) + 37;
+    faucet.right =
+      modelViewTransform.modelToViewX(FAUCET_POSITION.x) + WATER_TOWER_SCREEN_VIEW_SETTINGS.CONSTRUCTOR_RIGHT_OFFSET;
     faucet.bottom = modelViewTransform.modelToViewY(FAUCET_POSITION.y);
     this.addChild(faucet);
 
@@ -160,7 +165,10 @@ export class WaterTowerScreenView extends ScreenView {
       modelViewTransform.viewToModelX(this.layoutBounds.maxX - SCREEN_VIEW_MARGIN),
       modelViewTransform.viewToModelY(this.layoutBounds.minY + SCREEN_VIEW_MARGIN),
     );
-    const keyboardGrabPosition = new Vector2(modelViewTransform.viewToModelX(this.layoutBounds.minX + 172), 24);
+    const keyboardGrabPosition = new Vector2(
+      modelViewTransform.viewToModelX(this.layoutBounds.minX + 172),
+      WATER_TOWER_SCREEN_VIEW_SETTINGS.KEYBOARD_GRAB_POSITION_Y,
+    );
 
     const sensorLayer = new Node();
     toolsLayer.addChild(sensorLayer);
@@ -263,8 +271,18 @@ export class WaterTowerScreenView extends ScreenView {
     const measuringTape = new MeasuringTapeNode(measuringTapeUnitsProperty, {
       visibleProperty: this.isMeasuringTapeVisibleProperty,
       modelViewTransform: modelViewTransform,
-      basePositionProperty: new Property(new Vector2(2, 3)),
-      tipPositionProperty: new Property(new Vector2(8, 3)),
+      basePositionProperty: new Property(
+        new Vector2(
+          WATER_TOWER_SCREEN_VIEW_SETTINGS.MEASURING_TAPE_X,
+          WATER_TOWER_SCREEN_VIEW_SETTINGS.MEASURING_TAPE_Y,
+        ),
+      ),
+      tipPositionProperty: new Property(
+        new Vector2(
+          WATER_TOWER_SCREEN_VIEW_SETTINGS.MEASURING_TAPE_X_SEGMENT_2,
+          WATER_TOWER_SCREEN_VIEW_SETTINGS.MEASURING_TAPE_Y,
+        ),
+      ),
       textColor: FluidPressureAndFlowColors.textColorProperty,
       dragBounds: toolDragBounds,
     });
@@ -280,19 +298,19 @@ export class WaterTowerScreenView extends ScreenView {
       a11y.controls.fillButtonStringProperty,
     );
     // Beside the faucet it controls, in the top-left corner.
-    faucetControls.left = this.layoutBounds.minX + 184;
+    faucetControls.left = this.layoutBounds.minX + WATER_TOWER_SCREEN_VIEW_SETTINGS.CONSTRUCTOR_LEFT_OFFSET;
     faucetControls.top = this.layoutBounds.minY + SCREEN_VIEW_MARGIN;
     this.addChild(faucetControls);
 
     const sluiceControl = new SluiceControlPanel(model.waterTower.isHoleOpenProperty, a11y.controls);
     sluiceControl.right = waterTowerNode.right + 36;
-    sluiceControl.bottom = this.layoutBounds.maxY - 70;
+    sluiceControl.bottom = this.layoutBounds.maxY - WATER_TOWER_SCREEN_VIEW_SETTINGS.CONSTRUCTOR_BOTTOM_OFFSET;
     this.addChild(sluiceControl);
 
     const tankVolumeControl = new FluidPressureAndFlowPanel(
       new VBox({
         align: "left",
-        spacing: 4,
+        spacing: WATER_TOWER_SCREEN_VIEW_SETTINGS.TANK_VOLUME_CONTROL_SPACING,
         children: [
           new Text(screenStrings.tankVolumeStringProperty, { font: "13px sans-serif" }),
           new UnitSlider(
@@ -304,7 +322,7 @@ export class WaterTowerScreenView extends ScreenView {
               unitsLabelFor: (system) => system.labels(unitLabelGroups).volumeStringProperty,
               majorTicks: [],
               accessibleName: a11y.controls.tankVolumeSliderStringProperty,
-              trackWidth: 140,
+              trackWidth: WATER_TOWER_SCREEN_VIEW_SETTINGS.TANK_VOLUME_CONTROL_TRACK_WIDTH,
             },
           ),
         ],

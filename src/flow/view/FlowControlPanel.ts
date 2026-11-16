@@ -1,3 +1,4 @@
+import { FLOW_CONTROL_PANEL_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * FlowControlPanel.ts
  *
@@ -26,7 +27,7 @@ import { PANEL_SPACING } from "../../FluidPressureAndFlowConstants.js";
 const LABEL_FONT = "13px sans-serif";
 
 /** Width the panel's contents are held to, so the layout does not jump. */
-const CONTENT_WIDTH = 150;
+const CONTENT_WIDTH: number = FLOW_CONTROL_PANEL_SETTINGS.CONTENT_WIDTH;
 
 export type FlowControlPanelLabels = UnitsControlPanelLabels & {
   readonly rulerStringProperty: TReadOnlyProperty<string>;
@@ -63,7 +64,7 @@ export class FlowControlPanel extends VBox {
         new Text(labelProperty, {
           font: LABEL_FONT,
           fill: FluidPressureAndFlowColors.textColorProperty,
-          maxWidth: CONTENT_WIDTH - 30,
+          maxWidth: CONTENT_WIDTH - FLOW_CONTROL_PANEL_SETTINGS.CHECKBOX_MAX_WIDTH_OFFSET,
         }),
         { ...CHECKBOX_OPTIONS, accessibleName: accessibleName },
       );
@@ -71,7 +72,7 @@ export class FlowControlPanel extends VBox {
     const toggles = new FluidPressureAndFlowPanel(
       new VBox({
         align: "left",
-        spacing: 8,
+        spacing: FLOW_CONTROL_PANEL_SETTINGS.TOGGLES_SPACING,
         children: [
           checkbox(isRulerVisibleProperty, labels.rulerStringProperty, accessibleNames.rulerCheckboxStringProperty),
           checkbox(

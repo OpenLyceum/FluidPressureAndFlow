@@ -1,3 +1,4 @@
+import { SCENE_RADIO_BUTTON_GROUP_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * SceneRadioButtonGroup.ts
  *
@@ -31,17 +32,17 @@ import { PoolScene, type PoolSceneLabelProperties } from "../model/PoolScene.js"
  * Size of one scene icon, view pixels. Four of these plus their button chrome
  * have to stack between the ground line and the bottom of the play area.
  */
-const ICON_WIDTH = 50;
-const ICON_HEIGHT = 40;
+const ICON_WIDTH: number = SCENE_RADIO_BUTTON_GROUP_SETTINGS.ICON_WIDTH;
+const ICON_HEIGHT: number = SCENE_RADIO_BUTTON_GROUP_SETTINGS.ICON_HEIGHT;
 
 /** View y within an icon of its ground line. */
-const ICON_GROUND_Y = 10;
+const ICON_GROUND_Y: number = SCENE_RADIO_BUTTON_GROUP_SETTINGS.ICON_GROUND_Y;
 
 /** How full each icon's pool is drawn, as a fraction of its depth. */
-const ICON_FILL_FRACTION = 0.55;
+const ICON_FILL_FRACTION: number = SCENE_RADIO_BUTTON_GROUP_SETTINGS.ICON_FILL_FRACTION;
 
 /** Horizontal gap between the square icon's basin and the icon's own edges. */
-const SQUARE_ICON_SIDE_MARGIN = 12;
+const SQUARE_ICON_SIDE_MARGIN: number = SCENE_RADIO_BUTTON_GROUP_SETTINGS.SQUARE_ICON_SIDE_MARGIN;
 
 /** Font for the mystery icon's "?" glyph. */
 const MYSTERY_GLYPH_FONT = "bold 16px sans-serif";
@@ -78,13 +79,13 @@ export class SceneRadioButtonGroup extends RectangularRadioButtonGroup<PoolScene
       ],
       {
         orientation: "vertical",
-        spacing: 6,
+        spacing: SCENE_RADIO_BUTTON_GROUP_SETTINGS.CONSTRUCTOR_SPACING,
         accessibleName: accessibleName,
         radioButtonOptions: {
           baseColor: FluidPressureAndFlowColors.controlSurfaceColorProperty,
           cornerRadius: PANEL_CORNER_RADIUS,
-          xMargin: 3,
-          yMargin: 3,
+          xMargin: SCENE_RADIO_BUTTON_GROUP_SETTINGS.CONSTRUCTOR_X_MARGIN,
+          yMargin: SCENE_RADIO_BUTTON_GROUP_SETTINGS.CONSTRUCTOR_Y_MARGIN,
           buttonAppearanceStrategyOptions: {
             selectedStroke: FluidPressureAndFlowColors.accentColorProperty,
             selectedLineWidth: 3,
@@ -114,27 +115,55 @@ function trapezoidIconShape(): Shape {
   const bottom = ICON_POOL_BOTTOM;
   const top = ICON_GROUND_Y;
   const left = Shape.polygon([
-    new Vector2(10, top),
-    new Vector2(5, bottom),
-    new Vector2(20, bottom),
-    new Vector2(17, top),
+    new Vector2(SCENE_RADIO_BUTTON_GROUP_SETTINGS.LEFT_X, top),
+    new Vector2(SCENE_RADIO_BUTTON_GROUP_SETTINGS.LEFT_X_SEGMENT_2, bottom),
+    new Vector2(SCENE_RADIO_BUTTON_GROUP_SETTINGS.LEFT_X_SEGMENT_3, bottom),
+    new Vector2(SCENE_RADIO_BUTTON_GROUP_SETTINGS.LEFT_X_SEGMENT_4, top),
   ]);
   const right = Shape.polygon([
-    new Vector2(27, top),
-    new Vector2(31, bottom),
-    new Vector2(45, bottom),
-    new Vector2(40, top),
+    new Vector2(SCENE_RADIO_BUTTON_GROUP_SETTINGS.RIGHT_X, top),
+    new Vector2(SCENE_RADIO_BUTTON_GROUP_SETTINGS.RIGHT_X_SEGMENT_2, bottom),
+    new Vector2(SCENE_RADIO_BUTTON_GROUP_SETTINGS.RIGHT_X_SEGMENT_3, bottom),
+    new Vector2(SCENE_RADIO_BUTTON_GROUP_SETTINGS.RIGHT_X_SEGMENT_4, top),
   ]);
-  return left.shapeUnion(right).shapeUnion(Shape.rect(10, bottom - 5, 30, 5));
+  return left
+    .shapeUnion(right)
+    .shapeUnion(
+      Shape.rect(
+        SCENE_RADIO_BUTTON_GROUP_SETTINGS.TRAPEZOID_ICON_SHAPE_X,
+        bottom - 5,
+        SCENE_RADIO_BUTTON_GROUP_SETTINGS.TRAPEZOID_ICON_SHAPE_WIDTH,
+        SCENE_RADIO_BUTTON_GROUP_SETTINGS.TRAPEZOID_ICON_SHAPE_HEIGHT,
+      ),
+    );
 }
 
 /** A narrow shaft and a wide one over a linked pair of chambers. */
 function chamberIconShape(): Shape {
   const bottom = ICON_POOL_BOTTOM;
   const top = ICON_GROUND_Y;
-  return Shape.rect(11, top, 5, bottom - top)
-    .shapeUnion(Shape.rect(27, top, 14, bottom - top))
-    .shapeUnion(Shape.rect(7, bottom - 7, 37, 7));
+  return Shape.rect(
+    SCENE_RADIO_BUTTON_GROUP_SETTINGS.CHAMBER_ICON_SHAPE_X,
+    top,
+    SCENE_RADIO_BUTTON_GROUP_SETTINGS.CHAMBER_ICON_SHAPE_WIDTH,
+    bottom - top,
+  )
+    .shapeUnion(
+      Shape.rect(
+        SCENE_RADIO_BUTTON_GROUP_SETTINGS.CHAMBER_ICON_SHAPE_X_SEGMENT_2,
+        top,
+        SCENE_RADIO_BUTTON_GROUP_SETTINGS.CHAMBER_ICON_SHAPE_WIDTH_SEGMENT_2,
+        bottom - top,
+      ),
+    )
+    .shapeUnion(
+      Shape.rect(
+        SCENE_RADIO_BUTTON_GROUP_SETTINGS.CHAMBER_ICON_SHAPE_X_SEGMENT_3,
+        bottom - 7,
+        SCENE_RADIO_BUTTON_GROUP_SETTINGS.CHAMBER_ICON_SHAPE_WIDTH_SEGMENT_3,
+        SCENE_RADIO_BUTTON_GROUP_SETTINGS.CHAMBER_ICON_SHAPE_HEIGHT,
+      ),
+    );
 }
 
 /**

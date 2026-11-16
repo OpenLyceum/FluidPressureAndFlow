@@ -1,3 +1,4 @@
+import { HOSE_GEOMETRY_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * HoseGeometry.ts
  *
@@ -17,23 +18,23 @@ import { Vector2 } from "scenerystack/dot";
 import { Shape } from "scenerystack/kite";
 
 /** Length of the nozzle, metres. */
-export const HOSE_NOZZLE_LENGTH = 2.4;
+export const HOSE_NOZZLE_LENGTH: number = HOSE_GEOMETRY_SETTINGS.HOSE_NOZZLE_LENGTH;
 
 /** Corner fillet radius in metres, matching the artwork at its 12 px/m scale. */
-const CORNER_RADIUS = 0.25;
+const CORNER_RADIUS: number = HOSE_GEOMETRY_SETTINGS.CORNER_RADIUS;
 
 /**
  * Where the riser stands, as a fraction of the run from the tank to the nozzle.
  * A fraction rather than a fixed distance because the run shortens as the
  * student widens the tank, and the riser has to stay clear of the elbow.
  */
-const RISER_FRACTION = 0.36;
+const RISER_FRACTION: number = HOSE_GEOMETRY_SETTINGS.RISER_FRACTION;
 
 /** Straight segment between the elbow and the nozzle, metres. */
-const HOSE_LAYOUT_H2 = 2.1;
+const HOSE_LAYOUT_H2: number = HOSE_GEOMETRY_SETTINGS.HOSE_LAYOUT_H2;
 
 /** Hose bore diameter, metres. */
-export const HOSE_LAYOUT_WIDTH = 1.5;
+export const HOSE_LAYOUT_WIDTH: number = HOSE_GEOMETRY_SETTINGS.HOSE_LAYOUT_WIDTH;
 
 export type HoseLayout = {
   readonly angleWithVertical: number;
@@ -107,7 +108,7 @@ export function getMinOutletY(angle: number): number {
 }
 
 function useTopShape(layout: HoseLayout): boolean {
-  return layout.elbowOuterY >= 0.2 * Math.cos(layout.angleWithVertical);
+  return layout.elbowOuterY >= HOSE_GEOMETRY_SETTINGS.OUTLET_GROUND_CLEARANCE * Math.cos(layout.angleWithVertical);
 }
 
 function mapLayoutX(layoutX: number, holeX: number): number {
@@ -157,7 +158,7 @@ function createTopShape(hose: HoseLayout, holeX: number, tankBaseY: number): Sha
     )
     .lineTo(mx(hose.L1 - hose.width) + CORNER_RADIUS, my(hose.elbowInnerY));
 
-  if (hose.elbowInnerY - hose.width > 0.6) {
+  if (hose.elbowInnerY - hose.width > HOSE_GEOMETRY_SETTINGS.BEND_VERTICAL_CLEARANCE) {
     shape = shape
       .arc(
         mx(hose.L1 - hose.width) + CORNER_RADIUS,
@@ -180,7 +181,7 @@ function createTopShape(hose: HoseLayout, holeX: number, tankBaseY: number): Sha
 
   shape = shape.lineTo(mx(0), my(hose.width)).lineTo(mx(0), my(0));
 
-  if (hose.elbowInnerY - hose.width > 0.6) {
+  if (hose.elbowInnerY - hose.width > HOSE_GEOMETRY_SETTINGS.BEND_VERTICAL_CLEARANCE) {
     shape = shape
       .lineTo(mx(hose.L1) - CORNER_RADIUS, my(0))
       .arc(mx(hose.L1) - CORNER_RADIUS, my(0) + CORNER_RADIUS, CORNER_RADIUS, -Math.PI / 2, 0, false)
@@ -225,7 +226,7 @@ function createBottomShape(hose: HoseLayout, holeX: number, tankBaseY: number): 
     )
     .lineTo(mx(hose.L1) + CORNER_RADIUS, my(hose.elbowInnerY));
 
-  if (-hose.elbowInnerY + hose.width > 0.6) {
+  if (-hose.elbowInnerY + hose.width > HOSE_GEOMETRY_SETTINGS.BEND_VERTICAL_CLEARANCE) {
     shape = shape
       .arc(
         mx(hose.L1) + CORNER_RADIUS,
@@ -241,7 +242,7 @@ function createBottomShape(hose: HoseLayout, holeX: number, tankBaseY: number): 
 
   shape = shape.lineTo(mx(0), my(hose.width)).lineTo(mx(0), my(0));
 
-  if (-hose.elbowInnerY + hose.width > 0.6) {
+  if (-hose.elbowInnerY + hose.width > HOSE_GEOMETRY_SETTINGS.BEND_VERTICAL_CLEARANCE) {
     shape = shape
       .lineTo(mx(hose.L1 - hose.width) - CORNER_RADIUS, my(0))
       .arc(mx(hose.L1 - hose.width) - CORNER_RADIUS, my(0) - CORNER_RADIUS, CORNER_RADIUS, Math.PI / 2, 0, true)

@@ -1,3 +1,4 @@
+import { FLOW_MODEL_COORDINATES, FLOW_MODEL_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * FlowModel.ts
  *
@@ -38,45 +39,48 @@ import { Particle } from "./Particle.js";
 import { Pipe } from "./Pipe.js";
 
 /** Barometers and speedometers available on this screen. */
-const NUMBER_OF_BAROMETERS = 2;
-const NUMBER_OF_VELOCITY_SENSORS = 2;
+const NUMBER_OF_BAROMETERS: number = FLOW_MODEL_SETTINGS.NUMBER_OF_BAROMETERS;
+const NUMBER_OF_VELOCITY_SENSORS: number = FLOW_MODEL_SETTINGS.NUMBER_OF_VELOCITY_SENSORS;
 
 /** Where an instrument sits before the student moves it, model coordinates. */
-const BAROMETER_START = new Vector2(3, 1.2);
-const VELOCITY_SENSOR_START = new Vector2(1, 0.5);
+const BAROMETER_START = new Vector2(FLOW_MODEL_COORDINATES.BAROMETER_START_X, FLOW_MODEL_COORDINATES.BAROMETER_START_Y);
+const VELOCITY_SENSOR_START = new Vector2(
+  FLOW_MODEL_COORDINATES.VELOCITY_SENSOR_START_X,
+  FLOW_MODEL_COORDINATES.VELOCITY_SENSOR_START_Y,
+);
 
 /** Marker dots dripped into the pipe per second. */
-const DRIP_RATE = 10;
+const DRIP_RATE: number = FLOW_MODEL_SETTINGS.DRIP_RATE;
 
 /** Radius of a dripped dot, metres. */
-const DRIP_RADIUS = 0.1;
+const DRIP_RADIUS: number = FLOW_MODEL_SETTINGS.DRIP_RADIUS;
 
 /** Radius of an injected grid dot, metres. */
-const GRID_RADIUS = 0.06;
+const GRID_RADIUS: number = FLOW_MODEL_SETTINGS.GRID_RADIUS;
 
 /**
  * Dots are dripped between these fractions of the pipe height, never right
  * against the wall — with friction on, a dot at the very edge would crawl, and
  * a student would read that as the sim being stuck.
  */
-const DRIP_MIN_FRACTION = 0.15;
-const DRIP_MAX_FRACTION = 0.85;
+const DRIP_MIN_FRACTION: number = FLOW_MODEL_SETTINGS.DRIP_MIN_FRACTION;
+const DRIP_MAX_FRACTION: number = FLOW_MODEL_SETTINGS.DRIP_MAX_FRACTION;
 
 /** Shape of the injected grid: columns across, rows up. */
-const GRID_COLUMNS = 4;
-const GRID_ROWS = 9;
-const GRID_COLUMN_SPACING = 0.2;
-const GRID_MIN_FRACTION = 0.1;
-const GRID_MAX_FRACTION = 0.9;
+const GRID_COLUMNS: number = FLOW_MODEL_SETTINGS.GRID_COLUMNS;
+const GRID_ROWS: number = FLOW_MODEL_SETTINGS.GRID_ROWS;
+const GRID_COLUMN_SPACING: number = FLOW_MODEL_SETTINGS.GRID_COLUMN_SPACING;
+const GRID_MIN_FRACTION: number = FLOW_MODEL_SETTINGS.GRID_MIN_FRACTION;
+const GRID_MAX_FRACTION: number = FLOW_MODEL_SETTINGS.GRID_MAX_FRACTION;
 
 /** Seconds the grid injector is unavailable after firing, so the grid stays readable. */
-const GRID_INJECTOR_COOLDOWN = 4;
+const GRID_INJECTOR_COOLDOWN: number = FLOW_MODEL_SETTINGS.GRID_INJECTOR_COOLDOWN;
 
 /**
  * Model-x nudge (metres) for a particle spawned at the pipe's left edge, so it
  * starts strictly inside the pipe rather than exactly on the boundary.
  */
-const PARTICLE_SPAWN_EPSILON = 1e-6;
+const PARTICLE_SPAWN_EPSILON: number = FLOW_MODEL_SETTINGS.PARTICLE_SPAWN_EPSILON;
 
 /**
  * Base pressure inside the pipe, Pa. Sea-level air pressure — the fluid is
@@ -89,7 +93,7 @@ const PIPE_REFERENCE_PRESSURE = getStandardAirPressure(0);
  * the wall the velocity profile is ambiguous, and a barometer resting on the
  * boundary would flicker between a reading and a dash.
  */
-const WALL_MARGIN = 0.05;
+const WALL_MARGIN: number = FLOW_MODEL_SETTINGS.WALL_MARGIN;
 
 /**
  * Pressure loss through the initial straight pipe at the slider's default
@@ -97,7 +101,7 @@ const WALL_MARGIN = 0.05;
  * absolute pressure across the supported range; shape dependence comes from
  * Hagen–Poiseuille's r⁻⁴ resistance in Pipe.
  */
-const DEFAULT_FRICTION_PRESSURE_DROP = 12000;
+const DEFAULT_FRICTION_PRESSURE_DROP: number = FLOW_MODEL_SETTINGS.DEFAULT_FRICTION_PRESSURE_DROP;
 
 export class FlowModel extends FluidPressureAndFlowModel {
   public readonly pipe = new Pipe();

@@ -1,3 +1,4 @@
+import { FLUID_PRESSURE_AND_FLOW_PREFERENCES_NODE_SETTINGS } from "../FluidPressureAndFlowConstants.js";
 /**
  * FluidPressureAndFlowPreferencesNode.ts
  *
@@ -15,12 +16,12 @@ import FluidPressureAndFlowNamespace from "../FluidPressureAndFlowNamespace.js";
 import { StringManager } from "../i18n/StringManager.js";
 import type { FluidPressureAndFlowPreferencesModel } from "./FluidPressureAndFlowPreferencesModel.js";
 
-const HEADER_FONT_SIZE = 18;
-const CHECKBOX_LABEL_FONT_SIZE = 14;
-const DESCRIPTION_FONT_SIZE = 12;
-const DESCRIPTION_MAX_WIDTH = 380;
-const CHECKBOX_SPACING = 8;
-const CONTENT_SPACING = 8;
+const HEADER_FONT_SIZE: number = FLUID_PRESSURE_AND_FLOW_PREFERENCES_NODE_SETTINGS.HEADER_FONT_SIZE;
+const CHECKBOX_LABEL_FONT_SIZE: number = FLUID_PRESSURE_AND_FLOW_PREFERENCES_NODE_SETTINGS.CHECKBOX_LABEL_FONT_SIZE;
+const DESCRIPTION_FONT_SIZE: number = FLUID_PRESSURE_AND_FLOW_PREFERENCES_NODE_SETTINGS.DESCRIPTION_FONT_SIZE;
+const DESCRIPTION_MAX_WIDTH: number = FLUID_PRESSURE_AND_FLOW_PREFERENCES_NODE_SETTINGS.DESCRIPTION_MAX_WIDTH;
+const CHECKBOX_SPACING: number = FLUID_PRESSURE_AND_FLOW_PREFERENCES_NODE_SETTINGS.CHECKBOX_SPACING;
+const CONTENT_SPACING: number = FLUID_PRESSURE_AND_FLOW_PREFERENCES_NODE_SETTINGS.CONTENT_SPACING;
 
 export class FluidPressureAndFlowPreferencesNode extends VBox {
   public constructor(preferencesModel: FluidPressureAndFlowPreferencesModel, tandem?: Tandem) {

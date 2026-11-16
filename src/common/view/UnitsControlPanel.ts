@@ -1,3 +1,4 @@
+import { UNITS_CONTROL_PANEL_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * UnitsControlPanel.ts
  *
@@ -45,20 +46,20 @@ export class UnitsControlPanel extends VBox {
         { value: UnitSystem.ENGLISH, createNode: () => createLabel(labels.englishStringProperty) },
       ],
       {
-        spacing: 4,
-        radioButtonOptions: { radius: 7 },
+        spacing: UNITS_CONTROL_PANEL_SETTINGS.RADIO_BUTTON_GROUP_SPACING,
+        radioButtonOptions: { radius: UNITS_CONTROL_PANEL_SETTINGS.RADIO_BUTTON_GROUP_RADIUS },
         accessibleName: accessibleName,
       },
     );
 
     super({
       align: "left",
-      spacing: 5,
+      spacing: UNITS_CONTROL_PANEL_SETTINGS.CONSTRUCTOR_SPACING,
       children: [
         new Text(labels.unitsStringProperty, {
           font: TITLE_FONT,
           fill: FluidPressureAndFlowColors.textColorProperty,
-          maxWidth: 130,
+          maxWidth: UNITS_CONTROL_PANEL_SETTINGS.CONSTRUCTOR_MAX_WIDTH,
         }),
         radioButtonGroup,
       ],
@@ -70,6 +71,6 @@ function createLabel(stringProperty: TReadOnlyProperty<string>): Text {
   return new Text(stringProperty, {
     font: LABEL_FONT,
     fill: FluidPressureAndFlowColors.textColorProperty,
-    maxWidth: 110,
+    maxWidth: UNITS_CONTROL_PANEL_SETTINGS.CREATE_LABEL_MAX_WIDTH,
   });
 }

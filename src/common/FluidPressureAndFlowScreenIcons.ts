@@ -10,7 +10,7 @@ import { Circle, Line, Node, Path, Rectangle } from "scenerystack/scenery";
 import { ArrowNode } from "scenerystack/scenery-phet";
 import { ScreenIcon } from "scenerystack/sim";
 import FluidPressureAndFlowColors from "../FluidPressureAndFlowColors.js";
-import { WATER_DENSITY } from "../FluidPressureAndFlowConstants.js";
+import { FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS, WATER_DENSITY } from "../FluidPressureAndFlowConstants.js";
 import { getFluidColor } from "./view/fluidColor.js";
 
 const W = 548;
@@ -31,41 +31,99 @@ function iconFrom(content: Node): ScreenIcon {
 }
 
 export function createUnderPressureIcon(): ScreenIcon {
-  const ground = new Rectangle(0, 95, W, H - 95, {
+  const ground = new Rectangle(0, FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.GROUND_Y, W, H - 95, {
     fill: FluidPressureAndFlowColors.earthTopColorProperty,
   });
-  const grass = new Rectangle(0, 87, W, 12, { fill: FluidPressureAndFlowColors.grassColorProperty });
-  const pool = new Rectangle(65, 60, 260, 260, {
-    fill: FluidPressureAndFlowColors.poolInteriorColorProperty,
-  });
-  const water = new Rectangle(65, 135, 260, 185, { fill: WATER_FILL });
-  const surface = new Line(65, 135, 325, 135, {
-    stroke: FluidPressureAndFlowColors.waterEdgeColorProperty,
-    lineWidth: 4,
-  });
-  const lining = new Path(new Shape().moveTo(65, 60).lineTo(65, 320).lineTo(325, 320).lineTo(325, 60), {
-    stroke: FluidPressureAndFlowColors.poolEdgeColorProperty,
-    lineWidth: 12,
-    lineJoin: "round",
-  });
-  const probeTube = new Path(new Shape().moveTo(422, 160).lineTo(422, 263).lineTo(235, 263), {
-    stroke: FluidPressureAndFlowColors.gaugeRimColorProperty,
-    lineWidth: 8,
-    lineJoin: "round",
-  });
-  const probe = new Circle(12, {
-    centerX: 235,
-    centerY: 263,
+  const grass = new Rectangle(
+    0,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.GRASS_Y,
+    W,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.GRASS_HEIGHT,
+    { fill: FluidPressureAndFlowColors.grassColorProperty },
+  );
+  const pool = new Rectangle(
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.POOL_X,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.POOL_Y,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.POOL_WIDTH,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.POOL_HEIGHT,
+    {
+      fill: FluidPressureAndFlowColors.poolInteriorColorProperty,
+    },
+  );
+  const water = new Rectangle(
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.WATER_X,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.WATER_Y,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.WATER_WIDTH,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.WATER_HEIGHT,
+    { fill: WATER_FILL },
+  );
+  const surface = new Line(
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.SURFACE_START_X,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.SURFACE_START_Y,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.SURFACE_END_X,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.SURFACE_END_Y,
+    {
+      stroke: FluidPressureAndFlowColors.waterEdgeColorProperty,
+      lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.SURFACE_LINE_WIDTH,
+    },
+  );
+  const lining = new Path(
+    new Shape()
+      .moveTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LINING_X,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LINING_Y,
+      )
+      .lineTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LINING_X,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LINING_X_LINE_TO_Y,
+      )
+      .lineTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LINING_X_SEGMENT_2,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LINING_Y_SEGMENT_2,
+      )
+      .lineTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LINING_X_SEGMENT_2,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LINING_Y,
+      ),
+    {
+      stroke: FluidPressureAndFlowColors.poolEdgeColorProperty,
+      lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LINING_LINE_WIDTH,
+      lineJoin: "round",
+    },
+  );
+  const probeTube = new Path(
+    new Shape()
+      .moveTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PROBE_TUBE_X,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PROBE_TUBE_Y,
+      )
+      .lineTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PROBE_TUBE_X,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PROBE_TUBE_X_LINE_TO_Y,
+      )
+      .lineTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PROBE_TUBE_X_SEGMENT_2,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PROBE_TUBE_Y_SEGMENT_2,
+      ),
+    {
+      stroke: FluidPressureAndFlowColors.gaugeRimColorProperty,
+      lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PROBE_TUBE_LINE_WIDTH,
+      lineJoin: "round",
+    },
+  );
+  const probe = new Circle(FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PROBE_RADIUS, {
+    centerX: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PROBE_CENTER_X,
+    centerY: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PROBE_CENTER_Y,
     fill: FluidPressureAndFlowColors.gaugeFaceColorProperty,
     stroke: FluidPressureAndFlowColors.gaugeRimColorProperty,
-    lineWidth: 5,
+    lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PROBE_LINE_WIDTH,
   });
-  const dial = new Circle(65, {
-    centerX: 422,
-    centerY: 105,
+  const dial = new Circle(FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.DIAL_RADIUS, {
+    centerX: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.DIAL_CENTER_X,
+    centerY: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.DIAL_CENTER_Y,
     fill: FluidPressureAndFlowColors.gaugeFaceColorProperty,
     stroke: FluidPressureAndFlowColors.gaugeRimColorProperty,
-    lineWidth: 7,
+    lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.DIAL_LINE_WIDTH,
   });
   const ticks = [-150, -105, -60, -15, 30].map((degrees) => {
     const angle = (degrees * Math.PI) / 180;
@@ -74,14 +132,23 @@ export function createUnderPressureIcon(): ScreenIcon {
       105 + 43 * Math.sin(angle),
       422 + 53 * Math.cos(angle),
       105 + 53 * Math.sin(angle),
-      { stroke: FluidPressureAndFlowColors.gaugeRimColorProperty, lineWidth: 4 },
+      {
+        stroke: FluidPressureAndFlowColors.gaugeRimColorProperty,
+        lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.TICKS_LINE_WIDTH,
+      },
     );
   });
-  const needle = new Line(422, 105, 449, 75, {
-    stroke: FluidPressureAndFlowColors.tracerDotColorProperty,
-    lineWidth: 7,
-    lineCap: "round",
-  });
+  const needle = new Line(
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.NEEDLE_START_X,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.NEEDLE_START_Y,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.NEEDLE_END_X,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.NEEDLE_END_Y,
+    {
+      stroke: FluidPressureAndFlowColors.tracerDotColorProperty,
+      lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.NEEDLE_LINE_WIDTH,
+      lineCap: "round",
+    },
+  );
   return iconFrom(
     new Node({
       children: [background(), ground, grass, pool, water, surface, lining, probeTube, probe, dial, ...ticks, needle],
@@ -91,21 +158,67 @@ export function createUnderPressureIcon(): ScreenIcon {
 
 export function createFlowIcon(): ScreenIcon {
   const pipeShape = new Shape()
-    .moveTo(45, 90)
-    .lineTo(130, 90)
-    .cubicCurveTo(205, 90, 210, 150, 274, 150)
-    .cubicCurveTo(338, 150, 343, 90, 418, 90)
-    .lineTo(503, 90)
-    .lineTo(503, 283)
-    .lineTo(418, 283)
-    .cubicCurveTo(343, 283, 338, 223, 274, 223)
-    .cubicCurveTo(210, 223, 205, 283, 130, 283)
-    .lineTo(45, 283)
+    .moveTo(
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_X,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_Y,
+    )
+    .lineTo(
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_X_SEGMENT_2,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_Y,
+    )
+    .cubicCurveTo(
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_1_X,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_1_Y,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_2_X,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_2_Y,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_END_X,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_END_Y,
+    )
+    .cubicCurveTo(
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_1_X_SEGMENT_2,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_1_Y_SEGMENT_2,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_2_X_SEGMENT_2,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_2_Y_SEGMENT_2,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_END_X_SEGMENT_2,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_END_Y_SEGMENT_2,
+    )
+    .lineTo(
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_X_SEGMENT_3,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_Y,
+    )
+    .lineTo(
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_X_SEGMENT_3,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_Y_SEGMENT_2,
+    )
+    .lineTo(
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_X_SEGMENT_4,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_Y_SEGMENT_2,
+    )
+    .cubicCurveTo(
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_1_X_SEGMENT_3,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_1_Y_SEGMENT_3,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_2_X_SEGMENT_3,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_2_Y_SEGMENT_3,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_END_X,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_END_Y_SEGMENT_3,
+    )
+    .cubicCurveTo(
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_1_X_SEGMENT_4,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_1_Y_SEGMENT_4,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_2_X_SEGMENT_4,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_CONTROL_2_Y_SEGMENT_4,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_END_X_SEGMENT_3,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_END_Y_SEGMENT_4,
+    )
+    .lineTo(
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_X,
+      FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_SHAPE_X_LINE_TO_Y,
+    )
     .close();
   const pipe = new Path(pipeShape, {
     fill: WATER_FILL,
     stroke: FluidPressureAndFlowColors.pipeWallColorProperty,
-    lineWidth: 10,
+    lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.PIPE_LINE_WIDTH,
     lineJoin: "round",
   });
   // A longer arrow in the narrow section conveys the greater flow speed there.
@@ -120,9 +233,9 @@ export function createFlowIcon(): ScreenIcon {
       new ArrowNode(start, H / 2, end, H / 2, {
         fill: FluidPressureAndFlowColors.waterEdgeColorProperty,
         stroke: null,
-        tailWidth: 8,
-        headWidth: 25,
-        headHeight: 22,
+        tailWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.ARROWS_TAIL_WIDTH,
+        headWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.ARROWS_HEAD_WIDTH,
+        headHeight: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.ARROWS_HEAD_HEIGHT,
       }),
   );
   const tracers = (
@@ -137,7 +250,7 @@ export function createFlowIcon(): ScreenIcon {
     ] as const
   ).map(
     ([x, y]) =>
-      new Circle(7, {
+      new Circle(FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.TRACERS_RADIUS, {
         centerX: x,
         centerY: y,
         fill: FluidPressureAndFlowColors.tracerDotColorProperty,
@@ -151,51 +264,132 @@ export function createFlowIcon(): ScreenIcon {
 }
 
 export function createWaterTowerIcon(): ScreenIcon {
-  const ground = new Rectangle(0, 325, W, H - 325, {
+  const ground = new Rectangle(0, FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.GROUND_Y_SEGMENT_2, W, H - 325, {
     fill: FluidPressureAndFlowColors.turfTopColorProperty,
   });
   const frame = new Path(
     new Shape()
-      .moveTo(120, 165)
-      .lineTo(95, 325)
-      .moveTo(255, 165)
-      .lineTo(280, 325)
-      .moveTo(120, 175)
-      .lineTo(275, 305)
-      .moveTo(255, 175)
-      .lineTo(100, 305),
-    { stroke: FluidPressureAndFlowColors.towerStructureColorProperty, lineWidth: 8, lineJoin: "round" },
+      .moveTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_X,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_Y,
+      )
+      .lineTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_X_SEGMENT_2,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_Y_SEGMENT_2,
+      )
+      .moveTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_X_SEGMENT_3,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_Y,
+      )
+      .lineTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_X_SEGMENT_4,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_Y_SEGMENT_2,
+      )
+      .moveTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_X,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_X_MOVE_TO_Y,
+      )
+      .lineTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_X_SEGMENT_5,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_Y_SEGMENT_3,
+      )
+      .moveTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_X_SEGMENT_6,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_Y_SEGMENT_4,
+      )
+      .lineTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_X_SEGMENT_7,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_Y_SEGMENT_5,
+      ),
+    {
+      stroke: FluidPressureAndFlowColors.towerStructureColorProperty,
+      lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.FRAME_LINE_WIDTH,
+      lineJoin: "round",
+    },
   );
-  const tank = new Rectangle(85, 45, 205, 130, {
-    fill: FluidPressureAndFlowColors.poolInteriorColorProperty,
-    stroke: FluidPressureAndFlowColors.towerStructureColorProperty,
-    lineWidth: 7,
-  });
-  const water = new Rectangle(89, 85, 197, 86, { fill: WATER_FILL });
-  const surface = new Line(89, 85, 286, 85, {
-    stroke: FluidPressureAndFlowColors.waterEdgeColorProperty,
-    lineWidth: 4,
-  });
-  const lid = new Rectangle(75, 35, 225, 16, {
-    fill: FluidPressureAndFlowColors.towerTrimColorProperty,
-    stroke: FluidPressureAndFlowColors.towerStructureColorProperty,
-    lineWidth: 5,
-  });
-  const outlet = new Rectangle(282, 130, 40, 24, {
-    fill: FluidPressureAndFlowColors.towerTrimColorProperty,
-    stroke: FluidPressureAndFlowColors.towerStructureColorProperty,
-    lineWidth: 5,
-  });
+  const tank = new Rectangle(
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.TANK_X,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.TANK_Y,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.TANK_WIDTH,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.TANK_HEIGHT,
+    {
+      fill: FluidPressureAndFlowColors.poolInteriorColorProperty,
+      stroke: FluidPressureAndFlowColors.towerStructureColorProperty,
+      lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.TANK_LINE_WIDTH,
+    },
+  );
+  const water = new Rectangle(
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.WATER_X_SEGMENT_2,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.WATER_Y_SEGMENT_2,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.WATER_WIDTH_SEGMENT_2,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.WATER_HEIGHT_SEGMENT_2,
+    { fill: WATER_FILL },
+  );
+  const surface = new Line(
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.SURFACE_START_X_SEGMENT_2,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.SURFACE_START_Y_SEGMENT_2,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.SURFACE_END_X_SEGMENT_2,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.SURFACE_END_Y_SEGMENT_2,
+    {
+      stroke: FluidPressureAndFlowColors.waterEdgeColorProperty,
+      lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.SURFACE_LINE_WIDTH,
+    },
+  );
+  const lid = new Rectangle(
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LID_X,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LID_Y,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LID_WIDTH,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LID_HEIGHT,
+    {
+      fill: FluidPressureAndFlowColors.towerTrimColorProperty,
+      stroke: FluidPressureAndFlowColors.towerStructureColorProperty,
+      lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.LID_LINE_WIDTH,
+    },
+  );
+  const outlet = new Rectangle(
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.OUTLET_X,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.OUTLET_Y,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.OUTLET_WIDTH,
+    FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.OUTLET_HEIGHT,
+    {
+      fill: FluidPressureAndFlowColors.towerTrimColorProperty,
+      stroke: FluidPressureAndFlowColors.towerStructureColorProperty,
+      lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.OUTLET_LINE_WIDTH,
+    },
+  );
   // Horizontal launch followed by a downward-curving stream, as in the screen.
-  const jet = new Path(new Shape().moveTo(319, 142).quadraticCurveTo(423, 142, 480, 321), {
-    stroke: WATER_FILL,
-    lineWidth: 17,
-    lineCap: "round",
-  });
-  const jetEdge = new Path(new Shape().moveTo(319, 132).quadraticCurveTo(431, 132, 489, 318), {
-    stroke: FluidPressureAndFlowColors.waterEdgeColorProperty,
-    lineWidth: 3,
-  });
+  const jet = new Path(
+    new Shape()
+      .moveTo(FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_X, FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_Y)
+      .quadraticCurveTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_CONTROL_X,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_CONTROL_Y,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_END_X,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_END_Y,
+      ),
+    {
+      stroke: WATER_FILL,
+      lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_LINE_WIDTH,
+      lineCap: "round",
+    },
+  );
+  const jetEdge = new Path(
+    new Shape()
+      .moveTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_EDGE_X,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_EDGE_Y,
+      )
+      .quadraticCurveTo(
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_EDGE_CONTROL_X,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_EDGE_CONTROL_Y,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_EDGE_END_X,
+        FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_EDGE_END_Y,
+      ),
+    {
+      stroke: FluidPressureAndFlowColors.waterEdgeColorProperty,
+      lineWidth: FLUID_PRESSURE_AND_FLOW_SCREEN_ICONS_SETTINGS.JET_EDGE_LINE_WIDTH,
+    },
+  );
   return iconFrom(
     new Node({
       children: [background(), ground, frame, tank, water, surface, lid, outlet, jet, jetEdge],

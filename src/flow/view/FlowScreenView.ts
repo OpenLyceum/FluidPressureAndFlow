@@ -1,3 +1,4 @@
+import { FLOW_SCREEN_VIEW_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * FlowScreenView.ts
  *
@@ -52,13 +53,16 @@ import { PipeNode } from "./PipeNode.js";
 const VIEW_SCALE = FLOW_VIEW_SCALE;
 
 /** How high above the ground a tool may be dragged, metres. */
-const MAX_TOOL_ALTITUDE = 3.2;
+const MAX_TOOL_ALTITUDE: number = FLOW_SCREEN_VIEW_SETTINGS.MAX_TOOL_ALTITUDE;
 
 /** Length of the draggable ruler, metres. */
-const RULER_LENGTH = 4;
+const RULER_LENGTH: number = FLOW_SCREEN_VIEW_SETTINGS.RULER_LENGTH;
 
 /** Where the ruler sits when first shown, model coordinates. */
-const RULER_HOME_POSITION = new Vector2(4.4, 0.8);
+const RULER_HOME_POSITION = new Vector2(
+  FLOW_SCREEN_VIEW_SETTINGS.RULER_HOME_POSITION_X,
+  FLOW_SCREEN_VIEW_SETTINGS.RULER_HOME_POSITION_Y,
+);
 
 export type FlowScreenViewOptions = ScreenViewOptions;
 
@@ -140,11 +144,14 @@ export class FlowScreenView extends ScreenView {
     // ── Instruments ───────────────────────────────────────────────────────────
     const toolDragBounds = new Bounds2(
       modelViewTransform.viewToModelX(this.layoutBounds.minX + SCREEN_VIEW_MARGIN),
-      -4,
+      FLOW_SCREEN_VIEW_SETTINGS.TOOL_DRAG_BOUNDS_MIN_Y,
       modelViewTransform.viewToModelX(this.layoutBounds.maxX - SCREEN_VIEW_MARGIN),
       MAX_TOOL_ALTITUDE,
     );
-    const keyboardGrabPosition = new Vector2(modelViewTransform.viewToModelX(this.layoutBounds.centerX), 1.4);
+    const keyboardGrabPosition = new Vector2(
+      modelViewTransform.viewToModelX(this.layoutBounds.centerX),
+      FLOW_SCREEN_VIEW_SETTINGS.KEYBOARD_GRAB_POSITION_Y,
+    );
 
     const sensorLayer = new Node();
     toolsLayer.addChild(sensorLayer);

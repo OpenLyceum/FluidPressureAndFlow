@@ -1,3 +1,4 @@
+import { PIPE_HANDLES_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * PipeHandlesNode.ts
  *
@@ -18,43 +19,43 @@ import type { PipeNode } from "./PipeNode.js";
 import { PIPE_HEAD_X_SCALE } from "./pipeEndLayout.js";
 
 /** Scale applied to every handle bitmap, tracking the pipe artwork it sits on. */
-const HANDLE_IMAGE_SCALE = 0.43;
+const HANDLE_IMAGE_SCALE: number = PIPE_HANDLES_NODE_SETTINGS.HANDLE_IMAGE_SCALE;
 
 /** Horizontal inset of the left main drag handle from the layout edge. */
-const LEFT_MAIN_HANDLE_INSET = 13;
+const LEFT_MAIN_HANDLE_INSET: number = PIPE_HANDLES_NODE_SETTINGS.LEFT_MAIN_HANDLE_INSET;
 
 /** Horizontal inset of the right main drag handle from the layout edge. */
-const RIGHT_MAIN_HANDLE_INSET = 67;
+const RIGHT_MAIN_HANDLE_INSET: number = PIPE_HANDLES_NODE_SETTINGS.RIGHT_MAIN_HANDLE_INSET;
 
 /** Extra touch width on each side of a main handle. */
-const MAIN_HANDLE_TOUCH_X_EXPAND = 30;
+const MAIN_HANDLE_TOUCH_X_EXPAND: number = PIPE_HANDLES_NODE_SETTINGS.MAIN_HANDLE_TOUCH_X_EXPAND;
 
 /** Extra touch height below a main handle. */
-const MAIN_HANDLE_TOUCH_Y_EXPAND = 60;
+const MAIN_HANDLE_TOUCH_Y_EXPAND: number = PIPE_HANDLES_NODE_SETTINGS.MAIN_HANDLE_TOUCH_Y_EXPAND;
 
 /** Extra touch width on each side of a middle or rim handle. */
-const VERTICAL_HANDLE_TOUCH_X_EXPAND = 30;
+const VERTICAL_HANDLE_TOUCH_X_EXPAND: number = PIPE_HANDLES_NODE_SETTINGS.VERTICAL_HANDLE_TOUCH_X_EXPAND;
 
 /** Extra touch height below a top vertical handle, which has no room to grow upward. */
-const TOP_HANDLE_TOUCH_BOTTOM_EXPAND = 40;
+const TOP_HANDLE_TOUCH_BOTTOM_EXPAND: number = PIPE_HANDLES_NODE_SETTINGS.TOP_HANDLE_TOUCH_BOTTOM_EXPAND;
 
 /** Extra touch height above a bottom vertical handle. */
-const BOTTOM_HANDLE_TOUCH_TOP_EXPAND = 30;
+const BOTTOM_HANDLE_TOUCH_TOP_EXPAND: number = PIPE_HANDLES_NODE_SETTINGS.BOTTOM_HANDLE_TOUCH_TOP_EXPAND;
 
 /** Extra touch height below a bottom vertical handle. */
-const BOTTOM_HANDLE_TOUCH_BOTTOM_EXPAND = 60;
+const BOTTOM_HANDLE_TOUCH_BOTTOM_EXPAND: number = PIPE_HANDLES_NODE_SETTINGS.BOTTOM_HANDLE_TOUCH_BOTTOM_EXPAND;
 
 /** Extra touch height below the main handle's image, beyond MAIN_HANDLE_TOUCH_Y_EXPAND. */
-const MAIN_HANDLE_TOUCH_TOP_INSET = 25;
+const MAIN_HANDLE_TOUCH_TOP_INSET: number = PIPE_HANDLES_NODE_SETTINGS.MAIN_HANDLE_TOUCH_TOP_INSET;
 
 /** View-pixel gap between a pipe-head rim and its rim handle. */
-const RIM_HANDLE_OFFSET = 2;
+const RIM_HANDLE_OFFSET: number = PIPE_HANDLES_NODE_SETTINGS.RIM_HANDLE_OFFSET;
 
 /** Distance from a pipe-head image's mouth edge to its brown rim centre, bitmap pixels. */
-const RIM_HANDLE_X_INSET = 48;
+const RIM_HANDLE_X_INSET: number = PIPE_HANDLES_NODE_SETTINGS.RIM_HANDLE_X_INSET;
 
 /** Metres the handle moves per arrow-key press. */
-const KEYBOARD_DRAG_SPEED = 1.5;
+const KEYBOARD_DRAG_SPEED: number = PIPE_HANDLES_NODE_SETTINGS.KEYBOARD_DRAG_SPEED;
 
 export type PipeHandlesNodeOptions = {
   readonly layoutBounds: Bounds2;

@@ -1,3 +1,4 @@
+import { FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS } from "../FluidPressureAndFlowConstants.js";
 /**
  * FluidPressureAndFlowControlOptions.ts
  *
@@ -14,10 +15,19 @@ import type { CheckboxOptions, HSliderOptions } from "scenerystack/sun";
 import FluidPressureAndFlowColors from "../FluidPressureAndFlowColors.js";
 import { FLAT_RECTANGULAR_BUTTON_OPTIONS } from "./FluidPressureAndFlowButtonOptions.js";
 
-const SLIDER_THUMB_SIZE = new Dimension2(12, 22);
-const STANDALONE_SLIDER_TRACK_SIZE = new Dimension2(150, 3);
-const NUMBER_CONTROL_SLIDER_TRACK_SIZE = new Dimension2(110, 3);
-const CHECKBOX_BOX_WIDTH = 16;
+const SLIDER_THUMB_SIZE = new Dimension2(
+  FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS.SLIDER_THUMB_SIZE_WIDTH,
+  FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS.SLIDER_THUMB_SIZE_HEIGHT,
+);
+const STANDALONE_SLIDER_TRACK_SIZE = new Dimension2(
+  FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS.STANDALONE_SLIDER_TRACK_SIZE_WIDTH,
+  FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS.STANDALONE_SLIDER_TRACK_SIZE_HEIGHT,
+);
+const NUMBER_CONTROL_SLIDER_TRACK_SIZE = new Dimension2(
+  FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS.NUMBER_CONTROL_SLIDER_TRACK_SIZE_WIDTH,
+  FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS.NUMBER_CONTROL_SLIDER_TRACK_SIZE_HEIGHT,
+);
+const CHECKBOX_BOX_WIDTH: number = FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS.CHECKBOX_BOX_WIDTH;
 
 /** Options for standalone HSlider instances in control panels. @public */
 export const SLIDER_OPTIONS = {
@@ -28,11 +38,14 @@ export const SLIDER_OPTIONS = {
 
 /** Base NumberControl options; spread into each instance and add titleNodeOptions as needed. @public */
 export const NUMBER_CONTROL_OPTIONS = {
-  arrowButtonOptions: { ...FLAT_RECTANGULAR_BUTTON_OPTIONS, scale: 0.75 },
+  arrowButtonOptions: {
+    ...FLAT_RECTANGULAR_BUTTON_OPTIONS,
+    scale: FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS.NUMBER_CONTROL_OPTIONS_SCALE,
+  },
   layoutFunction: NumberControl.createLayoutFunction4({
-    sliderPadding: 4,
-    arrowButtonSpacing: 3,
-    verticalSpacing: 4,
+    sliderPadding: FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS.NUMBER_CONTROL_OPTIONS_SLIDER_PADDING,
+    arrowButtonSpacing: FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS.NUMBER_CONTROL_OPTIONS_ARROW_BUTTON_SPACING,
+    verticalSpacing: FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS.NUMBER_CONTROL_OPTIONS_VERTICAL_SPACING,
   }),
   sliderOptions: {
     trackSize: NUMBER_CONTROL_SLIDER_TRACK_SIZE,
@@ -53,7 +66,7 @@ export const NUMBER_CONTROL_OPTIONS = {
  */
 export const CHECKBOX_OPTIONS = {
   boxWidth: CHECKBOX_BOX_WIDTH,
-  spacing: 4,
+  spacing: FLUID_PRESSURE_AND_FLOW_CONTROL_OPTIONS_SETTINGS.CHECKBOX_OPTIONS_SPACING,
   checkboxColor: FluidPressureAndFlowColors.textColorProperty,
   checkboxColorBackground: FluidPressureAndFlowColors.panelBackgroundColorProperty,
 } satisfies CheckboxOptions;

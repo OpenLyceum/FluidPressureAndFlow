@@ -1,3 +1,4 @@
+import { GRID_INJECTOR_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * GridInjectorNode.ts
  *
@@ -21,25 +22,25 @@ import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import type { Pipe } from "../model/Pipe.js";
 
 /** Radius of the plunger head, view pixels. */
-const PLUNGER_RADIUS = 33;
+const PLUNGER_RADIUS: number = GRID_INJECTOR_NODE_SETTINGS.PLUNGER_RADIUS;
 
 /** Model x where the injector sits, from the HTML5 reference. */
-const INJECTOR_MODEL_X = -6;
+const INJECTOR_MODEL_X: number = GRID_INJECTOR_NODE_SETTINGS.INJECTOR_MODEL_X;
 
 /** View-pixel offset from the pipe mouth to the bulb artwork. */
-const INJECTOR_X_OFFSET = 67;
+const INJECTOR_X_OFFSET: number = GRID_INJECTOR_NODE_SETTINGS.INJECTOR_X_OFFSET;
 
 /**
  * View-pixel offset above the pipe ceiling to the bulb artwork. Has to match the
  * height of the scaled bulb, whose tube reaches down to the mouth, so it moves
  * with BULB_SCALE.
  */
-const INJECTOR_Y_OFFSET = 200;
+const INJECTOR_Y_OFFSET: number = GRID_INJECTOR_NODE_SETTINGS.INJECTOR_Y_OFFSET;
 
-const BULB_SCALE = 0.47;
+const BULB_SCALE: number = GRID_INJECTOR_NODE_SETTINGS.BULB_SCALE;
 
 /** View-pixel drop from the top of the bulb to the plunger it houses. */
-const PLUNGER_Y_OFFSET = 41;
+const PLUNGER_Y_OFFSET: number = GRID_INJECTOR_NODE_SETTINGS.PLUNGER_Y_OFFSET;
 
 export class GridInjectorNode extends Node {
   private readonly disposeGridInjectorNode: () => void;
@@ -66,7 +67,7 @@ export class GridInjectorNode extends Node {
       accessibleName: accessibleName,
       centerX: bulb.centerX,
       top: bulb.top + PLUNGER_Y_OFFSET,
-      touchAreaDilation: 10,
+      touchAreaDilation: GRID_INJECTOR_NODE_SETTINGS.BUTTON_TOUCH_AREA_DILATION,
     });
 
     this.children = [bulb, button];

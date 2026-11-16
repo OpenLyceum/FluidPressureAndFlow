@@ -1,3 +1,4 @@
+import { MASS_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * MassNode.ts
  *
@@ -19,7 +20,7 @@ import { SHIFT_KEY_SPEED_DIVISOR } from "../../FluidPressureAndFlowConstants.js"
 import type { MassModel } from "../model/MassModel.js";
 
 /** Metres the block moves per arrow-key press. */
-const KEYBOARD_DRAG_SPEED = 2;
+const KEYBOARD_DRAG_SPEED: number = MASS_NODE_SETTINGS.KEYBOARD_DRAG_SPEED;
 
 export class MassNode extends Node {
   private readonly disposeMassNode: () => void;
@@ -42,17 +43,25 @@ export class MassNode extends Node {
     const viewWidth = modelViewTransform.modelToViewDeltaX(mass.width);
     const viewHeight = -modelViewTransform.modelToViewDeltaY(mass.height);
 
-    const block = new Rectangle(0, 0, viewWidth, viewHeight, 2, 2, {
-      fill: FluidPressureAndFlowColors.massColorProperty,
-      stroke: FluidPressureAndFlowColors.poolEdgeColorProperty,
-      lineWidth: 1,
-    });
+    const block = new Rectangle(
+      0,
+      0,
+      viewWidth,
+      viewHeight,
+      MASS_NODE_SETTINGS.BLOCK_CORNER_X,
+      MASS_NODE_SETTINGS.BLOCK_CORNER_Y,
+      {
+        fill: FluidPressureAndFlowColors.massColorProperty,
+        stroke: FluidPressureAndFlowColors.poolEdgeColorProperty,
+        lineWidth: 1,
+      },
+    );
 
     const labelProperty = new PatternStringProperty(massLabelPatternProperty, { mass: mass.mass });
     const label = new Text(labelProperty, {
       font: "10px sans-serif",
       fill: FluidPressureAndFlowColors.controlSurfaceColorProperty,
-      maxWidth: viewWidth - 4,
+      maxWidth: viewWidth - MASS_NODE_SETTINGS.LABEL_MAX_WIDTH_OFFSET,
     });
     const centerLabel = () => {
       label.center = block.center;

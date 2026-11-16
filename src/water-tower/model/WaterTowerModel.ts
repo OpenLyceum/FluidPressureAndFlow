@@ -1,3 +1,4 @@
+import { WATER_TOWER_MODEL_COORDINATES, WATER_TOWER_MODEL_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * WaterTowerModel.ts
  *
@@ -42,15 +43,21 @@ import { WaterDrop } from "./WaterDrop.js";
 import { WaterTower } from "./WaterTower.js";
 
 /** Instruments available on this screen. */
-const NUMBER_OF_BAROMETERS = 2;
-const NUMBER_OF_VELOCITY_SENSORS = 2;
+const NUMBER_OF_BAROMETERS: number = WATER_TOWER_MODEL_SETTINGS.NUMBER_OF_BAROMETERS;
+const NUMBER_OF_VELOCITY_SENSORS: number = WATER_TOWER_MODEL_SETTINGS.NUMBER_OF_VELOCITY_SENSORS;
 
 /** Where an instrument sits before the student moves it, model coordinates. */
-const BAROMETER_START = new Vector2(6, 22);
-const VELOCITY_SENSOR_START = new Vector2(9, 20);
+const BAROMETER_START = new Vector2(
+  WATER_TOWER_MODEL_COORDINATES.BAROMETER_START_X,
+  WATER_TOWER_MODEL_COORDINATES.BAROMETER_START_Y,
+);
+const VELOCITY_SENSOR_START = new Vector2(
+  WATER_TOWER_MODEL_COORDINATES.VELOCITY_SENSOR_START_X,
+  WATER_TOWER_MODEL_COORDINATES.VELOCITY_SENSOR_START_Y,
+);
 
 /** Length of one internal step, seconds. See the class comment. */
-const FIXED_TIMESTEP = 0.016;
+const FIXED_TIMESTEP: number = WATER_TOWER_MODEL_SETTINGS.FIXED_TIMESTEP;
 
 /**
  * Effective outlet area, m². Not `π(HOLE_SIZE/2)²`: a real orifice discharges
@@ -58,19 +65,19 @@ const FIXED_TIMESTEP = 0.016;
  * this value is tuned so the tank empties at a rate that is watchable rather than
  * instantaneous. It sets the pace of the screen, not any of its physics.
  */
-const EFFECTIVE_OUTLET_AREA = 2.8;
+const EFFECTIVE_OUTLET_AREA: number = WATER_TOWER_MODEL_SETTINGS.EFFECTIVE_OUTLET_AREA;
 
 /** Smallest drop that is worth drawing, metres. */
-const MIN_DROP_RADIUS = 0.1;
+const MIN_DROP_RADIUS: number = WATER_TOWER_MODEL_SETTINGS.MIN_DROP_RADIUS;
 
 /** Maximum inflow from the faucet, m³ per second. */
-const MAX_FAUCET_FLOW_RATE = 30;
+const MAX_FAUCET_FLOW_RATE: number = WATER_TOWER_MODEL_SETTINGS.MAX_FAUCET_FLOW_RATE;
 
 /**
  * Where the faucet's spout is, model coordinates. Above the tank's highest
  * position, so it still pours *into* the tank when the tank is raised all the way.
  */
-export const FAUCET_POSITION = new Vector2(0, 27);
+export const FAUCET_POSITION = new Vector2(0, WATER_TOWER_MODEL_COORDINATES.FAUCET_POSITION_Y);
 
 /** Altitude at which a falling drop is considered to have landed and is removed. */
 const GROUND_Y = 0;
@@ -267,7 +274,13 @@ export class WaterTowerModel extends FluidPressureAndFlowModel {
     const inflow = this.faucetFlowRateProperty.value * MAX_FAUCET_FLOW_RATE * dt;
     if (inflow > 0) {
       this.addToTank(inflow);
-      this.faucetDrops.push(new WaterDrop(FAUCET_POSITION.copy(), new Vector2(0, 0), Math.min(inflow, 0.5)));
+      this.faucetDrops.push(
+        new WaterDrop(
+          FAUCET_POSITION.copy(),
+          new Vector2(0, 0),
+          Math.min(inflow, WATER_TOWER_MODEL_SETTINGS.MAX_FAUCET_DROP_VOLUME),
+        ),
+      );
     }
   }
 

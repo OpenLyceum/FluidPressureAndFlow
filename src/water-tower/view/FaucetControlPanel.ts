@@ -1,3 +1,4 @@
+import { FAUCET_CONTROL_PANEL_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * FaucetControlPanel.ts
  *
@@ -35,7 +36,7 @@ export class FaucetControlPanel extends FluidPressureAndFlowPanel {
       new Text(stringProperty, {
         font: LABEL_FONT,
         fill: FluidPressureAndFlowColors.textColorProperty,
-        maxWidth: 120,
+        maxWidth: FAUCET_CONTROL_PANEL_SETTINGS.LABEL_MAX_WIDTH,
       });
 
     const modeButtons = new AquaRadioButtonGroup(
@@ -44,12 +45,19 @@ export class FaucetControlPanel extends FluidPressureAndFlowPanel {
         { value: FaucetMode.MANUAL, createNode: () => label(labels.manualStringProperty) },
         { value: FaucetMode.MATCH_LEAKAGE, createNode: () => label(labels.matchLeakageStringProperty) },
       ],
-      { spacing: 4, radioButtonOptions: { radius: 7 }, accessibleName: modeAccessibleName },
+      {
+        spacing: FAUCET_CONTROL_PANEL_SETTINGS.MODE_BUTTONS_SPACING,
+        radioButtonOptions: { radius: FAUCET_CONTROL_PANEL_SETTINGS.MODE_BUTTONS_RADIUS },
+        accessibleName: modeAccessibleName,
+      },
     );
 
     const fillButton = new RectangularPushButton({
       ...FLAT_RECTANGULAR_BUTTON_OPTIONS,
-      content: new Text(labels.fillStringProperty, { font: LABEL_FONT, maxWidth: 80 }),
+      content: new Text(labels.fillStringProperty, {
+        font: LABEL_FONT,
+        maxWidth: FAUCET_CONTROL_PANEL_SETTINGS.FILL_BUTTON_MAX_WIDTH,
+      }),
       listener: fill,
       accessibleName: fillAccessibleName,
     });
@@ -58,6 +66,12 @@ export class FaucetControlPanel extends FluidPressureAndFlowPanel {
     };
     isFullProperty.link(updateEnabled);
 
-    super(new VBox({ align: "left", spacing: 8, children: [modeButtons, fillButton] }));
+    super(
+      new VBox({
+        align: "left",
+        spacing: FAUCET_CONTROL_PANEL_SETTINGS.CONSTRUCTOR_SPACING,
+        children: [modeButtons, fillButton],
+      }),
+    );
   }
 }

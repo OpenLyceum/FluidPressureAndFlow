@@ -1,3 +1,4 @@
+import { MYSTERY_POOL_CONTROLS_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * MysteryPoolControlsNode.ts
  *
@@ -21,7 +22,7 @@ import { type MysteryPoolModel, MysteryQuantity } from "../model/MysteryPoolMode
 import { PoolScene } from "../model/PoolScene.js";
 
 const LABEL_FONT = "12px sans-serif";
-const COMBO_LABEL_MAX_WIDTH = 70;
+const COMBO_LABEL_MAX_WIDTH: number = MYSTERY_POOL_CONTROLS_NODE_SETTINGS.COMBO_LABEL_MAX_WIDTH;
 
 export type MysteryPoolLabelProperties = {
   readonly mysteryFluidStringProperty: TReadOnlyProperty<string>;
@@ -52,26 +53,26 @@ export class MysteryPoolControlsNode {
     const textOptions = {
       font: LABEL_FONT,
       fill: LIGHT_SURFACE_TEXT_FILL,
-      maxWidth: panelWidth * 0.8,
+      maxWidth: panelWidth * MYSTERY_POOL_CONTROLS_NODE_SETTINGS.TEXT_OPTIONS_MAX_WIDTH_FACTOR,
     };
 
     const mysteryFluidRadio = new AquaRadioButton(
       mysteryPool.mysteryQuantityProperty,
       MysteryQuantity.FLUID_DENSITY,
       new Text(labels.mysteryFluidStringProperty, textOptions),
-      { ...FLAT_BUTTON_APPEARANCE_OPTIONS, radius: 6 },
+      { ...FLAT_BUTTON_APPEARANCE_OPTIONS, radius: MYSTERY_POOL_CONTROLS_NODE_SETTINGS.MYSTERY_FLUID_RADIO_RADIUS },
     );
     const mysteryPlanetRadio = new AquaRadioButton(
       mysteryPool.mysteryQuantityProperty,
       MysteryQuantity.GRAVITY,
       new Text(labels.mysteryPlanetStringProperty, textOptions),
-      { ...FLAT_BUTTON_APPEARANCE_OPTIONS, radius: 6 },
+      { ...FLAT_BUTTON_APPEARANCE_OPTIONS, radius: MYSTERY_POOL_CONTROLS_NODE_SETTINGS.MYSTERY_PLANET_RADIO_RADIUS },
     );
 
     const choicePanel = new FluidPressureAndFlowPanel(
       new VBox({
         align: "left",
-        spacing: 5,
+        spacing: MYSTERY_POOL_CONTROLS_NODE_SETTINGS.CHOICE_PANEL_SPACING,
         children: [mysteryFluidRadio, mysteryPlanetRadio],
       }),
       { minWidth: panelWidth },

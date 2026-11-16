@@ -1,3 +1,4 @@
+import { HOSE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * Hose.ts
  *
@@ -19,13 +20,13 @@ import { computeHoseLayout, createHoseShape, HOSE_NOZZLE_LENGTH } from "./HoseGe
 import { HOLE_SIZE } from "./WaterTower.js";
 
 /** Where the nozzle sits horizontally, metres. Far enough out to see the whole arc. */
-export const HOSE_OUTLET_X = 17;
+export const HOSE_OUTLET_X: number = HOSE_SETTINGS.HOSE_OUTLET_X;
 
 /** Highest the nozzle may be raised, metres. */
-export const MAX_HOSE_OUTLET_Y = 14;
+export const MAX_HOSE_OUTLET_Y: number = HOSE_SETTINGS.MAX_HOSE_OUTLET_Y;
 
 /** Radius of the straight nozzle bore, metres. */
-const HOSE_RADIUS = 0.4;
+const HOSE_RADIUS: number = HOSE_SETTINGS.HOSE_RADIUS;
 
 /** Angle straight up, radians. Zero is horizontal, to the right. */
 const INITIAL_ANGLE = Math.PI / 2;
@@ -35,7 +36,7 @@ const INITIAL_ANGLE = Math.PI / 2;
  * measure from the first frame, and high enough that the hose's own lower bend
  * clears the ground while the nozzle points straight up.
  */
-const INITIAL_OUTLET_Y = 9;
+const INITIAL_OUTLET_Y: number = HOSE_SETTINGS.INITIAL_OUTLET_Y;
 
 export class Hose {
   private cachedPipeShape: Shape | null = null;

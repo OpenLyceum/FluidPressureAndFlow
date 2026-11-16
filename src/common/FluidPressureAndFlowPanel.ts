@@ -1,3 +1,4 @@
+import { FLUID_PRESSURE_AND_FLOW_PANEL_SETTINGS } from "../FluidPressureAndFlowConstants.js";
 /**
  * FluidPressureAndFlowPanel.ts
  *
@@ -40,8 +41,8 @@ export class FluidPressureAndFlowPanel extends Panel {
         fill: FluidPressureAndFlowColors.panelBackgroundColorProperty,
         stroke: FluidPressureAndFlowColors.panelBorderColorProperty,
         cornerRadius: PANEL_CORNER_RADIUS,
-        xMargin: 10,
-        yMargin: 7,
+        xMargin: FLUID_PRESSURE_AND_FLOW_PANEL_SETTINGS.OPTIONS_X_MARGIN,
+        yMargin: FLUID_PRESSURE_AND_FLOW_PANEL_SETTINGS.OPTIONS_Y_MARGIN,
       },
       providedOptions,
     );

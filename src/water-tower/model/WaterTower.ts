@@ -1,3 +1,4 @@
+import { WATER_TOWER_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * WaterTower.ts
  *
@@ -19,10 +20,10 @@ import { Vector2 } from "scenerystack/dot";
  * Radius of the tank, metres.
  * @internal Exported for unit tests; not part of the application API.
  */
-export const TANK_RADIUS = 5;
+export const TANK_RADIUS: number = WATER_TOWER_SETTINGS.TANK_RADIUS;
 
 /** Height of the tank, metres. */
-export const TANK_HEIGHT = 10;
+export const TANK_HEIGHT: number = WATER_TOWER_SETTINGS.TANK_HEIGHT;
 
 /**
  * Highest the tank's base may be dragged, metres.
@@ -30,13 +31,13 @@ export const TANK_HEIGHT = 10;
  * Capped so the tank's lid still clears the faucet above it; a tank that could be
  * raised past its own supply would be filling from nowhere.
  */
-export const MAX_TANK_BASE_Y = 15;
+export const MAX_TANK_BASE_Y: number = WATER_TOWER_SETTINGS.MAX_TANK_BASE_Y;
 
 /** Lowest the tank's base may be dragged, metres. Keeps the legs on the ground. */
-export const MIN_TANK_BASE_Y = 6;
+export const MIN_TANK_BASE_Y: number = WATER_TOWER_SETTINGS.MIN_TANK_BASE_Y;
 
 /** Where the tank's base starts, metres. Not at the top, so it can be raised as well as lowered. */
-const INITIAL_TANK_BASE_Y = 11;
+const INITIAL_TANK_BASE_Y: number = WATER_TOWER_SETTINGS.INITIAL_TANK_BASE_Y;
 
 /** Diameter of the hole in the tank's side, metres. */
 export const HOLE_SIZE = 1;
@@ -48,8 +49,8 @@ export const HOLE_SIZE = 1;
 export const TANK_VOLUME = Math.PI * TANK_RADIUS * TANK_RADIUS * TANK_HEIGHT;
 
 /** Smallest and largest tank radii the capacity slider can produce, metres. */
-const MIN_TANK_RADIUS = 3.5;
-const MAX_TANK_RADIUS = 6.5;
+const MIN_TANK_RADIUS: number = WATER_TOWER_SETTINGS.MIN_TANK_RADIUS;
+const MAX_TANK_RADIUS: number = WATER_TOWER_SETTINGS.MAX_TANK_RADIUS;
 
 /** Smallest and largest capacities available to the student, m³. */
 export const MIN_TANK_VOLUME = Math.PI * MIN_TANK_RADIUS * MIN_TANK_RADIUS * TANK_HEIGHT;
@@ -62,10 +63,10 @@ export const MAX_TANK_VOLUME = Math.PI * MAX_TANK_RADIUS * MAX_TANK_RADIUS * TAN
  * first frame — a control that starts disabled is one a student may never
  * discover.
  */
-const INITIAL_FILL_FRACTION = 0.8;
+const INITIAL_FILL_FRACTION: number = WATER_TOWER_SETTINGS.INITIAL_FILL_FRACTION;
 
 /** Volume slack (m³) below capacity that still counts as "full", to absorb float error. */
-const FULL_VOLUME_TOLERANCE = 1e-9;
+const FULL_VOLUME_TOLERANCE: number = WATER_TOWER_SETTINGS.FULL_VOLUME_TOLERANCE;
 
 export class WaterTower {
   /** Centre of the tank's base, model coordinates (metres). */

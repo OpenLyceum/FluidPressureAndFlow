@@ -1,3 +1,4 @@
+import { SLUICE_CONTROL_PANEL_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * SluiceControlPanel.ts
  *
@@ -20,8 +21,8 @@ import { getFluidColor } from "../../common/view/fluidColor.js";
 import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { PANEL_CORNER_RADIUS, WATER_DENSITY } from "../../FluidPressureAndFlowConstants.js";
 
-const OPTION_WIDTH = 48;
-const OPTION_HEIGHT = 36;
+const OPTION_WIDTH: number = SLUICE_CONTROL_PANEL_SETTINGS.OPTION_WIDTH;
+const OPTION_HEIGHT: number = SLUICE_CONTROL_PANEL_SETTINGS.OPTION_HEIGHT;
 const TANK_SIZE = OPTION_WIDTH * 0.33;
 const LEG_WIDTH = 1;
 const CROSSBEAM_WIDTH = 1;
@@ -69,12 +70,22 @@ function createOption(isOpen: boolean): Node {
   frame.addChild(tank);
 
   if (isOpen) {
-    const flow = new Path(new Shape().moveTo(0, 0).quadraticCurveTo(10, 0, 13, 15), {
-      left: tank.right - 3,
-      top: tank.bottom - 6,
-      lineWidth: 4,
-      stroke: getFluidColor(WATER_DENSITY).toCSS(),
-    });
+    const flow = new Path(
+      new Shape()
+        .moveTo(0, 0)
+        .quadraticCurveTo(
+          SLUICE_CONTROL_PANEL_SETTINGS.FLOW_CONTROL_X,
+          0,
+          SLUICE_CONTROL_PANEL_SETTINGS.FLOW_END_X,
+          SLUICE_CONTROL_PANEL_SETTINGS.FLOW_END_Y,
+        ),
+      {
+        left: tank.right - SLUICE_CONTROL_PANEL_SETTINGS.FLOW_LEFT_OFFSET,
+        top: tank.bottom - SLUICE_CONTROL_PANEL_SETTINGS.FLOW_TOP_OFFSET,
+        lineWidth: SLUICE_CONTROL_PANEL_SETTINGS.FLOW_LINE_WIDTH,
+        stroke: getFluidColor(WATER_DENSITY).toCSS(),
+      },
+    );
     frame.addChild(flow);
   }
 

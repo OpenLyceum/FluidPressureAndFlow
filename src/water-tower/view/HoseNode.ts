@@ -1,3 +1,4 @@
+import { HOSE_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * HoseNode.ts
  *
@@ -25,22 +26,22 @@ import {
 import type { WaterTower } from "../model/WaterTower.js";
 
 /** Scale for the height and spout drag handles. */
-const HANDLE_SCALE = 0.3;
+const HANDLE_SCALE: number = HOSE_NODE_SETTINGS.HANDLE_SCALE;
 
 /** Scale for the nozzle bitmap. */
-const NOZZLE_SCALE = 0.75;
+const NOZZLE_SCALE: number = HOSE_NODE_SETTINGS.NOZZLE_SCALE;
 
 /** Scale for the spout rotation handle. */
-const SPOUT_HANDLE_SCALE = 0.75;
+const SPOUT_HANDLE_SCALE: number = HOSE_NODE_SETTINGS.SPOUT_HANDLE_SCALE;
 
 /** Radius of grab padding around the spout handle, view pixels. */
-const SPOUT_HANDLE_HIT_PADDING = 10;
+const SPOUT_HANDLE_HIT_PADDING: number = HOSE_NODE_SETTINGS.SPOUT_HANDLE_HIT_PADDING;
 
 /** Metres the nozzle moves per arrow-key press. */
-const KEYBOARD_DRAG_SPEED = 3;
+const KEYBOARD_DRAG_SPEED: number = HOSE_NODE_SETTINGS.KEYBOARD_DRAG_SPEED;
 
 /** Radians the nozzle swings per arrow-key press. */
-const KEYBOARD_ANGLE_SPEED = 0.6;
+const KEYBOARD_ANGLE_SPEED: number = HOSE_NODE_SETTINGS.KEYBOARD_ANGLE_SPEED;
 
 export class HoseNode extends Node {
   private readonly disposeHoseNode: () => void;
@@ -70,7 +71,10 @@ export class HoseNode extends Node {
       focusable: true,
       accessibleName: heightAccessibleName,
     });
-    heightHandle.touchArea = heightHandle.localBounds.dilatedXY(20, 20);
+    heightHandle.touchArea = heightHandle.localBounds.dilatedXY(
+      HOSE_NODE_SETTINGS.HEIGHT_HANDLE_X_DILATION,
+      HOSE_NODE_SETTINGS.HEIGHT_HANDLE_Y_DILATION,
+    );
 
     const nozzle = new Image(nozzleImage, { scale: NOZZLE_SCALE });
     // Bottom-centre of the bitmap is where the green hose meets the grey nozzle.
@@ -86,7 +90,7 @@ export class HoseNode extends Node {
     });
     spoutHandle.touchArea = spoutHandle.localBounds.dilated(SPOUT_HANDLE_HIT_PADDING);
     spoutHandle.bottom = nozzle.bottom;
-    spoutHandle.left = nozzle.right - 4;
+    spoutHandle.left = nozzle.right - HOSE_NODE_SETTINGS.CONSTRUCTOR_LEFT_OFFSET;
 
     const spoutAndNozzle = new Node({ children: [nozzle, spoutHandle] });
 

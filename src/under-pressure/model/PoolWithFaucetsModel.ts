@@ -1,3 +1,4 @@
+import { POOL_WITH_FAUCETS_MODEL_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * PoolWithFaucetsModel.ts
  *
@@ -24,7 +25,7 @@ import { Pool, type PressureContext } from "./Pool.js";
  * an empty pool fills in about six seconds — long enough to watch the barometer
  * climb, short enough not to be a chore.
  */
-const MAX_FILL_RATE = 0.5;
+const MAX_FILL_RATE: number = POOL_WITH_FAUCETS_MODEL_SETTINGS.MAX_FILL_RATE;
 
 export abstract class PoolWithFaucetsModel extends Pool {
   /** Depth of water above the pool floor, in metres. */

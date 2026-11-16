@@ -1,3 +1,4 @@
+import { FLUX_METER_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * FluxMeter.ts
  *
@@ -14,7 +15,7 @@ import { BooleanProperty, DerivedProperty, NumberProperty, type TReadOnlyPropert
 import type { Pipe } from "./Pipe.js";
 
 /** Where the hoop sits before the student moves it, metres. */
-const INITIAL_X = -3;
+const INITIAL_X: number = FLUX_METER_SETTINGS.INITIAL_X;
 
 export class FluxMeter {
   /** Whether the meter is on screen. */

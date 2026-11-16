@@ -1,3 +1,4 @@
+import { UNDER_PRESSURE_SCREEN_VIEW_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * UnderPressureScreenView.ts
  *
@@ -59,28 +60,31 @@ import { UnderPressureScreenSummaryContent } from "./UnderPressureScreenSummaryC
  * fit between the scene chooser and the expanded right-hand controls, including
  * clearance for the faucet handle when fully open.
  */
-const VIEW_SCALE = 76;
+const VIEW_SCALE: number = UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.VIEW_SCALE;
 
 /** View y of the ground line (model y = 0). */
-const GROUND_VIEW_Y = 300;
+const GROUND_VIEW_Y: number = UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.GROUND_VIEW_Y;
 
 /** Model x at the play-area anchor; keeps the widest pool clear of the scene chooser. */
-const MODEL_CENTER_X = -0.15;
+const MODEL_CENTER_X: number = UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.MODEL_CENTER_X;
 
 /** How high above the ground a tool may be dragged, metres. */
-const MAX_TOOL_ALTITUDE = 3.6;
+const MAX_TOOL_ALTITUDE: number = UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.MAX_TOOL_ALTITUDE;
 
 /** Vertical offset from an accordion box top to its slider readout, view pixels. */
-const MYSTERY_COMBO_TOP_INSET = 28;
+const MYSTERY_COMBO_TOP_INSET: number = UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.MYSTERY_COMBO_TOP_INSET;
 
 /** Panel width shared by the control column and mystery choice panel. */
-const CONTROL_PANEL_WIDTH = 150;
+const CONTROL_PANEL_WIDTH: number = UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.CONTROL_PANEL_WIDTH;
 
 /** Length of the draggable ruler, metres. */
-const RULER_LENGTH = 4;
+const RULER_LENGTH: number = UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.RULER_LENGTH;
 
 /** Where the ruler sits when first shown, model coordinates. */
-const RULER_HOME_POSITION = new Vector2(1.6, 0.6);
+const RULER_HOME_POSITION = new Vector2(
+  UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.RULER_HOME_POSITION_X,
+  UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.RULER_HOME_POSITION_Y,
+);
 
 export type UnderPressureScreenViewOptions = ScreenViewOptions;
 
@@ -199,7 +203,12 @@ export class UnderPressureScreenView extends ScreenView {
 
     // ── Chamber-pool weights ──────────────────────────────────────────────────
     const massLayer = new Node();
-    const massDragBounds = new Bounds2(-5.4, -MAX_POOL_HEIGHT, 2.6, MAX_TOOL_ALTITUDE);
+    const massDragBounds = new Bounds2(
+      UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.MASS_DRAG_BOUNDS_MIN_X,
+      -MAX_POOL_HEIGHT,
+      UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.MASS_DRAG_BOUNDS_MAX_X,
+      MAX_TOOL_ALTITUDE,
+    );
     massLayer.addChild(new ChamberMassDropZoneNode(model.chamberPool, modelViewTransform));
     for (const mass of model.chamberPool.masses) {
       massLayer.addChild(
@@ -247,7 +256,10 @@ export class UnderPressureScreenView extends ScreenView {
 
     // Where a keyboard-taken barometer lands: in the open sky over the pool, clear
     // of the tray and the panels and well inside the drag bounds.
-    const keyboardGrabPosition = new Vector2(modelViewTransform.viewToModelX(this.layoutBounds.centerX), 1.5);
+    const keyboardGrabPosition = new Vector2(
+      modelViewTransform.viewToModelX(this.layoutBounds.centerX),
+      UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.KEYBOARD_GRAB_POSITION_Y,
+    );
 
     const sensorLayer = new Node();
     this.addChild(sensorLayer);
@@ -415,9 +427,11 @@ export class UnderPressureScreenView extends ScreenView {
       mysteryControls.choicePanel.left = controlPanel.left;
       mysteryControls.choicePanel.top = controlPanel.bottom + PANEL_SPACING;
 
-      mysteryControls.fluidComboBox.right = fluidDensityBox.right - 10;
+      mysteryControls.fluidComboBox.right =
+        fluidDensityBox.right - UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.STACK_RIGHT_COLUMN_RIGHT_OFFSET;
       mysteryControls.fluidComboBox.top = fluidDensityBox.top + MYSTERY_COMBO_TOP_INSET;
-      mysteryControls.planetComboBox.right = gravityBox.right - 10;
+      mysteryControls.planetComboBox.right =
+        gravityBox.right - UNDER_PRESSURE_SCREEN_VIEW_SETTINGS.STACK_RIGHT_COLUMN_RIGHT_OFFSET;
       mysteryControls.planetComboBox.top = gravityBox.top + MYSTERY_COMBO_TOP_INSET;
     };
     pinAccordionBox(gravityBox, stackRightColumn);

@@ -1,3 +1,4 @@
+import { WATER_TOWER_CONTROL_PANEL_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * WaterTowerControlPanel.ts
  *
@@ -27,7 +28,7 @@ import {
 const LABEL_FONT = "13px sans-serif";
 
 /** Width the panel's contents are held to, so the layout does not jump. */
-const CONTENT_WIDTH = 150;
+const CONTENT_WIDTH: number = WATER_TOWER_CONTROL_PANEL_SETTINGS.CONTENT_WIDTH;
 
 export type WaterTowerControlPanelLabels = UnitsControlPanelLabels & {
   readonly rulerStringProperty: TReadOnlyProperty<string>;
@@ -55,7 +56,7 @@ export class WaterTowerControlPanel extends VBox {
       new Text(stringProperty, {
         font: LABEL_FONT,
         fill: FluidPressureAndFlowColors.textColorProperty,
-        maxWidth: CONTENT_WIDTH - 60,
+        maxWidth: CONTENT_WIDTH - WATER_TOWER_CONTROL_PANEL_SETTINGS.LABEL_MAX_WIDTH_OFFSET,
       });
 
     const rulerIcon = createRulerIcon();
@@ -82,7 +83,7 @@ export class WaterTowerControlPanel extends VBox {
     const toggles = new FluidPressureAndFlowPanel(
       new VBox({
         align: "left",
-        spacing: 8,
+        spacing: WATER_TOWER_CONTROL_PANEL_SETTINGS.TOGGLES_SPACING,
         children: [
           checkbox(
             isRulerVisibleProperty,

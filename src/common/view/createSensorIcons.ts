@@ -1,3 +1,4 @@
+import { CREATE_SENSOR_ICONS_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * createSensorIcons.ts
  *
@@ -43,25 +44,25 @@ const CAPTION_FONT = "12px sans-serif";
 const READOUT_FONT = "bold 12px sans-serif";
 
 // \u2500\u2500 Barometer icon layout, relative to GAUGE_RADIUS \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-const CAPTION_MAX_WIDTH_RATIO = 1.6;
-const CAPTION_Y_OFFSET_RATIO = 0.35;
-const NEEDLE_TIP_X_RATIO = 0.3;
-const NEEDLE_TIP_Y_RATIO = 0.25;
+const CAPTION_MAX_WIDTH_RATIO: number = CREATE_SENSOR_ICONS_SETTINGS.CAPTION_MAX_WIDTH_RATIO;
+const CAPTION_Y_OFFSET_RATIO: number = CREATE_SENSOR_ICONS_SETTINGS.CAPTION_Y_OFFSET_RATIO;
+const NEEDLE_TIP_X_RATIO: number = CREATE_SENSOR_ICONS_SETTINGS.NEEDLE_TIP_X_RATIO;
+const NEEDLE_TIP_Y_RATIO: number = CREATE_SENSOR_ICONS_SETTINGS.NEEDLE_TIP_Y_RATIO;
 
 // \u2500\u2500 Speedometer icon layout, view pixels \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
-const SPEEDOMETER_BODY_CORNER_RADIUS = 5;
-const SPEEDOMETER_CAPTION_HORIZONTAL_INSET = 8;
-const SPEEDOMETER_CAPTION_TOP_INSET = 3;
-const SPEEDOMETER_READOUT_WIDTH_INSET = 10;
-const SPEEDOMETER_READOUT_BOTTOM_INSET = 22;
-const SPEEDOMETER_TIP_OVERLAP_WITH_BODY = 2;
+const SPEEDOMETER_BODY_CORNER_RADIUS: number = CREATE_SENSOR_ICONS_SETTINGS.SPEEDOMETER_BODY_CORNER_RADIUS;
+const SPEEDOMETER_CAPTION_HORIZONTAL_INSET: number = CREATE_SENSOR_ICONS_SETTINGS.SPEEDOMETER_CAPTION_HORIZONTAL_INSET;
+const SPEEDOMETER_CAPTION_TOP_INSET: number = CREATE_SENSOR_ICONS_SETTINGS.SPEEDOMETER_CAPTION_TOP_INSET;
+const SPEEDOMETER_READOUT_WIDTH_INSET: number = CREATE_SENSOR_ICONS_SETTINGS.SPEEDOMETER_READOUT_WIDTH_INSET;
+const SPEEDOMETER_READOUT_BOTTOM_INSET: number = CREATE_SENSOR_ICONS_SETTINGS.SPEEDOMETER_READOUT_BOTTOM_INSET;
+const SPEEDOMETER_TIP_OVERLAP_WITH_BODY: number = CREATE_SENSOR_ICONS_SETTINGS.SPEEDOMETER_TIP_OVERLAP_WITH_BODY;
 
 /** The barometer as it sits in the tray: dial, caption, empty readout, tip. */
 export function createBarometerIcon(labelProperty: TReadOnlyProperty<string>): Node {
   const face = new Circle(GAUGE_RADIUS, {
     fill: FluidPressureAndFlowColors.gaugeFaceColorProperty,
     stroke: FluidPressureAndFlowColors.gaugeRimColorProperty,
-    lineWidth: 2,
+    lineWidth: CREATE_SENSOR_ICONS_SETTINGS.FACE_LINE_WIDTH,
   });
 
   const caption = new Text(labelProperty, {
@@ -76,7 +77,7 @@ export function createBarometerIcon(labelProperty: TReadOnlyProperty<string>): N
   // rather than as a blank face.
   const needle = new Line(0, 0, -GAUGE_RADIUS * NEEDLE_TIP_X_RATIO, -GAUGE_RADIUS * NEEDLE_TIP_Y_RATIO, {
     stroke: FluidPressureAndFlowColors.accentColorProperty,
-    lineWidth: 2,
+    lineWidth: CREATE_SENSOR_ICONS_SETTINGS.NEEDLE_LINE_WIDTH,
   });
 
   const readout = createReadout(
@@ -109,7 +110,7 @@ export function createSpeedometerIcon(labelProperty: TReadOnlyProperty<string>):
     {
       fill: FluidPressureAndFlowColors.speedometerBodyColorProperty,
       stroke: FluidPressureAndFlowColors.gaugeRimColorProperty,
-      lineWidth: 2,
+      lineWidth: CREATE_SENSOR_ICONS_SETTINGS.BODY_LINE_WIDTH,
     },
   );
 
@@ -155,7 +156,7 @@ function createReadout(width: number, top: number, centerX: number): Node {
     {
       fill: FluidPressureAndFlowColors.gaugeFaceColorProperty,
       stroke: FluidPressureAndFlowColors.gaugeRimColorProperty,
-      lineWidth: 2,
+      lineWidth: CREATE_SENSOR_ICONS_SETTINGS.BACKGROUND_LINE_WIDTH,
       centerX: centerX,
       top: top,
     },

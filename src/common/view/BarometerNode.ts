@@ -1,3 +1,4 @@
+import { BAROMETER_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * BarometerNode.ts
  *
@@ -40,34 +41,34 @@ import { InstrumentDescriptionProperty } from "./InstrumentDescriptionProperty.j
  * Radius of the dial face, view pixels. Exported because the stowed tray icon in
  * createSensorIcons.ts is drawn at the instrument's true size, not a thumbnail.
  */
-export const GAUGE_RADIUS = 34;
+export const GAUGE_RADIUS: number = BAROMETER_NODE_SETTINGS.GAUGE_RADIUS;
 
 /** Height of the pointed tip below the dial, view pixels. Shared with the tray icon. */
-export const TIP_HEIGHT = 12;
+export const TIP_HEIGHT: number = BAROMETER_NODE_SETTINGS.TIP_HEIGHT;
 
 /** Half-width of the tip where it meets the dial, view pixels. Shared with the tray icon. */
-export const TIP_HALF_WIDTH = 7;
+export const TIP_HALF_WIDTH: number = BAROMETER_NODE_SETTINGS.TIP_HALF_WIDTH;
 
 /** Metres the sampling point moves per arrow-key press. */
-const KEYBOARD_DRAG_SPEED = 3;
+const KEYBOARD_DRAG_SPEED: number = BAROMETER_NODE_SETTINGS.KEYBOARD_DRAG_SPEED;
 
 const READOUT_FONT = "bold 12px sans-serif";
 
 /** Width of the digital readout text, relative to the dial radius — narrower than the background behind it. */
-const READOUT_TEXT_MAX_WIDTH_RATIO = 1.9;
+const READOUT_TEXT_MAX_WIDTH_RATIO: number = BAROMETER_NODE_SETTINGS.READOUT_TEXT_MAX_WIDTH_RATIO;
 
 /** Width of the digital readout's background pill, relative to the dial radius. Shared with the tray icon. */
-export const READOUT_BACKGROUND_WIDTH_RATIO = 2.1;
+export const READOUT_BACKGROUND_WIDTH_RATIO: number = BAROMETER_NODE_SETTINGS.READOUT_BACKGROUND_WIDTH_RATIO;
 
 /** Shared with the tray icon's readout pill. */
-export const READOUT_BACKGROUND_HEIGHT = 19;
-export const READOUT_BACKGROUND_CORNER_RADIUS = 3;
+export const READOUT_BACKGROUND_HEIGHT: number = BAROMETER_NODE_SETTINGS.READOUT_BACKGROUND_HEIGHT;
+export const READOUT_BACKGROUND_CORNER_RADIUS: number = BAROMETER_NODE_SETTINGS.READOUT_BACKGROUND_CORNER_RADIUS;
 
 /** How far the readout pill tucks up under the dial, view pixels. Shared with the tray icon. */
-export const READOUT_OVERLAP_WITH_GAUGE = 10;
+export const READOUT_OVERLAP_WITH_GAUGE: number = BAROMETER_NODE_SETTINGS.READOUT_OVERLAP_WITH_GAUGE;
 
 /** How far the tip tucks up under the readout pill, view pixels. Shared with the tray icon. */
-export const TIP_OVERLAP_WITH_READOUT = 2;
+export const TIP_OVERLAP_WITH_READOUT: number = BAROMETER_NODE_SETTINGS.TIP_OVERLAP_WITH_READOUT;
 
 export type BarometerNodeOptions = {
   /** Where the barometer returns to when dropped back on the toolbox. */
@@ -152,7 +153,7 @@ export class BarometerNode extends Node {
       {
         fill: FluidPressureAndFlowColors.gaugeFaceColorProperty,
         stroke: FluidPressureAndFlowColors.gaugeRimColorProperty,
-        lineWidth: 2,
+        lineWidth: BAROMETER_NODE_SETTINGS.READOUT_BACKGROUND_LINE_WIDTH,
         centerX: gauge.centerX,
         top: gauge.bottom - READOUT_OVERLAP_WITH_GAUGE,
       },

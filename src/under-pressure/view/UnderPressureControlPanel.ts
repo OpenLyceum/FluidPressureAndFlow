@@ -1,3 +1,4 @@
+import { UNDER_PRESSURE_CONTROL_PANEL_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * UnderPressureControlPanel.ts
  *
@@ -30,7 +31,7 @@ const TITLE_FONT = "bold 13px sans-serif";
 const LABEL_FONT = "13px sans-serif";
 
 /** Width the panel's contents are held to, so the layout does not jump. */
-const CONTENT_WIDTH = 150;
+const CONTENT_WIDTH: number = UNDER_PRESSURE_CONTROL_PANEL_SETTINGS.CONTENT_WIDTH;
 
 export type UnderPressureControlPanelLabels = UnitsControlPanelLabels & {
   readonly rulerStringProperty: TReadOnlyProperty<string>;
@@ -61,7 +62,7 @@ export class UnderPressureControlPanel extends VBox {
       new Text(labels.rulerStringProperty, {
         font: LABEL_FONT,
         fill: FluidPressureAndFlowColors.textColorProperty,
-        maxWidth: CONTENT_WIDTH - 30,
+        maxWidth: CONTENT_WIDTH - UNDER_PRESSURE_CONTROL_PANEL_SETTINGS.RULER_CHECKBOX_MAX_WIDTH_OFFSET,
       }),
       { ...CHECKBOX_OPTIONS, accessibleName: accessibleNames.rulerCheckboxStringProperty },
     );
@@ -71,7 +72,7 @@ export class UnderPressureControlPanel extends VBox {
       new Text(labels.gridStringProperty, {
         font: LABEL_FONT,
         fill: FluidPressureAndFlowColors.textColorProperty,
-        maxWidth: CONTENT_WIDTH - 30,
+        maxWidth: CONTENT_WIDTH - UNDER_PRESSURE_CONTROL_PANEL_SETTINGS.GRID_CHECKBOX_MAX_WIDTH_OFFSET,
       }),
       { ...CHECKBOX_OPTIONS, accessibleName: accessibleNames.gridCheckboxStringProperty },
     );
@@ -85,7 +86,7 @@ export class UnderPressureControlPanel extends VBox {
             new Text(labels.onStringProperty, {
               font: LABEL_FONT,
               fill: FluidPressureAndFlowColors.textColorProperty,
-              maxWidth: 60,
+              maxWidth: UNDER_PRESSURE_CONTROL_PANEL_SETTINGS.ATMOSPHERE_BUTTONS_MAX_WIDTH,
             }),
         },
         {
@@ -94,21 +95,21 @@ export class UnderPressureControlPanel extends VBox {
             new Text(labels.offStringProperty, {
               font: LABEL_FONT,
               fill: FluidPressureAndFlowColors.textColorProperty,
-              maxWidth: 60,
+              maxWidth: UNDER_PRESSURE_CONTROL_PANEL_SETTINGS.ATMOSPHERE_BUTTONS_MAX_WIDTH,
             }),
         },
       ],
       {
         orientation: "horizontal",
-        spacing: 14,
-        radioButtonOptions: { radius: 7 },
+        spacing: UNDER_PRESSURE_CONTROL_PANEL_SETTINGS.ATMOSPHERE_BUTTONS_SPACING,
+        radioButtonOptions: { radius: UNDER_PRESSURE_CONTROL_PANEL_SETTINGS.ATMOSPHERE_BUTTONS_RADIUS },
         accessibleName: accessibleNames.atmosphereControlStringProperty,
       },
     );
 
     const atmosphereControl = new VBox({
       align: "left",
-      spacing: 5,
+      spacing: UNDER_PRESSURE_CONTROL_PANEL_SETTINGS.ATMOSPHERE_CONTROL_SPACING,
       children: [
         new Text(labels.atmosphereStringProperty, {
           font: TITLE_FONT,
@@ -122,7 +123,7 @@ export class UnderPressureControlPanel extends VBox {
     const toolsAndAtmosphere = new FluidPressureAndFlowPanel(
       new VBox({
         align: "left",
-        spacing: 6,
+        spacing: UNDER_PRESSURE_CONTROL_PANEL_SETTINGS.TOOLS_AND_ATMOSPHERE_SPACING,
         children: [
           rulerCheckbox,
           gridCheckbox,

@@ -1,3 +1,4 @@
+import { CHAMBER_MASS_DROP_ZONE_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * ChamberMassDropZoneNode.ts
  *
@@ -17,7 +18,7 @@ import {
 } from "../model/ChamberPoolModel.js";
 
 /** Height of the drop zone above the water surface, metres — fits one large block. */
-const DROP_ZONE_HEIGHT = 0.55;
+const DROP_ZONE_HEIGHT: number = CHAMBER_MASS_DROP_ZONE_NODE_SETTINGS.DROP_ZONE_HEIGHT;
 
 export class ChamberMassDropZoneNode extends Node {
   private readonly disposeChamberMassDropZoneNode: () => void;
@@ -27,8 +28,11 @@ export class ChamberMassDropZoneNode extends Node {
 
     const outline = new Path(null, {
       stroke: FluidPressureAndFlowColors.textColorProperty,
-      lineWidth: 2,
-      lineDash: [10, 5],
+      lineWidth: CHAMBER_MASS_DROP_ZONE_NODE_SETTINGS.OUTLINE_LINE_WIDTH,
+      lineDash: [
+        CHAMBER_MASS_DROP_ZONE_NODE_SETTINGS.OUTLINE_LINE_DASH_DASH,
+        CHAMBER_MASS_DROP_ZONE_NODE_SETTINGS.CONSTRUCTOR_OUTLINE_LINE_DASH_DASH,
+      ],
       fill: FluidPressureAndFlowColors.dropZoneFillColorProperty,
     });
 

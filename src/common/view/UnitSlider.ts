@@ -1,3 +1,4 @@
+import { UNIT_SLIDER_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * UnitSlider.ts
  *
@@ -50,25 +51,25 @@ export type UnitSliderOptions = {
 };
 
 /** Default track width, wide enough for three tick labels without crowding. */
-const DEFAULT_TRACK_WIDTH = 150;
+const DEFAULT_TRACK_WIDTH: number = UNIT_SLIDER_SETTINGS.DEFAULT_TRACK_WIDTH;
 
-const TRACK_HEIGHT = 4;
-const THUMB_SIZE = new Dimension2(12, 20);
+const TRACK_HEIGHT: number = UNIT_SLIDER_SETTINGS.TRACK_HEIGHT;
+const THUMB_SIZE = new Dimension2(UNIT_SLIDER_SETTINGS.THUMB_SIZE_WIDTH, UNIT_SLIDER_SETTINGS.THUMB_SIZE_HEIGHT);
 
 /** Fraction of the range crossed per arrow-key press: fine enough to land on a
  * particular value, coarse enough to cross the range in a few seconds. */
-const KEYBOARD_STEP_DIVISOR = 100;
+const KEYBOARD_STEP_DIVISOR: number = UNIT_SLIDER_SETTINGS.KEYBOARD_STEP_DIVISOR;
 
 /** Fraction of the range crossed per arrow-key press while Shift is held, for fine control. */
-const SHIFT_KEYBOARD_STEP_DIVISOR = 500;
+const SHIFT_KEYBOARD_STEP_DIVISOR: number = UNIT_SLIDER_SETTINGS.SHIFT_KEYBOARD_STEP_DIVISOR;
 
 /** Fraction of the range crossed per Page Up/Down press. */
-const PAGE_KEYBOARD_STEP_DIVISOR = 10;
+const PAGE_KEYBOARD_STEP_DIVISOR: number = UNIT_SLIDER_SETTINGS.PAGE_KEYBOARD_STEP_DIVISOR;
 
 const TICK_LABEL_FONT = "11px sans-serif";
-const TICK_LABEL_MAX_WIDTH = 60;
+const TICK_LABEL_MAX_WIDTH: number = UNIT_SLIDER_SETTINGS.TICK_LABEL_MAX_WIDTH;
 const READOUT_FONT = "13px sans-serif";
-const READOUT_SPACING = 2;
+const READOUT_SPACING: number = UNIT_SLIDER_SETTINGS.READOUT_SPACING;
 
 export class UnitSlider extends VBox {
   private readonly disposeUnitSlider: () => void;

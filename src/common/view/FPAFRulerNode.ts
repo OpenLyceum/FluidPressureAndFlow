@@ -1,3 +1,4 @@
+import { FPAF_RULER_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * FPAFRulerNode.ts
  *
@@ -22,10 +23,10 @@ import { SHIFT_KEY_SPEED_DIVISOR } from "../../FluidPressureAndFlowConstants.js"
 import { toDisplayValue, type UnitLabelGroups, type UnitSystem } from "../model/units.js";
 
 /** Width of the ruler body, view pixels. */
-const RULER_WIDTH = 42;
+const RULER_WIDTH: number = FPAF_RULER_NODE_SETTINGS.RULER_WIDTH;
 
 /** Font for the ruler's numbers and its unit label. */
-const TICK_FONT = new Font({ size: 11, family: "sans-serif" });
+const TICK_FONT = new Font({ size: FPAF_RULER_NODE_SETTINGS.TICK_FONT_SIZE, family: "sans-serif" });
 
 /**
  * Graduations to try, in display units, coarsest-fitting wins. A ruler marked
@@ -35,10 +36,10 @@ const TICK_FONT = new Font({ size: 11, family: "sans-serif" });
 const TICK_INTERVALS = [1, 2, 5, 10];
 
 /** Least spacing between major ticks that keeps their labels legible, view pixels. */
-const MIN_MAJOR_TICK_SPACING = 34;
+const MIN_MAJOR_TICK_SPACING: number = FPAF_RULER_NODE_SETTINGS.MIN_MAJOR_TICK_SPACING;
 
 /** Metres the ruler moves per arrow-key press. */
-const KEYBOARD_DRAG_SPEED = 3;
+const KEYBOARD_DRAG_SPEED: number = FPAF_RULER_NODE_SETTINGS.KEYBOARD_DRAG_SPEED;
 
 export type FPAFRulerNodeOptions = {
   /** Hides the ruler when pressed, as in the published Under Pressure sim. */

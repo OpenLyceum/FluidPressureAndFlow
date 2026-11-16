@@ -1,3 +1,4 @@
+import { UNDER_PRESSURE_MODEL_COORDINATES } from "../../FluidPressureAndFlowConstants.js";
 /**
  * UnderPressureModel.ts
  *
@@ -23,7 +24,10 @@ import { SquarePoolModel } from "./SquarePoolModel.js";
 import { TrapezoidPoolModel } from "./TrapezoidPoolModel.js";
 
 /** Where a barometer sits when first taken from the toolbox: just under the surface. */
-const BAROMETER_START_POSITION = new Vector2(-4, 2);
+const BAROMETER_START_POSITION = new Vector2(
+  UNDER_PRESSURE_MODEL_COORDINATES.BAROMETER_START_POSITION_X,
+  UNDER_PRESSURE_MODEL_COORDINATES.BAROMETER_START_POSITION_Y,
+);
 
 export class UnderPressureModel extends FluidPressureAndFlowModel {
   private ordinaryGravity = EARTH_GRAVITY;

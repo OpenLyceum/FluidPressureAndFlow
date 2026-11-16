@@ -1,3 +1,4 @@
+import { SENSOR_TOOLBOX_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * SensorToolboxNode.ts
  *
@@ -18,7 +19,7 @@ import { HBox, Node, type PressListenerEvent } from "scenerystack/scenery";
 import { FluidPressureAndFlowPanel } from "../FluidPressureAndFlowPanel.js";
 
 /** Opacity of a slot with nothing left in it. */
-const DISABLED_OPACITY = 0.4;
+const DISABLED_OPACITY: number = SENSOR_TOOLBOX_NODE_SETTINGS.DISABLED_OPACITY;
 
 /**
  * All the toolbox needs of an instrument: whether it is out, and where it is.
@@ -109,7 +110,7 @@ export class SensorToolboxNode extends FluidPressureAndFlowPanel {
       slots.push(slot);
     }
 
-    super(new HBox({ spacing: 12, align: "center", children: slots }));
+    super(new HBox({ spacing: SENSOR_TOOLBOX_NODE_SETTINGS.CONSTRUCTOR_SPACING, align: "center", children: slots }));
 
     this.disposeSensorToolboxNode = () => {
       for (const dispose of disposers) {

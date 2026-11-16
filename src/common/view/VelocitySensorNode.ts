@@ -1,3 +1,4 @@
+import { VELOCITY_SENSOR_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * VelocitySensorNode.ts
  *
@@ -37,21 +38,21 @@ import { InstrumentDescriptionProperty } from "./InstrumentDescriptionProperty.j
  * Size of the readout body, view pixels. Exported because the stowed tray icon in
  * createSensorIcons.ts is drawn at the instrument's true size, not a thumbnail.
  */
-export const BODY_WIDTH = 76;
-export const BODY_HEIGHT = 44;
+export const BODY_WIDTH: number = VELOCITY_SENSOR_NODE_SETTINGS.BODY_WIDTH;
+export const BODY_HEIGHT: number = VELOCITY_SENSOR_NODE_SETTINGS.BODY_HEIGHT;
 
 /** Height of the pointed tip below the body, view pixels. Shared with the tray icon. */
-export const TIP_HEIGHT = 12;
-export const TIP_HALF_WIDTH = 8;
+export const TIP_HEIGHT: number = VELOCITY_SENSOR_NODE_SETTINGS.TIP_HEIGHT;
+export const TIP_HALF_WIDTH: number = VELOCITY_SENSOR_NODE_SETTINGS.TIP_HALF_WIDTH;
 
 /** View pixels of arrow per m/s of flow. */
-const ARROW_SCALE = 22;
+const ARROW_SCALE: number = VELOCITY_SENSOR_NODE_SETTINGS.ARROW_SCALE;
 
 /** Longest the direction arrow is allowed to grow, view pixels. */
-const MAX_ARROW_LENGTH = 90;
+const MAX_ARROW_LENGTH: number = VELOCITY_SENSOR_NODE_SETTINGS.MAX_ARROW_LENGTH;
 
 /** Metres the sampling point moves per arrow-key press. */
-const KEYBOARD_DRAG_SPEED = 3;
+const KEYBOARD_DRAG_SPEED: number = VELOCITY_SENSOR_NODE_SETTINGS.KEYBOARD_DRAG_SPEED;
 
 export type VelocitySensorNodeOptions = {
   /** Region that catches a drop; dropping here stows the tool. */
@@ -100,29 +101,45 @@ export class VelocitySensorNode extends Node {
       otherElementName: PEER_DESCRIPTION_SIBLING,
     });
 
-    const body = new Rectangle(0, 0, BODY_WIDTH, BODY_HEIGHT, 5, 5, {
-      fill: FluidPressureAndFlowColors.speedometerBodyColorProperty,
-      stroke: FluidPressureAndFlowColors.gaugeRimColorProperty,
-      lineWidth: 2,
-    });
+    const body = new Rectangle(
+      0,
+      0,
+      BODY_WIDTH,
+      BODY_HEIGHT,
+      VELOCITY_SENSOR_NODE_SETTINGS.BODY_CORNER_X,
+      VELOCITY_SENSOR_NODE_SETTINGS.BODY_CORNER_Y,
+      {
+        fill: FluidPressureAndFlowColors.speedometerBodyColorProperty,
+        stroke: FluidPressureAndFlowColors.gaugeRimColorProperty,
+        lineWidth: VELOCITY_SENSOR_NODE_SETTINGS.BODY_LINE_WIDTH,
+      },
+    );
 
     const label = new Text(labelProperty, {
       font: "11px sans-serif",
       fill: FluidPressureAndFlowColors.controlSurfaceColorProperty,
-      maxWidth: BODY_WIDTH - 8,
+      maxWidth: BODY_WIDTH - VELOCITY_SENSOR_NODE_SETTINGS.LABEL_MAX_WIDTH_OFFSET,
       centerX: body.centerX,
-      top: body.top + 3,
+      top: body.top + VELOCITY_SENSOR_NODE_SETTINGS.LABEL_TOP_OFFSET,
     });
 
-    const readoutBackground = new Rectangle(0, 0, BODY_WIDTH - 10, 18, 3, 3, {
-      fill: FluidPressureAndFlowColors.gaugeFaceColorProperty,
-      centerX: body.centerX,
-      bottom: body.bottom - 4,
-    });
+    const readoutBackground = new Rectangle(
+      0,
+      0,
+      BODY_WIDTH - 10,
+      VELOCITY_SENSOR_NODE_SETTINGS.READOUT_BACKGROUND_HEIGHT,
+      VELOCITY_SENSOR_NODE_SETTINGS.READOUT_BACKGROUND_CORNER_X,
+      VELOCITY_SENSOR_NODE_SETTINGS.READOUT_BACKGROUND_CORNER_Y,
+      {
+        fill: FluidPressureAndFlowColors.gaugeFaceColorProperty,
+        centerX: body.centerX,
+        bottom: body.bottom - VELOCITY_SENSOR_NODE_SETTINGS.READOUT_BACKGROUND_BOTTOM_OFFSET,
+      },
+    );
     const readoutText = new Text(speedTextProperty, {
       font: "bold 12px sans-serif",
       fill: FluidPressureAndFlowColors.controlSurfaceTextColorProperty,
-      maxWidth: BODY_WIDTH - 14,
+      maxWidth: BODY_WIDTH - VELOCITY_SENSOR_NODE_SETTINGS.READOUT_TEXT_MAX_WIDTH_OFFSET,
     });
     const centerReadout = () => {
       readoutText.center = readoutBackground.center;
@@ -153,9 +170,9 @@ export class VelocitySensorNode extends Node {
     const arrow = new ArrowNode(0, 0, 0, 0, {
       fill: FluidPressureAndFlowColors.accentColorProperty,
       stroke: FluidPressureAndFlowColors.gaugeRimColorProperty,
-      headHeight: 12,
-      headWidth: 12,
-      tailWidth: 5,
+      headHeight: VELOCITY_SENSOR_NODE_SETTINGS.ARROW_HEAD_HEIGHT,
+      headWidth: VELOCITY_SENSOR_NODE_SETTINGS.ARROW_HEAD_WIDTH,
+      tailWidth: VELOCITY_SENSOR_NODE_SETTINGS.ARROW_TAIL_WIDTH,
     });
     this.insertChild(0, arrow);
 

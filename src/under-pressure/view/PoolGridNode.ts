@@ -1,3 +1,4 @@
+import { POOL_GRID_NODE_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * PoolGridNode.ts
  *
@@ -23,13 +24,13 @@ import FluidPressureAndFlowColors from "../../FluidPressureAndFlowColors.js";
 import { MAX_POOL_HEIGHT } from "../../FluidPressureAndFlowConstants.js";
 
 /** Vertical spacing between grid lines, metres. */
-const MINOR_SPACING = 0.5;
+const MINOR_SPACING: number = POOL_GRID_NODE_SETTINGS.MINOR_SPACING;
 
 /** Every this many lines gets a label. */
-const LINES_PER_LABEL = 2;
+const LINES_PER_LABEL: number = POOL_GRID_NODE_SETTINGS.LINES_PER_LABEL;
 
 /** Slack added to the loop bound so float error doesn't drop the last grid line. */
-const LOOP_EPSILON = 1e-9;
+const LOOP_EPSILON: number = POOL_GRID_NODE_SETTINGS.LOOP_EPSILON;
 
 export class PoolGridNode extends Node {
   private readonly disposePoolGridNode: () => void;
@@ -63,7 +64,7 @@ export class PoolGridNode extends Node {
         const label = new Text("", {
           font: "11px sans-serif",
           fill: FluidPressureAndFlowColors.gridLineColorProperty,
-          left: modelViewTransform.modelToViewX(poolBounds.minX) + 4,
+          left: modelViewTransform.modelToViewX(poolBounds.minX) + POOL_GRID_NODE_SETTINGS.LABEL_LEFT_OFFSET,
           bottom: y - 2,
         });
         labelNodes.push(label);
@@ -94,7 +95,7 @@ export class PoolGridNode extends Node {
       new Path(lines, {
         stroke: FluidPressureAndFlowColors.gridLineColorProperty,
         lineWidth: 1,
-        lineDash: [4, 3],
+        lineDash: [POOL_GRID_NODE_SETTINGS.CONSTRUCTOR_LINE_DASH_DASH, 3],
       }),
       ...labelNodes,
     ];

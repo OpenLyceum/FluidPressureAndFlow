@@ -1,3 +1,4 @@
+import { PIPE_END_LAYOUT_SETTINGS } from "../../FluidPressureAndFlowConstants.js";
 /**
  * pipeEndLayout.ts
  *
@@ -16,20 +17,20 @@ import type { PipeCrossSection } from "../model/PipeCrossSection.js";
  * the head has to be as tall as the pipe mouth it caps, and the mouth's height
  * in view pixels is its height in metres times that scale.
  */
-export const PIPE_HEAD_X_SCALE = 0.48;
+export const PIPE_HEAD_X_SCALE: number = PIPE_END_LAYOUT_SETTINGS.PIPE_HEAD_X_SCALE;
 
 /** Reference cross-section height used to compute the vertical head scale (PhET: 2.1 m). */
-const PIPE_REFERENCE_HEIGHT = 2.1;
+const PIPE_REFERENCE_HEIGHT: number = PIPE_END_LAYOUT_SETTINGS.PIPE_REFERENCE_HEIGHT;
 
 /** Smallest allowed vertical scale for a pipe head. */
-const MIN_PIPE_HEAD_SCALE = 0.24;
+const MIN_PIPE_HEAD_SCALE: number = PIPE_END_LAYOUT_SETTINGS.MIN_PIPE_HEAD_SCALE;
 
 /**
  * Offset from the top control point to the pipe-head node origin, in unscaled
  * bitmap pixels — it is multiplied by the head's own scale below, so it does not
  * move with the layout bounds.
  */
-const LEFT_PIPE_Y_OFFSET = 30;
+const LEFT_PIPE_Y_OFFSET: number = PIPE_END_LAYOUT_SETTINGS.LEFT_PIPE_Y_OFFSET;
 
 export type PipeEndLayout = {
   readonly scaleY: number;
