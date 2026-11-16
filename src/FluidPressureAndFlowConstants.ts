@@ -442,7 +442,7 @@ export const BAROMETER_NODE_SETTINGS = {
   KEYBOARD_DRAG_SPEED: 3,
   /** Width of the digital readout text, relative to the dial radius — narrower than the background behind it. */
   READOUT_TEXT_MAX_WIDTH_RATIO: 1.9,
-  /** Readout background width ratio (px). */
+  /** Width of the readout background relative to the dial radius (dimensionless). */
   READOUT_BACKGROUND_WIDTH_RATIO: 2.1,
   /** Readout background height (px). */
   READOUT_BACKGROUND_HEIGHT: 19,
@@ -569,13 +569,13 @@ export const VELOCITY_SENSOR_NODE_SETTINGS = {
 
 /** Settings for common/view/createSensorIcons.ts. */
 export const CREATE_SENSOR_ICONS_SETTINGS = {
-  /** Caption max width ratio (px). */
+  /** Caption max width relative to the icon body (dimensionless). */
   CAPTION_MAX_WIDTH_RATIO: 1.6,
-  /** Caption y offset ratio (px). */
+  /** Caption vertical offset relative to the icon body (dimensionless). */
   CAPTION_Y_OFFSET_RATIO: 0.35,
-  /** Needle tip x ratio (px). */
+  /** Needle tip x as a fraction of the speedometer face (dimensionless). */
   NEEDLE_TIP_X_RATIO: 0.3,
-  /** Needle tip y ratio (px). */
+  /** Needle tip y as a fraction of the speedometer face (dimensionless). */
   NEEDLE_TIP_Y_RATIO: 0.25,
   /** Speedometer body corner radius (px). */
   SPEEDOMETER_BODY_CORNER_RADIUS: 5,
@@ -627,7 +627,7 @@ export const FLOW_MODEL_SETTINGS = {
   DRIP_RADIUS: 0.1,
   /** Radius of an injected grid dot, metres. */
   GRID_RADIUS: 0.06,
-  /** * Dots are dripped between these fractions of the pipe height, never right against the wall — with friction on, a dot at the very edge would crawl, and a student would read that as the sim being stuck. */
+  /** Dots are dripped between these fractions of the pipe height, never right against the wall — with friction on, a dot at the very edge would crawl, and a student would read that as the sim being stuck. */
   DRIP_MIN_FRACTION: 0.15,
   /** Drip max fraction (dimensionless). */
   DRIP_MAX_FRACTION: 0.85,
@@ -643,9 +643,9 @@ export const FLOW_MODEL_SETTINGS = {
   GRID_MAX_FRACTION: 0.9,
   /** Seconds the grid injector is unavailable after firing, so the grid stays readable. */
   GRID_INJECTOR_COOLDOWN: 4,
-  /** * Model-x nudge (metres) for a particle spawned at the pipe's left edge, so it starts strictly inside the pipe rather than exactly on the boundary. */
+  /** Model-x nudge (metres) for a particle spawned at the pipe's left edge, so it starts strictly inside the pipe rather than exactly on the boundary. */
   PARTICLE_SPAWN_EPSILON: 1e-6,
-  /** * How close to the wall the model declines to report a pressure, metres. Right at the wall the velocity profile is ambiguous, and a barometer resting on the boundary would flicker between a reading and a dash. */
+  /** How close to the wall the model declines to report a pressure, metres. Right at the wall the velocity profile is ambiguous, and a barometer resting on the boundary would flicker between a reading and a dash. */
   WALL_MARGIN: 0.05,
   /** Default friction pressure drop (Pa). */
   DEFAULT_FRICTION_PRESSURE_DROP: 12000,
@@ -709,7 +709,7 @@ export const GRID_INJECTOR_NODE_SETTINGS = {
   INJECTOR_MODEL_X: -6,
   /** View-pixel offset from the pipe mouth to the bulb artwork. */
   INJECTOR_X_OFFSET: 67,
-  /** * View-pixel offset above the pipe ceiling to the bulb artwork. Has to match the height of the scaled bulb, whose tube reaches down to the mouth, so it moves with BULB_SCALE. */
+  /** View-pixel offset above the pipe ceiling to the bulb artwork. Has to match the height of the scaled bulb, whose tube reaches down to the mouth, so it moves with BULB_SCALE. */
   INJECTOR_Y_OFFSET: 200,
   /** Bulb scale (dimensionless). */
   BULB_SCALE: 0.47,
@@ -755,7 +755,7 @@ export const PIPE_NODE_SETTINGS = {
   MIDDLE_WALL_LINE_WIDTH: 8,
   /** Horizontal stretch of the repeating pipe-segment bitmap off-screen. */
   PIPE_SEGMENT_X_SCALE: 100,
-  /** * Gap between the left head and the repeating segment, in unscaled bitmap pixels: both live inside the head assembly, which is scaled as a whole. */
+  /** Gap between the left head and the repeating segment, in unscaled bitmap pixels: both live inside the head assembly, which is scaled as a whole. */
   LEFT_SEGMENT_GAP: 30,
   /** Overlap between the right head and the repeating segment, same frame as above. */
   RIGHT_SEGMENT_OVERLAP: 50,
@@ -769,7 +769,7 @@ export const PIPE_END_LAYOUT_SETTINGS = {
   PIPE_REFERENCE_HEIGHT: 2.1,
   /** Smallest allowed vertical scale for a pipe head. */
   MIN_PIPE_HEAD_SCALE: 0.24,
-  /** * Offset from the top control point to the pipe-head node origin, in unscaled bitmap pixels — it is multiplied by the head's own scale below, so it does not move with the layout bounds. */
+  /** Offset from the top control point to the pipe-head node origin, in unscaled bitmap pixels — it is multiplied by the head's own scale below, so it does not move with the layout bounds. */
   LEFT_PIPE_Y_OFFSET: 30,
 } as const;
 
@@ -791,7 +791,7 @@ export const FLUID_PRESSURE_AND_FLOW_PREFERENCES_NODE_SETTINGS = {
 
 /** Settings for under-pressure/model/PoolWithFaucetsModel.ts. */
 export const POOL_WITH_FAUCETS_MODEL_SETTINGS = {
-  /** * Metres of water level gained per second with the fill tap wide open. Tuned so an empty pool fills in about six seconds — long enough to watch the barometer climb, short enough not to be a chore. */
+  /** Metres of water level gained per second with the fill tap wide open. Tuned so an empty pool fills in about six seconds — long enough to watch the barometer climb, short enough not to be a chore. */
   MAX_FILL_RATE: 0.5,
 } as const;
 
@@ -834,7 +834,7 @@ export const MYSTERY_POOL_CONTROLS_NODE_SETTINGS = {
 
 /** Settings for under-pressure/view/PoolFaucetsNode.ts. */
 export const POOL_FAUCETS_NODE_SETTINGS = {
-  /** * Length of the supply pipe feeding the fill tap, view pixels. Long enough to run off the left of the screen, so the water reads as coming from the mains rather than from a floating spout. */
+  /** Length of the supply pipe feeding the fill tap, view pixels. Long enough to run off the left of the screen, so the water reads as coming from the mains rather than from a floating spout. */
   SUPPLY_PIPE_LENGTH: 900,
   /** Drain pipe length (px). */
   DRAIN_PIPE_LENGTH: 120,
@@ -894,7 +894,7 @@ export const SCENE_RADIO_BUTTON_GROUP_SETTINGS = {
   CHAMBER_ICON_SHAPE_X_SEGMENT_3: 7, // px
   CHAMBER_ICON_SHAPE_WIDTH_SEGMENT_3: 37, // px
 
-  /** * Size of one scene icon, view pixels. Four of these plus their button chrome have to stack between the ground line and the bottom of the play area. */
+  /** Size of one scene icon, view pixels. Four of these plus their button chrome have to stack between the ground line and the bottom of the play area. */
   ICON_WIDTH: 50,
   /** Icon height (px). */
   ICON_HEIGHT: 40,
@@ -951,7 +951,7 @@ export const UNDER_PRESSURE_CONTROL_PANEL_SETTINGS = {
 export const UNDER_PRESSURE_SCREEN_VIEW_SETTINGS = {
   STACK_RIGHT_COLUMN_RIGHT_OFFSET: 10, // px
 
-  /** * View pixels per model metre. Sized so the widest pool and its drain faucet fit between the scene chooser and the expanded right-hand controls, including clearance for the faucet handle when fully open. */
+  /** View pixels per model metre. Sized so the widest pool and its drain faucet fit between the scene chooser and the expanded right-hand controls, including clearance for the faucet handle when fully open. */
   VIEW_SCALE: 76,
   /** View y of the ground line (model y = 0). */
   GROUND_VIEW_Y: 300,
@@ -985,7 +985,7 @@ export const HOSE_SETTINGS = {
   MAX_HOSE_OUTLET_Y: 14,
   /** Radius of the straight nozzle bore, metres. */
   HOSE_RADIUS: 0.4,
-  /** * Where the nozzle starts, metres. Below the tank's hole, so there is head to measure from the first frame, and high enough that the hose's own lower bend clears the ground while the nozzle points straight up. */
+  /** Where the nozzle starts, metres. Below the tank's hole, so there is head to measure from the first frame, and high enough that the hose's own lower bend clears the ground while the nozzle points straight up. */
   INITIAL_OUTLET_Y: 9,
 } as const;
 
@@ -999,7 +999,7 @@ export const HOSE_GEOMETRY_SETTINGS = {
   HOSE_NOZZLE_LENGTH: 2.4,
   /** Corner fillet radius in metres, matching the artwork at its 12 px/m scale. */
   CORNER_RADIUS: 0.25,
-  /** * Where the riser stands, as a fraction of the run from the tank to the nozzle. A fraction rather than a fixed distance because the run shortens as the student widens the tank, and the riser has to stay clear of the elbow. */
+  /** Where the riser stands, as a fraction of the run from the tank to the nozzle. A fraction rather than a fixed distance because the run shortens as the student widens the tank, and the riser has to stay clear of the elbow. */
   RISER_FRACTION: 0.36,
   /** Straight segment between the elbow and the nozzle, metres. */
   HOSE_LAYOUT_H2: 2.1,
@@ -1023,7 +1023,7 @@ export const WATER_TOWER_SETTINGS = {
   MIN_TANK_RADIUS: 3.5,
   /** Max tank radius (m). */
   MAX_TANK_RADIUS: 6.5,
-  /** * How full the tank starts, as a fraction of capacity.  Not completely full, so the fill button and the faucet are both live from the first frame — a control that starts disabled is one a student may never discover. */
+  /** How full the tank starts, as a fraction of capacity.  Not completely full, so the fill button and the faucet are both live from the first frame — a control that starts disabled is one a student may never discover. */
   INITIAL_FILL_FRACTION: 0.8,
   /** Volume slack (m³) below capacity that still counts as "full", to absorb float error. */
   FULL_VOLUME_TOLERANCE: 1e-9,
@@ -1151,7 +1151,7 @@ export const WATER_TOWER_SCREEN_VIEW_SETTINGS = {
 
   MEASURING_TAPE_X_SEGMENT_2: 8, // px
 
-  /** * View pixels per model metre.  Set by the tallest thing that has to fit: the tank raised to its limit, with the faucet still above it and still on screen. The jet's horizontal range fits comfortably at the same scale. */
+  /** View pixels per model metre.  Set by the tallest thing that has to fit: the tank raised to its limit, with the faucet still above it and still on screen. The jet's horizontal range fits comfortably at the same scale. */
   VIEW_SCALE: 12,
   /** View y of the ground line (model y = 0). */
   GROUND_VIEW_Y: 429,
