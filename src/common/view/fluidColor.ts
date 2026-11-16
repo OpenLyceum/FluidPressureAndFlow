@@ -17,6 +17,7 @@
  * colour cannot be used to reverse-engineer the hidden value.
  */
 
+// biome-ignore-all lint/plugin/no-inline-color: density-keyed physical palette interpolated per fluid, not a theme color
 import { Color } from "scenerystack/scenery";
 import { GASOLINE_DENSITY, HONEY_DENSITY, WATER_DENSITY } from "../../FluidPressureAndFlowConstants.js";
 
