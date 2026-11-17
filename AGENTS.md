@@ -72,6 +72,23 @@ A11y strings live under the `a11y` key of each locale JSON, read through `String
   gradient stops, and sky `#000000` when atmosphere is off (`SkyGroundNode`,
   `HoseNode`, `WaterTowerNode`, `ChamberMassDropZoneNode`). Themeable UI chrome
   still lives in `FluidPressureAndFlowColors.ts`.
+- `memory-leak:FluidPressureAndFlowModel` — abstract base; dispose coverage is via UnderPressureModel / FlowModel / WaterTowerModel.
+- `memory-leak:BarometerNode` — scene-coupled instrument; needs Barometer + MVT + readout Properties from a screen view.
+- `memory-leak:ChamberMassDropZoneNode` — chamber-pool drop zone; needs ChamberPoolModel + MVT.
+- `memory-leak:FPAFRulerNode` — ruler with unit labels and drag bounds; needs full unit-label + MVT wiring.
+- `memory-leak:FluxMeterNode` — flow flux meter; needs FluxMeter + Pipe + unit labels + MVT.
+- `memory-leak:GridInjectorNode` — flow injector control; needs Pipe + cooldown Property + MVT.
+- `memory-leak:HoseNode` — water-tower hose; needs Hose + WaterTower + MVT.
+- `memory-leak:MassNode` — chamber mass; needs MassModel + drag bounds + release callback.
+- `memory-leak:MysteryPoolControlsNode` — mystery-pool chooser; needs MysteryPoolModel + listParent.
+- `memory-leak:PipeHandlesNode` — pipe handles; needs Pipe + PipeNode + MVT.
+- `memory-leak:PipeNode` — flow pipe scene; needs FlowModel + Pipe + density + MVT.
+- `memory-leak:PoolFaucetsNode` — pool faucets; needs PoolWithFaucetsModel + density + MVT.
+- `memory-leak:PoolGridNode` — pool depth grid; needs pool Bounds2 + unit labels + MVT.
+- `memory-leak:PoolNode` — pool water shape; needs Shape + waterShape Property + density + MVT.
+- `memory-leak:SensorToolboxNode` — toolbox of sensor items; needs ToolboxItem graph from a screen view.
+- `memory-leak:VelocitySensorNode` — velocity sensor; needs VelocitySensor + MVT + readout Properties.
+- `memory-leak:WaterTowerNode` — tower tank; needs WaterTower + density + MVT.
 
 ## Testing
 

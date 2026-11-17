@@ -7,8 +7,16 @@
  * a block scope) so local strong references die when the helper returns.
  */
 
+import { BooleanProperty, EnumerationProperty, NumberProperty, Property, StringProperty } from "scenerystack/axon";
+import { Vector2 } from "scenerystack/dot";
 import { describe, expect, it } from "vitest";
+import { UnitSystem } from "../src/common/model/units.js";
+import { InstrumentDescriptionProperty } from "../src/common/view/InstrumentDescriptionProperty.js";
+import { SkyGroundNode } from "../src/common/view/SkyGroundNode.js";
+import { UnitSlider } from "../src/common/view/UnitSlider.js";
+import { DENSITY_RANGE, WATER_DENSITY } from "../src/FluidPressureAndFlowConstants.js";
 import { FlowModel } from "../src/flow/model/FlowModel.js";
+import { StringManager } from "../src/i18n/StringManager.js";
 import { UnderPressureModel } from "../src/under-pressure/model/UnderPressureModel.js";
 import { WaterTowerModel } from "../src/water-tower/model/WaterTowerModel.js";
 import { describeDisposalLeaks, forceGC } from "./helpers/memoryLeak.js";
@@ -97,8 +105,37 @@ describe("Memory leak regression", () => {
   });
 });
 
+const unitSystemProperty = new EnumerationProperty(UnitSystem.METRIC);
+const readingProperty = new StringProperty("101.3");
+const positionProperty = new Property(new Vector2(0, 0));
+const densityProperty = new NumberProperty(WATER_DENSITY, { range: DENSITY_RANGE });
+const atmosphereProperty = new BooleanProperty(true);
+const unitLabels = StringManager.getInstance().getUnitLabelGroups();
+const densityAccessibleName = new StringProperty("Fluid density");
+
 describeDisposalLeaks([
   { name: "UnderPressureModel", create: () => new UnderPressureModel() },
   { name: "FlowModel", create: () => new FlowModel() },
   { name: "WaterTowerModel", create: () => new WaterTowerModel() },
+  {
+    name: "InstrumentDescriptionProperty",
+    create: () => new InstrumentDescriptionProperty(readingProperty, positionProperty, unitSystemProperty),
+    keepAlive: () => [readingProperty, positionProperty, unitSystemProperty],
+  },
+  {
+    name: "SkyGroundNode",
+    create: () => new SkyGroundNode(0, 800, 0, 600, 400, { isAtmosphereProperty: atmosphereProperty }),
+    keepAlive: () => [atmosphereProperty],
+  },
+  {
+    name: "UnitSlider",
+    create: () =>
+      new UnitSlider(densityProperty, DENSITY_RANGE, unitSystemProperty, {
+        conversionFor: (system) => system.density,
+        unitsLabelFor: (system) => system.labels(unitLabels).densityStringProperty,
+        majorTicks: [],
+        accessibleName: densityAccessibleName,
+      }),
+    keepAlive: () => [densityProperty, unitSystemProperty, unitLabels, densityAccessibleName],
+  },
 ]);
