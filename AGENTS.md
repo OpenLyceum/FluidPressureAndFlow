@@ -34,7 +34,7 @@ that the Flow screen's friction checkbox does not affect pressure or flux.
 | `src/common/model/FluidPressureAndFlowModel.ts` | Abstract base: gravity, density, units, atmosphere, sensors. `getPressureAt` is the only abstract method. |
 | `src/common/model/units.ts` | `UnitSystem` enumeration; all conversion, display-time only |
 | `src/common/model/airPressure.ts` | The linear air column |
-| `src/common/model/fluidColor.ts` | Density → colour, and the mystery purples |
+| `src/common/view/fluidColor.ts` | Density → colour, and the mystery purples |
 | `src/under-pressure/model/Pool.ts` | The three-way pressure branch, written once |
 | `src/flow/model/Pipe.ts` | Spline wall, continuity, the friction profile |
 | `src/flow/model/spline.ts` | Natural cubic spline; replaces upstream's `numeric.js` |
