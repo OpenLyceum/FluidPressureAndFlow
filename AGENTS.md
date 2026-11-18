@@ -66,12 +66,6 @@ A11y strings live under the `a11y` key of each locale JSON, read through `String
 - **The default colour profile is light.** All three screens are an outdoor
   scene; see `FluidPressureAndFlowColors.ts` for the reasoning. `background_color`
   in the PWA manifest is correspondingly not black.
-- **Hardcoded colors:** a few scene paints stay as literals because they are
-  physical / atmospheric tones that must not remapped with projector chrome —
-  chamber drop-zone `#ffdcf0`, hose `#00FF00` / `#555555`, water-tower metal
-  gradient stops, and sky `#000000` when atmosphere is off (`SkyGroundNode`,
-  `HoseNode`, `WaterTowerNode`, `ChamberMassDropZoneNode`). Themeable UI chrome
-  still lives in `FluidPressureAndFlowColors.ts`.
 - `memory-leak:FluidPressureAndFlowModel` — abstract base; dispose coverage is via UnderPressureModel / FlowModel / WaterTowerModel.
 - `memory-leak:BarometerNode` — scene-coupled instrument; needs Barometer + MVT + readout Properties from a screen view.
 - `memory-leak:ChamberMassDropZoneNode` — chamber-pool drop zone; needs ChamberPoolModel + MVT.
