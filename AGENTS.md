@@ -66,7 +66,6 @@ A11y strings live under the `a11y` key of each locale JSON, read through `String
 - **The default colour profile is light.** All three screens are an outdoor
   scene; see `FluidPressureAndFlowColors.ts` for the reasoning. `background_color`
   in the PWA manifest is correspondingly not black.
-- `memory-leak:FluidPressureAndFlowModel` — abstract base; dispose coverage is via UnderPressureModel / FlowModel / WaterTowerModel.
 - `memory-leak:BarometerNode` — scene-coupled instrument; needs Barometer + MVT + readout Properties from a screen view.
 - `memory-leak:ChamberMassDropZoneNode` — chamber-pool drop zone; needs ChamberPoolModel + MVT.
 - `memory-leak:FPAFRulerNode` — ruler with unit labels and drag bounds; needs full unit-label + MVT wiring.
