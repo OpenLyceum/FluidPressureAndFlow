@@ -25,33 +25,33 @@ export class InstrumentDescriptionProperty extends PatternStringProperty<
     const a11y = strings.getCommonA11yStrings();
     const unitLabels = strings.getUnitLabelGroups();
     const common = strings.getCommonStrings();
-    const reading = new DerivedProperty(
+    const formattedReadingProperty = new DerivedProperty(
       [readingProperty, common.unknownValueStringProperty, a11y.noReadingStringProperty],
       (value, unknown, noReading) => (value === unknown ? noReading : value),
     );
-    const x = new DerivedProperty([positionProperty, unitSystemProperty], (position, system) =>
+    const xProperty = new DerivedProperty([positionProperty, unitSystemProperty], (position, system) =>
       formatValue(system.distance, position.x),
     );
-    const y = new DerivedProperty([positionProperty, unitSystemProperty], (position, system) =>
+    const yProperty = new DerivedProperty([positionProperty, unitSystemProperty], (position, system) =>
       formatValue(system.distance, position.y),
     );
-    const unitsSource = new DerivedProperty(
+    const unitsSourceProperty = new DerivedProperty(
       [unitSystemProperty],
       (system) => system.labels(unitLabels).distanceStringProperty,
     );
-    const units = new DynamicProperty<string, string, TReadOnlyProperty<string>>(unitsSource);
+    const unitsProperty = new DynamicProperty<string, string, TReadOnlyProperty<string>>(unitsSourceProperty);
     super(isMeter ? a11y.meterDescriptionPatternStringProperty : a11y.instrumentDescriptionPatternStringProperty, {
-      reading,
-      x,
-      y,
-      units,
+      reading: formattedReadingProperty,
+      x: xProperty,
+      y: yProperty,
+      units: unitsProperty,
     });
     this.disposeDescription = () => {
-      reading.dispose();
-      x.dispose();
-      y.dispose();
-      units.dispose();
-      unitsSource.dispose();
+      formattedReadingProperty.dispose();
+      xProperty.dispose();
+      yProperty.dispose();
+      unitsProperty.dispose();
+      unitsSourceProperty.dispose();
     };
   }
 
