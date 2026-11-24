@@ -7,11 +7,11 @@ import {
 } from "scenerystack/axon";
 import type { Vector2 } from "scenerystack/dot";
 import { StringManager } from "../../i18n/StringManager.js";
-import { formatValue, type UnitSystem } from "../model/units.js";
+import { formatValue, type UnitSystem } from "../model/unitsProperty.js";
 
-/** Live measurements and SI probe coordinates, converted to the selected display units. */
+/** Live measurements and SI probe coordinates, converted to the selected display unitsProperty. */
 export class InstrumentDescriptionProperty extends PatternStringProperty<
-  Record<"reading" | "x" | "y" | "units", TReadOnlyProperty<string>>
+  Record<"reading" | "xProperty" | "yProperty" | "unitsProperty", TReadOnlyProperty<string>>
 > {
   private readonly disposeDescription: () => void;
 
@@ -29,29 +29,29 @@ export class InstrumentDescriptionProperty extends PatternStringProperty<
       [readingProperty, common.unknownValueStringProperty, a11y.noReadingStringProperty],
       (value, unknown, noReading) => (value === unknown ? noReading : value),
     );
-    const x = new DerivedProperty([positionProperty, unitSystemProperty], (position, system) =>
-      formatValue(system.distance, position.x),
+    const xProperty = new DerivedProperty([positionProperty, unitSystemProperty], (position, system) =>
+      formatValue(system.distance, position.xProperty),
     );
-    const y = new DerivedProperty([positionProperty, unitSystemProperty], (position, system) =>
-      formatValue(system.distance, position.y),
+    const yProperty = new DerivedProperty([positionProperty, unitSystemProperty], (position, system) =>
+      formatValue(system.distance, position.yProperty),
     );
-    const unitsSource = new DerivedProperty(
+    const unitsSourceProperty = new DerivedProperty(
       [unitSystemProperty],
       (system) => system.labels(unitLabels).distanceStringProperty,
     );
-    const units = new DynamicProperty<string, string, TReadOnlyProperty<string>>(unitsSource);
+    const unitsProperty = new DynamicProperty<string, string, TReadOnlyProperty<string>>(unitsSourceProperty);
     super(isMeter ? a11y.meterDescriptionPatternStringProperty : a11y.instrumentDescriptionPatternStringProperty, {
       reading,
-      x,
-      y,
-      units,
+      xProperty,
+      yProperty,
+      unitsProperty,
     });
     this.disposeDescription = () => {
       reading.dispose();
-      x.dispose();
-      y.dispose();
-      units.dispose();
-      unitsSource.dispose();
+      xProperty.dispose();
+      yProperty.dispose();
+      unitsProperty.dispose();
+      unitsSourceProperty.dispose();
     };
   }
 

@@ -9,6 +9,7 @@
  */
 
 import { DerivedProperty, PatternStringProperty } from "scenerystack/axon";
+import { roundSymmetric } from "scenerystack/dot";
 import { ScreenSummaryContent } from "scenerystack/sim";
 import { StringManager } from "../../i18n/StringManager.js";
 import type { WaterTowerModel } from "../model/WaterTowerModel.js";
@@ -21,7 +22,7 @@ export class WaterTowerScreenSummaryContent extends ScreenSummaryContent {
 
     const fillPercentProperty = new DerivedProperty(
       [model.waterTower.fluidVolumeProperty, model.waterTower.capacityProperty],
-      (volume, capacity) => Math.round((100 * volume) / capacity),
+      (volume, capacity) => roundSymmetric((100 * volume) / capacity),
     );
 
     const holeStateProperty = new DerivedProperty(
